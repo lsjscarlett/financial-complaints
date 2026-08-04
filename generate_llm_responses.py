@@ -1,8 +1,12 @@
 import os
 import pandas as pd
+from dotenv import load_dotenv
 from openai import OpenAI
 from anthropic import Anthropic
 from mistralai.client import Mistral
+
+# Load keys from a local .env file (real environment variables win over it)
+load_dotenv()
 
 # 1. Dataset Path (override with the CONSUMER_COMPLAINTS_CSV env var)
 DEFAULT_DATASET = os.path.join(
