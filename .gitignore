@@ -22,3 +22,5 @@ dataset/*.zip
 
 # Generated output
 llm_responses_sample.csv
+llm_responses_long.csv
+llm_responses_wide.csv

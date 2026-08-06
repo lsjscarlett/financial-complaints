@@ -2,10 +2,11 @@
 
 Compare how three LLMs respond to real consumer finance complaints.
 
-`generate_llm_responses.py` reads the CFPB consumer complaint dataset, builds a
-customer-service prompt from each complaint's `issue` and `sub_issue` fields, sends it to
-ChatGPT, Claude, and Mistral, and writes all three replies side by side to a CSV for
-comparison.
+`generate_llm_responses.py` reads the CFPB consumer complaint dataset, builds **three
+different prompts** from each complaint's `issue` and `sub_issue` fields, and sends each
+one to ChatGPT, Claude, and Mistral. That is **9 responses per complaint**, so you can
+compare how much the wording of a prompt changes the answer, and how differently each
+model reacts to the same change. Every rendered prompt is saved alongside its response.
 
 ## Setup
 
@@ -70,31 +71,56 @@ $env:CONSUMER_COMPLAINTS_CSV = "D:\data\consumer_complaints.csv"
 python generate_llm_responses.py
 ```
 
-Each complaint is printed as it is processed, and the results are saved next to the
-dataset as `llm_responses_sample.csv` with columns:
+Each response is printed as it arrives, and two CSVs are written next to the dataset —
+the same data in both shapes, because each is convenient for a different job.
+
+**`llm_responses_long.csv`** — one row per response, 9 rows per complaint. Use this for
+analysis (`groupby`, `pivot_table`).
 
 | Column | Contents |
 | --- | --- |
 | `Row` | 1-based row number from the dataset |
-| `Issue` | The `issue` field |
-| `Sub_Issue` | The `sub_issue` field, blank where absent |
-| `ChatGPT` | Response from `gpt-4o-mini` |
-| `Claude` | Response from `claude-sonnet-5` |
-| `Mistral` | Response from `mistral-small-latest` |
+| `Issue` / `Sub_Issue` | The source fields; `Sub_Issue` blank where absent |
+| `Prompt_Variant` | `v1_terse`, `v2_empathetic`, or `v3_structured` |
+| `Prompt_Text` | The full prompt actually sent |
+| `Model` | `ChatGPT`, `Claude`, or `Mistral` |
+| `Response` | The reply, or the error message if the call failed |
+| `Response_Chars` | Reply length, `0` on error |
+| `Is_Error` | Boolean, for filtering failures out of aggregates |
 
-By default only the first 10 rows are processed, so a run costs a few cents. Change
-`df.head(10)` to widen the sample — the dataset has ~555,000 rows, so run the full thing
-only if you mean to.
+**`llm_responses_wide.csv`** — one row per complaint with 15 columns: the 3 rendered
+prompts (`prompt__v1_terse`, …) and the 9 responses (`v1_terse__Claude`, …). Use this to
+read the variants side by side.
 
-## How the prompt is built
+The run ends with a mean-response-length table per variant × model, which is a quick
+signal that the prompts actually landed differently.
+
+Row count is controlled by `LLM_SAMPLE_ROWS` (default 10). At 9 calls per complaint that
+is 90 API calls, so raise it deliberately — the dataset has ~555,000 rows.
+
+```powershell
+$env:LLM_SAMPLE_ROWS = "50"
+```
+
+## The three prompt variants
+
+All three receive the same complaint text and differ only in framing, so differences in
+the output are attributable to the prompt. They are defined in `PROMPT_VARIANTS` near the
+top of the script — edit the templates there to run your own comparison.
+
+| Variant | Framing | `max_tokens` |
+| --- | --- | --- |
+| `v1_terse` | Bare instruction, no persona, no tone guidance. The baseline. | 150 |
+| `v2_empathetic` | Adds a persona and asks for acknowledgement, ownership, and one concrete next step in plain language. | 300 |
+| `v3_structured` | Same persona, but a rigid `Acknowledgement / Next step / What we need from you` format plus compliance constraints (no promised outcomes, no admitted liability, no invented figures). | 350 |
+
+### How the complaint text is built
 
 The dataset splits a complaint's category across two columns, and `sub_issue` is messy:
 it is empty for a large share of rows, and sometimes just repeats `issue` verbatim. The
 script handles both, so the prompt gets the extra detail only when it adds something:
 
 ```
-You are a customer service representative for a financial institution.
-Briefly respond to the following consumer complaint in 2 sentences.
 Issue: Incorrect information on credit report
 Sub-issue: Account status
 ```
@@ -104,13 +130,18 @@ entirely. Column lookup ignores case and `-`/`_`/space differences, so `issue`/`
 and `sub_issue`/`Sub-issue` all resolve — the Kaggle export and the current CFPB export
 disagree on this.
 
-Each model is called in its own `try`/`except`, so one provider being down or out of
-credits leaves the other two intact; the error text lands in that model's cell.
+Each call is wrapped individually, so one provider being down leaves the other two
+intact; the error text lands in that cell with `Is_Error` set. If a provider returns an
+unrecoverable error (no credits, bad key) it is skipped for the rest of the run instead
+of failing the same way dozens of times.
 
 ## Notes
 
 - `mistralai` 2.x moved the `Mistral` class to `mistralai.client`. On 1.x the import is
   `from mistralai import Mistral` instead.
-- `max_tokens=150` keeps replies to roughly the requested two sentences.
+- Claude's `content` list can begin with a non-text block, so the script collects the
+  text blocks rather than reading `content[0].text`.
+- Leave a key blank in `.env` and it is set to `""`, not unset — the script uses
+  `os.getenv(...) or default` so blank behaves as absent.
 - These are LLM-generated drafts for research and comparison, not compliance-reviewed
   customer communications.
