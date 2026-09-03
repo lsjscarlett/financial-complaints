@@ -16,9 +16,12 @@ __pycache__/
 .idea/
 .vscode/
 
-# Data: consumer_complaints.csv is ~167 MB, well over GitHub's 100 MB file limit
+# Data: the raw CFPB export is ~9 GB, well over GitHub's 100 MB file limit.
+# The feature-engineered 10k subset and its summary are small and are committed.
 dataset/*.csv
 dataset/*.zip
+!dataset/complaints_10k.csv
+!dataset/complaints_10k_summary.md
 
 # Generated output
 llm_responses_sample.csv
