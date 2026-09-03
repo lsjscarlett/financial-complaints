@@ -11,16 +11,20 @@ venv/
 __pycache__/
 *.py[cod]
 *.egg-info/
+.pytest_cache/
 
 # IDE
 .idea/
 .vscode/
 
-# Data: consumer_complaints.csv is ~167 MB, well over GitHub's 100 MB file limit
+# Data: consumer_complaints.csv is ~167 MB, well over GitHub's 100 MB file limit.
+# The curated 10k CSV and the response files are generated locally too.
 dataset/*.csv
 dataset/*.zip
+dataset/*.jsonl
+dataset/fixture_*
 
-# Generated output
+# Generated output (legacy locations)
 llm_responses_sample.csv
 llm_responses_long.csv
 llm_responses_wide.csv

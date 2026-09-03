@@ -2,11 +2,13 @@
 
 Compare how three LLMs respond to real consumer finance complaints.
 
-`generate_llm_responses.py` reads the CFPB consumer complaint dataset, builds **three
-different prompts** from each complaint's `issue` and `sub_issue` fields, and sends each
-one to ChatGPT, Claude, and Mistral. That is **9 responses per complaint**, so you can
-compare how much the wording of a prompt changes the answer, and how differently each
-model reacts to the same change. Every rendered prompt is saved alongside its response.
+Two scripts, run in order:
+
+1. **`build_dataset.py`** curates a high-quality, category-diverse subset of the CFPB
+   consumer complaint dataset (default 10,000 rows) and engineers analysis features.
+2. **`generate_llm_responses.py`** sends every curated complaint through **three prompt
+   variants** to **three models** (ChatGPT, Claude, Mistral): 9 responses per complaint,
+   **90,000 responses** for the 10k set. It is async, checkpointed, and resumable.
 
 ## Setup
 
@@ -33,16 +35,13 @@ MISTRAL_API_KEY=...
 ```
 
 `.env` is gitignored and must stay that way — never commit real keys. Real environment
-variables take precedence over `.env`, so you can also just set them in your shell:
-
-```powershell
-$env:OPENAI_API_KEY = "sk-..."
-```
+variables take precedence over `.env`. All three are paid APIs; **make sure each account
+has credit before a full run** (the script detects a no-credit / bad-key error on the first
+call and stops using that provider instead of failing 30,000 times).
 
 Get keys from [OpenAI](https://platform.openai.com/api-keys),
 [Anthropic](https://console.anthropic.com/settings/keys), and
-[Mistral](https://console.mistral.ai/api-keys). All three are paid APIs; the script
-reports a per-model error inline if a key is missing credits rather than crashing.
+[Mistral](https://console.mistral.ai/api-keys).
 
 ### 3. Get the dataset
 
@@ -58,90 +57,173 @@ financial-complaints/
     └── consumer_complaints.csv
 ```
 
-The file is ~167 MB, which is over GitHub's 100 MB per-file limit, so it is gitignored
-rather than committed. If you keep it somewhere else, point at it instead:
+The file is ~167 MB, over GitHub's 100 MB per-file limit, so it is gitignored. To keep it
+elsewhere:
 
 ```powershell
 $env:CONSUMER_COMPLAINTS_CSV = "D:\data\consumer_complaints.csv"
 ```
 
-## Run
+The current CFPB export (`Date received`, `Sub-issue`, `Consumer complaint narrative`, …)
+works too; column names are matched ignoring case and separators.
+
+## Step 1 — curate the 10,000 rows
+
+```powershell
+python build_dataset.py
+```
+
+Writes `dataset/curated_complaints.csv` and `dataset/curated_complaints_summary.json`.
+
+### Filtering
+
+Rows are kept only when they provide real context:
+
+| Rule | Why |
+| --- | --- |
+| `issue` and `sub_issue` both present | The sub-issue is what makes the complaint specific. |
+| `sub_issue` is not generic (`Other`, `N/A`, …) and not a verbatim repeat of `issue` | Those add no information. |
+| `product` present | Needed for the category key. |
+| Exact-duplicate narratives dropped | Re-submitted complaints would give the LLMs identical prompts. |
+
+### Feature engineering
+
+Each curated row carries these engineered columns in addition to the raw fields:
+
+| Column | Meaning |
+| --- | --- |
+| `category` | `product \| issue \| sub_issue` — the stratification key |
+| `issue_pair` | `issue \| sub_issue` |
+| `has_narrative`, `narrative_chars`, `narrative_words` | Consumer narrative presence and size |
+| `narrative_redactions`, `narrative_redaction_ratio` | Count / share of `XXXX` redaction tokens |
+| `issue_words`, `sub_issue_words`, `sub_issue_specificity` | How descriptive the labels are |
+| `has_sub_product`, `has_company_response` | Extra context flags |
+| `year`, `month` | Parsed from `date_received` |
+| `timely_response_flag`, `consumer_disputed_flag` | Booleans from the Yes/No columns |
+| `quality_score` | Context-richness score (≈0–10) used for ranking |
+
+`quality_score` rewards a narrative (+4), a narrative in the 500–3,000 character band (+2.5),
+a specific sub-issue, and a sub-product, and penalises heavy redaction. Within a category,
+rows are taken in score order, so complaints with a consumer narrative are always picked
+before label-only rows.
+
+### Selection: coverage first, then prevalence
+
+1. Every `category` gets at least `--min-per-category` rows (default 5) if that many exist.
+2. The remaining budget is spread across categories in proportion to
+   **√(available rows)** — frequent categories stay prominent, but the long tail is not
+   drowned out the way a plain proportional sample would.
+
+`--target`, `--min-per-category`, and `--seed` are all flags; the selection is
+deterministic for a given seed. The summary JSON reports how many products / issues /
+sub-issues / categories made it in, the narrative share, and the smallest categories.
+
+## Step 2 — generate the 90,000 responses
+
+Smoke test first (45 calls):
+
+```powershell
+python generate_llm_responses.py --limit 5
+```
+
+Full run:
 
 ```powershell
 python generate_llm_responses.py
 ```
 
-Each response is printed as it arrives, and two CSVs are written next to the dataset —
-the same data in both shapes, because each is convenient for a different job.
+Every response is appended to `dataset/llm_responses_raw.jsonl` the moment it arrives.
+**If the run stops for any reason — crash, laptop sleep, a provider running out of
+credit — just run the same command again and it resumes where it left off.**
 
-**`llm_responses_long.csv`** — one row per response, 9 rows per complaint. Use this for
-analysis (`groupby`, `pivot_table`).
+Useful flags:
 
-| Column | Contents |
+| Flag | Effect |
 | --- | --- |
-| `Row` | 1-based row number from the dataset |
-| `Issue` / `Sub_Issue` | The source fields; `Sub_Issue` blank where absent |
-| `Prompt_Variant` | `v1_terse`, `v2_empathetic`, or `v3_structured` |
-| `Prompt_Text` | The full prompt actually sent |
-| `Model` | `ChatGPT`, `Claude`, or `Mistral` |
-| `Response` | The reply, or the error message if the call failed |
-| `Response_Chars` | Reply length, `0` on error |
-| `Is_Error` | Boolean, for filtering failures out of aggregates |
+| `--limit N` | Only the first N complaints (or `LLM_SAMPLE_ROWS`) |
+| `--models Claude,Mistral` | Subset of providers |
+| `--retry-errors` | Redo calls that were recorded as errors |
+| `--dry-run` | No API calls; exercises scheduling, checkpointing and outputs |
+| `--finalize-only` | Rebuild the CSVs from the checkpoint without calling anything |
+| `--concurrency-openai/claude/mistral` | Parallel requests per provider (defaults 8 / 4 / 2) |
+| `--max-attempts`, `--base-backoff`, `--max-backoff` | Retry policy for 429 / 5xx / timeouts |
 
-**`llm_responses_wide.csv`** — one row per complaint with 15 columns: the 3 rendered
-prompts (`prompt__v1_terse`, …) and the 9 responses (`v1_terse__Claude`, …). Use this to
-read the variants side by side.
+Raise the concurrency once your rate-limit tier allows it; at the defaults the Claude leg
+(30,000 calls) is the slowest at several hours. Models default to `gpt-4o-mini`,
+`claude-sonnet-5`, `mistral-small-latest`; override with `OPENAI_MODEL`, `CLAUDE_MODEL`,
+`MISTRAL_MODEL`.
 
-The run ends with a mean-response-length table per variant × model, which is a quick
-signal that the prompts actually landed differently.
+### Outputs (all in `dataset/`, all gitignored)
 
-Row count is controlled by `LLM_SAMPLE_ROWS` (default 10). At 9 calls per complaint that
-is 90 API calls, so raise it deliberately — the dataset has ~555,000 rows.
+| File | Contents |
+| --- | --- |
+| `llm_responses_raw.jsonl` | Append-only checkpoint: one JSON object per call (key, response, tokens, latency, attempts, error) |
+| `llm_prompts.csv` | One row per complaint × variant: the exact prompt text sent |
+| `llm_responses_long.csv` | One row per response, 9 per complaint. Use this for `groupby` / `pivot_table`. |
+| `llm_responses_wide.csv` | One row per complaint: 3 prompt columns + 9 response columns, side by side |
 
-```powershell
-$env:LLM_SAMPLE_ROWS = "50"
-```
+`llm_responses_long.csv` columns: `Complaint_ID`, `Product`, `Sub_Product`, `Issue`,
+`Sub_Issue`, `Category`, `has_narrative`, `narrative_chars`, `Prompt_Variant`, `Model`,
+`Model_ID`, `Response`, `Response_Chars`, `Is_Error`, `Error_Type`, `Finish_Reason`,
+`Input_Tokens`, `Output_Tokens`, `Attempts`, `Latency_ms`.
+
+The run ends with a response-count table, a mean-length table per variant × model, token
+usage with an approximate cost per model (edit `PRICES` in the script), and an error
+breakdown.
 
 ## The three prompt variants
 
-All three receive the same complaint text and differ only in framing, so differences in
-the output are attributable to the prompt. They are defined in `PROMPT_VARIANTS` near the
-top of the script — edit the templates there to run your own comparison.
+All three receive the same complaint block and differ only in framing, so differences in
+the output are attributable to the prompt. They live in `PROMPT_VARIANTS` near the top of
+`generate_llm_responses.py`.
 
 | Variant | Framing | `max_tokens` |
 | --- | --- | --- |
-| `v1_terse` | Bare instruction, no persona, no tone guidance. The baseline. | 150 |
-| `v2_empathetic` | Adds a persona and asks for acknowledgement, ownership, and one concrete next step in plain language. | 300 |
-| `v3_structured` | Same persona, but a rigid `Acknowledgement / Next step / What we need from you` format plus compliance constraints (no promised outcomes, no admitted liability, no invented figures). | 350 |
+| `v1_terse` | Bare instruction, no persona, no tone guidance. The baseline. | 200 |
+| `v2_empathetic` | Adds a persona and asks for acknowledgement, ownership, and one concrete next step in plain language. | 400 |
+| `v3_structured` | Same persona, but a rigid `Acknowledgement / Next step / What we need from you` format plus compliance constraints. | 450 |
 
-### How the complaint text is built
-
-The dataset splits a complaint's category across two columns, and `sub_issue` is messy:
-it is empty for a large share of rows, and sometimes just repeats `issue` verbatim. The
-script handles both, so the prompt gets the extra detail only when it adds something:
+### How the complaint block is built
 
 ```
-Issue: Incorrect information on credit report
-Sub-issue: Account status
+Product: Debt collection
+Sub-product: Medical
+Issue: Disclosure verification of debt
+Sub-issue: Right to dispute notice not received
+
+Customer's description (personal details redacted as XXXX):
+On XX/XX/XXXX I received a letter stating that I owed ...
 ```
 
-When `sub_issue` is blank or duplicates `issue`, the `Sub-issue:` line is omitted
-entirely. Column lookup ignores case and `-`/`_`/space differences, so `issue`/`Issue`
-and `sub_issue`/`Sub-issue` all resolve — the Kaggle export and the current CFPB export
-disagree on this.
+Lines are omitted when the field is blank or (for `Sub-issue`) when it repeats the issue.
+Narratives longer than 2,500 characters are cut at a word boundary with a `[...]` marker
+(`LLM_MAX_NARRATIVE_CHARS` to change).
 
-Each call is wrapped individually, so one provider being down leaves the other two
-intact; the error text lands in that cell with `Is_Error` set. If a provider returns an
-unrecoverable error (no credits, bad key) it is skipped for the rest of the run instead
-of failing the same way dozens of times.
+## Tests
+
+No dataset or API key needed — a schema-faithful synthetic fixture is generated on the fly:
+
+```powershell
+python -m pytest tests/ -q
+```
+
+`tests/make_fixture.py` can also write a fixture CSV to try the scripts end to end:
+
+```powershell
+python tests/make_fixture.py --rows 20000 --output dataset/fixture_complaints.csv
+python build_dataset.py --input dataset/fixture_complaints.csv --output dataset/fixture_curated.csv --target 1000
+python generate_llm_responses.py --dry-run --rows-file dataset/fixture_curated.csv --limit 20
+```
 
 ## Notes
 
 - `mistralai` 2.x moved the `Mistral` class to `mistralai.client`. On 1.x the import is
   `from mistralai import Mistral` instead.
-- Claude's `content` list can begin with a non-text block, so the script collects the
-  text blocks rather than reading `content[0].text`.
-- Leave a key blank in `.env` and it is set to `""`, not unset — the script uses
-  `os.getenv(...) or default` so blank behaves as absent.
+- Claude is called with extended thinking disabled so the whole `max_tokens` budget goes
+  to the visible reply; its `content` list is scanned for text blocks rather than reading
+  `content[0].text`.
+- Fatal provider errors (bad key, no credit) are not written to the checkpoint, so the
+  affected calls are retried automatically on the next run. Non-fatal errors are written
+  with `Is_Error=True`; use `--retry-errors` to redo them.
 - These are LLM-generated drafts for research and comparison, not compliance-reviewed
   customer communications.
