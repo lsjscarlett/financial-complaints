@@ -221,6 +221,8 @@ FATAL_MARKERS = (
     "insufficient_quota",
     "credit_balance_exhausted",
     "credit balance is too low",
+    # A per-day request cap will not clear during the run; rerun tomorrow to fill in
+    "requests per day",
     "authentication_error",
     "invalid_api_key",
     "unauthorized",
