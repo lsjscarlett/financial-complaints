@@ -220,6 +220,7 @@ def build_complaint(row):
 FATAL_MARKERS = (
     "insufficient_quota",
     "credit_balance_exhausted",
+    "credit balance is too low",
     "authentication_error",
     "invalid_api_key",
     "unauthorized",
