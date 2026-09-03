@@ -13,6 +13,8 @@ Built for long runs:
 
 Environment:
   OPENAI_API_KEY, ANTHROPIC_API_KEY, MISTRAL_API_KEY   required
+  CLAUDE_API_KEY       accepted instead of ANTHROPIC_API_KEY, for hosts that
+                       reserve that name (e.g. Claude Code on the web)
   LLM_INPUT_CSV        input file (default dataset/complaints_10k.csv)
   LLM_SAMPLE_ROWS      rows to process, or "all" (default 10)
   LLM_CONCURRENCY      parallel calls per provider (default 4)
@@ -50,22 +52,29 @@ MAX_RETRIES = 6
 
 
 # 1. API keys come from the environment only -- never hardcode them in this file.
-def require_key(name: str) -> str:
-    key = os.getenv(name)
-    if not key:
-        raise SystemExit(
-            f"Missing {name}. Set it before running, e.g. in PowerShell:\n"
-            f'    $env:{name} = "your-key-here"'
-        )
-    return key
+def require_key(name: str, *aliases: str) -> str:
+    for candidate in (name, *aliases):
+        key = os.getenv(candidate)
+        if key:
+            return key
+    raise SystemExit(
+        f"Missing {name}. Set it before running, e.g. in PowerShell:\n"
+        f'    $env:{name} = "your-key-here"'
+    )
 
 
 OPENAI_API_KEY = require_key("OPENAI_API_KEY")
-ANTHROPIC_API_KEY = require_key("ANTHROPIC_API_KEY")
+# Claude Code on the web reserves ANTHROPIC_API_KEY for itself, so the key can
+# also be supplied as CLAUDE_API_KEY.
+ANTHROPIC_API_KEY = require_key("ANTHROPIC_API_KEY", "CLAUDE_API_KEY")
 MISTRAL_API_KEY = require_key("MISTRAL_API_KEY")
+# The same host points ANTHROPIC_BASE_URL at a local proxy, which the SDK would
+# otherwise pick up; always use the public API unless overridden for this script.
+ANTHROPIC_URL = os.getenv("LLM_ANTHROPIC_BASE_URL") or "https://api.anthropic.com"
 
 openai_client = OpenAI(api_key=OPENAI_API_KEY, max_retries=0, timeout=90)
-anthropic_client = Anthropic(api_key=ANTHROPIC_API_KEY, max_retries=0, timeout=90)
+anthropic_client = Anthropic(api_key=ANTHROPIC_API_KEY, base_url=ANTHROPIC_URL,
+                             max_retries=0, timeout=90)
 mistral_client = Mistral(api_key=MISTRAL_API_KEY)
 
 

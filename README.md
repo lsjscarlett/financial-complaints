@@ -49,6 +49,12 @@ Get keys from [OpenAI](https://platform.openai.com/api-keys),
 [Mistral](https://console.mistral.ai/api-keys). All three are paid APIs; the script
 reports a per-model error inline if a key is missing credits rather than crashing.
 
+**Running inside Claude Code on the web?** Its cloud environment reserves
+`ANTHROPIC_API_KEY` for Claude Code itself, so a value you set under that name never
+reaches the session (and `ANTHROPIC_BASE_URL` is pointed at a local proxy). Add the
+Anthropic key to the environment as `CLAUDE_API_KEY` instead; the script accepts either
+name and always calls the public Anthropic API.
+
 ### 3. Get the dataset
 
 The raw data is the CFPB's public complaint database, downloadable without an account:
@@ -197,8 +203,9 @@ old Kaggle export (`issue`/`sub_issue`, no narrative for most rows) via
   text blocks rather than reading `content[0].text`.
 - Leave a key blank in `.env` and it is set to `""`, not unset — the script uses
   `os.getenv(...) or default` so blank behaves as absent.
-- The Anthropic SDK honours `ANTHROPIC_BASE_URL` if it is set in your environment; unset
-  it if you have one pointing somewhere other than the public API.
+- The Anthropic SDK honours `ANTHROPIC_BASE_URL` if it is set in your environment, so the
+  script pins the public API URL explicitly. Set `LLM_ANTHROPIC_BASE_URL` to route Claude
+  calls elsewhere on purpose.
 - Narratives contain `XXXX` where the CFPB redacted names, dates, and amounts. The models
   see them as-is.
 - These are LLM-generated drafts for research and comparison, not compliance-reviewed
