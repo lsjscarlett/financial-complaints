@@ -238,6 +238,26 @@ Three follow-up scripts build on the feature table:
 
 The manuscript draft is in `paper/paper.md`, with worked examples in `paper/appendix_examples.md`.
 
+## Study 2: factorial prompts
+
+`generate_llm_responses.py` also carries ten Study 2 prompts (`FACTORIAL_VARIANTS`): a 2×2×2
+factorial around `v2_empathetic` over empathetic framing (A), the three-field format (B), and
+the compliance constraints (C), all with a 3-4 sentence target so length is not confounded;
+a hygiene cell (`h_A00_hygiene`, V2 plus "plain text, no salutation, no placeholders"); and
+two surface paraphrases of V2 (`p_A00_para1`, `p_A00_para2`). `v2_empathetic` is cell A00.
+They run on the 2,999-complaint stratified subset in `dataset/study2_rows.txt`, which is a
+superset of the 300 judge complaints:
+
+```powershell
+$env:LLM_SAMPLE_ROWS = "all"
+$env:LLM_ROWS_FILE = "dataset/study2_rows.txt"
+$env:LLM_OUTPUT_NAME = "llm_responses_study2"
+$env:LLM_VARIANTS = "f_000_base,f_0B0_format,f_00C_constraints,f_0BC_format_constraints,f_A0C_empathetic_constraints,f_AB0_empathetic_format,f_ABC_empathetic_format_constraints,h_A00_hygiene,p_A00_para1,p_A00_para2"
+python generate_llm_responses.py
+```
+
+Output goes to `dataset/llm_responses_study2_long.csv` / `_wide.csv` and resumes like Study 1.
+
 ## Notes
 
 - `mistralai` 2.x moved the `Mistral` class to `mistralai.client`. On 1.x the import is

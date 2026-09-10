@@ -20,6 +20,10 @@ Environment:
   LLM_CONCURRENCY      parallel calls per provider (default 4)
   LLM_NARRATIVE_CHARS  narrative truncation length (default 1500)
   LLM_VERBOSE          1 to print every reply (default: only for <=100 calls)
+  LLM_VARIANTS         comma-separated prompt names to run (default: the three
+                       Study 1 prompts); see FACTORIAL_VARIANTS for Study 2
+  LLM_ROWS_FILE        text file of row_ids to restrict the run to
+  LLM_OUTPUT_NAME      output file stem (default llm_responses)
 """
 
 import csv
@@ -164,6 +168,80 @@ PROMPT_VARIANTS = [
     },
 ]
 
+# 3b. Study 2: a 2x2x2 factorial around v2_empathetic, plus a hygiene cell and two
+# paraphrases. Factors: A = empathetic framing (v2's persona + directives), B =
+# the three-field format, C = the compliance constraints. All free-text cells ask
+# for 3-4 sentences so length is not confounded. v2_empathetic is cell A00; the
+# other seven cells are below. Select with LLM_VARIANTS (comma-separated names).
+_PERSONA_A = ("You are an experienced customer service representative at a financial "
+              "institution, known for being warm and genuinely helpful.\n\n")
+_DIRECTIVES_A_FREE = (
+    "A customer has raised the complaint below. Reply directly to them in 3-4 "
+    "sentences. Acknowledge the frustration this has caused, take ownership on "
+    "behalf of the institution, and describe one concrete next step you will "
+    "take. Write in plain language, avoid corporate jargon, and do not ask the "
+    "customer to repeat information they have already provided.\n\n")
+_FORMAT_SPEC = (
+    "Acknowledgement: <one sentence restating the issue>\n"
+    "Next step: <one sentence on what the institution will do, and by when>\n"
+    "What we need from you: <one sentence, or 'Nothing at this time.'>\n\n")
+_FORMAT_PLAIN = "Draft a reply to the complaint below using exactly this format:\n" + _FORMAT_SPEC
+_DIRECTIVES_A_FORMAT = (
+    "A customer has raised the complaint below. Draft a reply to them using exactly "
+    "this format:\n" + _FORMAT_SPEC +
+    "Acknowledge the frustration this has caused, take ownership on behalf of the "
+    "institution, and describe one concrete next step you will take. Write in plain "
+    "language, avoid corporate jargon, and do not ask the customer to repeat "
+    "information they have already provided.\n\n")
+_CONSTRAINTS = (
+    "Constraints: do not promise a specific outcome, do not admit legal liability, "
+    "do not give legal or tax advice, and do not invent account numbers, dates, or "
+    "dollar amounts.\n\n")
+_BASE_FREE = "Reply to the following consumer complaint in 3-4 sentences.\n\n"
+_HYGIENE = ("Write plain text only: no salutation, no sign-off, no markdown, and no "
+            "bracketed placeholders such as [Customer's Name] or [date].\n\n")
+
+FACTORIAL_VARIANTS = [
+    {"name": "f_000_base", "max_tokens": 300, "template": _BASE_FREE + "{complaint}"},
+    {"name": "f_0B0_format", "max_tokens": 350, "template": _FORMAT_PLAIN + "{complaint}"},
+    {"name": "f_00C_constraints", "max_tokens": 300, "template": _BASE_FREE + _CONSTRAINTS + "{complaint}"},
+    {"name": "f_0BC_format_constraints", "max_tokens": 350, "template": _FORMAT_PLAIN + _CONSTRAINTS + "{complaint}"},
+    {"name": "f_A0C_empathetic_constraints", "max_tokens": 300,
+     "template": _PERSONA_A + _DIRECTIVES_A_FREE + _CONSTRAINTS + "{complaint}"},
+    {"name": "f_AB0_empathetic_format", "max_tokens": 350,
+     "template": _PERSONA_A + _DIRECTIVES_A_FORMAT + "{complaint}"},
+    {"name": "f_ABC_empathetic_format_constraints", "max_tokens": 350,
+     "template": _PERSONA_A + _DIRECTIVES_A_FORMAT + _CONSTRAINTS + "{complaint}"},
+    # mitigation cell: v2 plus output hygiene
+    {"name": "h_A00_hygiene", "max_tokens": 300,
+     "template": _PERSONA_A + _DIRECTIVES_A_FREE + _HYGIENE + "{complaint}"},
+    # surface paraphrases of v2 (same content, reworded) to estimate wording noise
+    {"name": "p_A00_para1", "max_tokens": 300, "template": (
+        "You work in customer service at a financial institution and have a reputation "
+        "for being kind and genuinely useful to customers.\n\n"
+        "Below is a complaint from one of your customers. Write your response to them in "
+        "three or four sentences. Recognise how frustrating this has been, accept "
+        "responsibility on the institution's behalf, and set out one specific thing you "
+        "will do next. Keep the language simple and free of corporate phrasing, and don't "
+        "ask for details the customer has already given.\n\n{complaint}")},
+    {"name": "p_A00_para2", "max_tokens": 300, "template": (
+        "Take the role of a seasoned customer-service agent at a bank or lender, someone "
+        "customers describe as warm and truly helpful.\n\n"
+        "A customer has sent the complaint shown below. Answer them directly, using 3 to 4 "
+        "sentences. Show that you understand the frustration involved, own the problem on "
+        "behalf of the institution, and name one concrete action you will take. Use "
+        "everyday words rather than jargon, and avoid asking the customer to repeat "
+        "anything they have already told you.\n\n{complaint}")},
+]
+PROMPT_VARIANTS += FACTORIAL_VARIANTS
+DEFAULT_VARIANTS = ["v1_terse", "v2_empathetic", "v3_structured"]
+_variants_env = (os.getenv("LLM_VARIANTS") or "").strip()
+_selected = [v.strip() for v in _variants_env.split(",") if v.strip()] if _variants_env else DEFAULT_VARIANTS
+_unknown = set(_selected) - {v["name"] for v in PROMPT_VARIANTS}
+if _unknown:
+    raise SystemExit(f"Unknown LLM_VARIANTS: {sorted(_unknown)}")
+PROMPT_VARIANTS = [v for v in PROMPT_VARIANTS if v["name"] in _selected]
+
 # 4. Load dataset
 df = pd.read_csv(input_path, low_memory=False, dtype=str)
 
@@ -189,6 +267,12 @@ product_col = find_col("product", required=False)
 sub_product_col = find_col("sub_product", required=False)
 
 sample_df = df if NUM_ROWS is None else df.head(NUM_ROWS)
+# LLM_ROWS_FILE: restrict to the row_ids listed in a text file (one per line)
+_rows_file = os.getenv("LLM_ROWS_FILE")
+if _rows_file and row_id_col is not None:
+    _keep = {ln.strip() for ln in open(_rows_file) if ln.strip()}
+    sample_df = sample_df[sample_df[row_id_col].astype(str).str.strip().isin(_keep)]
+    print(f"Restricted to {len(sample_df):,} rows listed in {_rows_file}")
 
 
 def cell(row, col):
@@ -266,8 +350,10 @@ def call_model(model_name, fn, prompt, max_tokens):
 
 # 6. Job list and checkpoint
 out_dir = os.path.dirname(os.path.abspath(input_path))
-long_path = os.path.join(out_dir, "llm_responses_long.csv")
-wide_path = os.path.join(out_dir, "llm_responses_wide.csv")
+# LLM_OUTPUT_NAME lets a separate study write its own files (default llm_responses)
+_out_name = os.getenv("LLM_OUTPUT_NAME") or "llm_responses"
+long_path = os.path.join(out_dir, f"{_out_name}_long.csv")
+wide_path = os.path.join(out_dir, f"{_out_name}_wide.csv")
 
 LONG_COLUMNS = [
     "Row", "Complaint_ID", "Product", "Sub_Product", "Issue", "Sub_Issue",
