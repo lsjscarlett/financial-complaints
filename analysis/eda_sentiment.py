@@ -16,6 +16,7 @@ Features per reply
 Usage
   python analysis/eda_sentiment.py            # full run
   ANALYSIS_SAMPLE=2000 python analysis/...    # quick pass on a random subset of complaints
+  ANALYSIS_FROM_CACHE=1 python analysis/...   # redo stats + figures from tables/reply_features.csv.gz
 """
 
 import os
@@ -106,6 +107,8 @@ MARKERS = {
     "markdown": r"(\*\*|^\s*[-*] |^\s*\d+\.\s)",
     "echo_redaction": r"XXXX",
     "gratitude": r"\b(thank you|thanks|appreciate you)\b",
+    # unfilled template slots such as "[Your Name]" or "[specific date, e.g., Friday]"
+    "placeholder": r"\[[^\]\n]{2,60}\]",
 }
 MARKER_LABEL = {
     "apology": "Apology", "empathy": "Empathy / acknowledgement", "ownership": "Ownership",
@@ -113,6 +116,7 @@ MARKER_LABEL = {
     "escalation": "Escalation", "promise_outcome": "Promises an outcome",
     "external_body": "Mentions regulator / bureau", "markdown": "Markdown formatting",
     "echo_redaction": "Echoes XXXX redaction", "gratitude": "Thanks the customer",
+    "placeholder": "Leaves a [placeholder]",
 }
 V3_LABELS = [r"acknowledg?ement\s*:", r"next step\s*:", r"what we need from you\s*:"]
 MAX_TOKENS = {"v1_terse": 150, "v2_empathetic": 300, "v3_structured": 350}  # from generate_llm_responses.py
@@ -123,7 +127,10 @@ def add_features(df, comp):
     import textstat
     sia = SentimentIntensityAnalyzer()
 
-    text = df["Response"].astype(str)
+    # Normalise typographic quotes so "I’ll" matches the same patterns as "I'll"
+    text = (df["Response"].astype(str)
+            .str.replace("\u2019", "'", regex=False).str.replace("\u2018", "'", regex=False)
+            .str.replace("\u201c", '"', regex=False).str.replace("\u201d", '"', regex=False))
     df["words"] = text.str.split().str.len()
     df["sentences"] = text.apply(lambda t: len([s for s in SENT_SPLIT.split(t.strip()) if s.strip()]))
 
@@ -423,7 +430,7 @@ def fig_product(df, plt):
         ax.scatter(prod[m], y, s=42, color=COLOR[m], zorder=2, label=m, edgecolor="white", linewidth=1)
     ax.set_yticks(y); ax.set_yticklabels([f"{p}  (n={n[p]:,})" for p in prod.index], fontsize=8)
     ax.set_xlabel("Mean reply VADER compound (all three variants)"); ax.grid(axis="y", visible=False)
-    ax.legend(loc="lower right", fontsize=8)
+    ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.18), ncol=2, fontsize=8)
     ax.set_title("Reply sentiment by complaint product")
     save(plt, "fig5_product.png")
 
@@ -472,12 +479,19 @@ def fig_outcome(df, plt):
 
 # --------------------------------------------------------------------------- main
 def main():
-    print("Loading...")
-    df, comp = load()
-    print(f"  {len(df):,} replies over {df['Row'].nunique():,} complaints")
-    print("Computing features (VADER, readability, markers)...")
-    df, comp = add_features(df, comp)
-    df.to_csv(os.path.join(TAB, "reply_features.csv.gz"), index=False, compression="gzip")
+    cache = os.path.join(TAB, "reply_features.csv.gz")
+    if os.getenv("ANALYSIS_FROM_CACHE") and os.path.exists(cache):
+        print("Loading cached features from", cache)
+        df = pd.read_csv(cache, dtype={"Row": str}, keep_default_na=False)
+        comp = df.drop_duplicates("Row")[["Row", "narr_compound", "narr_neg", "narrative_chars",
+                                           "redaction_ratio"]].copy()
+    else:
+        print("Loading...")
+        df, comp = load()
+        print(f"  {len(df):,} replies over {df['Row'].nunique():,} complaints")
+        print("Computing features (VADER, readability, markers)...")
+        df, comp = add_features(df, comp)
+        df.to_csv(cache, index=False, compression="gzip")
 
     print("Statistics...")
     summ, mc, vc = summary_tables(df)
@@ -518,7 +532,7 @@ def main():
     print("\n=== Complaint narratives ===")
     print(comp[["narr_compound", "narr_neg", "narrative_chars", "redaction_ratio"]].describe().T.to_string())
     print("\n=== Products (complaints) ===")
-    print(comp.merge(df[["Row", "Product"]].drop_duplicates(), on="Row")["Product"].value_counts().to_string())
+    print(df.drop_duplicates("Row")["Product_family"].value_counts().to_string())
 
 
 if __name__ == "__main__":

@@ -2,7 +2,7 @@
 
 Compare how three LLMs respond to real consumer finance complaints.
 
-The pipeline has two steps:
+The pipeline has three steps:
 
 1. **`feature_engineering.py`** reads the full CFPB consumer complaint database, keeps
    only complaints with real context (an issue, a distinct sub-issue, and the consumer's
@@ -12,6 +12,10 @@ The pipeline has two steps:
    complaint and sends each one to ChatGPT, Claude, and Mistral. That is **9 responses per
    complaint, 90,000 in total**, so you can compare how much the wording of a prompt
    changes the answer, and how differently each model reacts to the same change.
+3. **`analysis/eda_sentiment.py`** measures every reply (length, sentiment, readability,
+   rhetorical markers, instruction compliance) and compares models and prompts with paired
+   tests. Figures and tables land in `analysis/`; the findings are in
+   `analysis/findings.md`.
 
 ## Setup
 
@@ -194,6 +198,33 @@ and it is saved in full in `Prompt_Text`.
 Column lookup ignores case and `-`/`_`/space differences, so the script also runs on the
 old Kaggle export (`issue`/`sub_issue`, no narrative for most rows) via
 `LLM_INPUT_CSV=path/to/consumer_complaints.csv`.
+
+## Step 3: EDA and sentiment analysis
+
+```powershell
+pip install -r requirements.txt   # adds vaderSentiment, textstat, matplotlib, scipy, statsmodels
+python analysis/eda_sentiment.py
+```
+
+Reads the long CSV (or its `.gz`) plus `complaints_10k.csv` and, for every successful
+reply, computes length, VADER sentiment, Flesch readability, a set of regex rhetorical
+markers (apology, empathy, ownership, time-bound commitment, hedging, escalation, requests
+for information, promised outcomes, markdown, unfilled `[placeholders]`), and whether the
+reply followed the variant's length / format instruction. It then compares models within
+each prompt (Wilcoxon signed-rank and exact McNemar tests, paired on the complaint) and
+prompts within each model, and relates reply sentiment to the complaint's own narrative
+sentiment, product, and the company's real-world outcome (OLS with complaint-clustered
+errors).
+
+Output:
+
+- `analysis/figures/*.png` — paper-ready figures (300 dpi)
+- `analysis/tables/*.csv` — summary means with 95% CIs, paired comparisons, context tables,
+  the OLS summary, and `reply_features.csv.gz` (per-reply features, gitignored)
+- `analysis/findings.md` — the written findings
+
+`ANALYSIS_SAMPLE=2000` runs on a random subset of complaints; `ANALYSIS_FROM_CACHE=1`
+redoes the statistics and figures from the saved feature table without recomputing it.
 
 ## Notes
 
