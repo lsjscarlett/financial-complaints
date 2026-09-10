@@ -226,6 +226,18 @@ Output:
 `ANALYSIS_SAMPLE=2000` runs on a random subset of complaints; `ANALYSIS_FROM_CACHE=1`
 redoes the statistics and figures from the saved feature table without recomputing it.
 
+Three follow-up scripts build on the feature table:
+
+- `analysis/robustness.py` — variance decomposition (prompt vs model vs complaint) and the
+  invented-facts audit
+- `analysis/llm_judge.py` then `analysis/judge_analysis.py` — blind rubric ratings of a
+  stratified 300-complaint sample by two LLM judges (`JUDGE_COMPLAINTS`, paid API calls), with
+  agreement and self-preference tests
+- `analysis/transformer_sentiment.py` — RoBERTa sentiment on a subsample as a check on VADER
+  (needs `torch` and `transformers`; downloads the model from Hugging Face on first run)
+
+The manuscript draft is in `paper/paper.md`, with worked examples in `paper/appendix_examples.md`.
+
 ## Notes
 
 - `mistralai` 2.x moved the `Mistral` class to `mistralai.client`. On 1.x the import is

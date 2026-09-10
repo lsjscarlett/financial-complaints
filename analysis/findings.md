@@ -1,6 +1,7 @@
 # How ChatGPT and Mistral answer real consumer-finance complaints: EDA and sentiment findings
 
-Working notes toward the paper. Every number below comes from `analysis/eda_sentiment.py`
+Working notes toward the paper. **Superseded in part by `paper/paper.md`**, which adds the variance
+decomposition, the invented-facts audit, two-judge rubric ratings, and a RoBERTa sentiment check. Every number below comes from `analysis/eda_sentiment.py`
 run over the full dataset; tables with confidence intervals and test statistics are in
 `analysis/tables/`, figures in `analysis/figures/`.
 

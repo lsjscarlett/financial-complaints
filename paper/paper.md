@@ -269,9 +269,9 @@ time-bound commitment in 69%.
 Reading the replies explains the sentiment gap. Mistral restates the grievance in the customer's own
 vocabulary ("closed without warning", "repeated calls", "potential FDCPA violations") and then commits
 to a dated action; ChatGPT reassures ("I want to assure you", "thank you for your patience") and closes
-warmly. A lexicon scores the first as negative and the second as positive. The RoBERTa classifier
-[Section 5.7: fill in] and the judge ratings [Section 5.7: fill in] indicate whether this ordering
-survives instruments that see context. In the OLS the Mistral × V2 interaction is -0.44 compound
+warmly. A lexicon scores the first as negative and the second as positive. Section 5.7 shows that the
+gap between the models keeps its direction under a transformer sentiment classifier, but that two
+rubric-based judges rank Mistral's V2 replies above ChatGPT's on concreteness and overall quality. In the OLS the Mistral × V2 interaction is -0.44 compound
 points, the largest coefficient after the V3 format effect (Appendix Table C1).
 
 ### 5.3 Length compliance is model-specific
@@ -440,7 +440,29 @@ opposite order from a rubric-based judge on this task, and the GPT judge's lengt
 large enough that verbosity bias [cite] cannot be excluded as part of the reason V2 replies score
 well.
 
-**Transformer sentiment.** *[To be completed from `analysis/tables/transformer_vs_vader.csv`.]*
+**Transformer sentiment disagrees with the lexicon on level but not on order.** On the
+3,000-complaint subsample (18,000 replies), the RoBERTa classifier's positive-minus-negative score
+correlates only weakly with VADER (Spearman 0.26 over replies). Trained on tweets, it reads almost
+every reply as negative or neutral: it labels 84% of ChatGPT's V2 replies and 97% of Mistral's as
+*negative* and fewer than 0.1% of any cell as *positive*, because the replies restate a grievance and
+apologise for it (Table 9). Two things survive the change of instrument. The ChatGPT-minus-Mistral
+gap under V2 keeps its sign and remains large (paired *d* = 0.86, vs 1.06 with VADER), so the
+finding that the two models occupy different registers under the empathetic prompt is robust. And
+V3 is the least negative condition for Mistral under both instruments (89% neutral by RoBERTa). What
+does not survive is the description of ChatGPT's V2 replies as "positive" in any absolute sense, and
+the mirroring correlations shrink to 0.03-0.14. Sentiment classifiers built for social media should
+be read as relative, not absolute, measures on this material.
+
+**Table 9. RoBERTa sentiment labels by prompt and model, 3,000-complaint subsample.**
+
+| Prompt | Model | VADER compound | RoBERTa score | Negative | Neutral | Positive |
+| --- | --- | ---: | ---: | ---: | ---: | ---: |
+| V1 | ChatGPT | 0.51 | -0.35 | 47% | 52% | 1% |
+| V1 | Mistral | 0.28 | -0.42 | 56% | 44% | 1% |
+| V2 | ChatGPT | 0.61 | -0.59 | 84% | 16% | 0% |
+| V2 | Mistral | -0.05 | -0.76 | 97% | 3% | 0% |
+| V3 | ChatGPT | -0.11 | -0.45 | 49% | 51% | 0% |
+| V3 | Mistral | 0.12 | -0.28 | 11% | 89% | 0% |
 
 ## 6. Discussion
 

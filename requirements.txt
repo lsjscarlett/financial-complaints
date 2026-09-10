@@ -14,3 +14,7 @@ textstat==0.7.3
 matplotlib>=3.7
 scipy>=1.10
 statsmodels>=0.14
+
+# Optional, for analysis/transformer_sentiment.py (CPU build: pip install torch --index-url https://download.pytorch.org/whl/cpu)
+# torch>=2.0
+# transformers>=4.40
