@@ -1,0 +1,109 @@
+Model,Comparison,Metric,n pairs,Variant mean,V1 mean,Diff,Cohen d (paired),p
+ChatGPT,V2 empathetic vs V1 terse,Length (chars),10000,495.902,295.3695,200.53249999999997,2.962749479432386,0.0
+ChatGPT,V2 empathetic vs V1 terse,Length (words),10000,83.6178,45.2793,38.3385,3.6556100704808903,0.0
+ChatGPT,V2 empathetic vs V1 terse,Sentences,10000,4.6356,2.0092,2.6264000000000003,3.977264141130229,0.0
+ChatGPT,V2 empathetic vs V1 terse,VADER compound,10000,0.60820331,0.51790568,0.09029763000000002,0.16949721964267714,6.2895570215144625e-114
+ChatGPT,V2 empathetic vs V1 terse,VADER positive share,10000,0.180208,0.20874830000000003,-0.02854030000000002,-0.3832200865268656,1.8986640691723595e-271
+ChatGPT,V2 empathetic vs V1 terse,VADER negative share,10000,0.0916576,0.0890932,0.0025644000000000083,0.05427078404522393,2.5864147984646393e-12
+ChatGPT,V2 empathetic vs V1 terse,Flesch reading ease,10000,57.802195,35.88915,21.913044999999997,1.9882106776272985,0.0
+ChatGPT,V2 empathetic vs V1 terse,Flesch-Kincaid grade,10000,9.7291,13.8518,-4.1227,-2.1232957909118135,0.0
+ChatGPT,V2 empathetic vs V1 terse,Latency (s),10000,1.182825,0.888705,0.29412000000000005,0.584384794425545,0.0
+ChatGPT,V2 empathetic vs V1 terse,Completion tokens,10000,95.034,49.0758,45.958200000000005,3.4723124900846765,0.0
+ChatGPT,V2 empathetic vs V1 terse,Apology,10000,0.9636,0.6965,0.2671,,0.0
+ChatGPT,V2 empathetic vs V1 terse,Empathy / acknowledgement,10000,0.9896,0.8124,0.17720000000000002,,0.0
+ChatGPT,V2 empathetic vs V1 terse,Ownership,10000,0.9781,0.3239,0.6541999999999999,,0.0
+ChatGPT,V2 empathetic vs V1 terse,Time-bound commitment,10000,0.0602,0.0038,0.0564,,3.894897234200657e-145
+ChatGPT,V2 empathetic vs V1 terse,Hedging,10000,0.0195,0.0401,-0.020599999999999997,,4.174448546416102e-19
+ChatGPT,V2 empathetic vs V1 terse,Asks for information,10000,0.0056,0.4468,-0.4412,,0.0
+ChatGPT,V2 empathetic vs V1 terse,Escalation,10000,0.5027,0.0695,0.43320000000000003,,0.0
+ChatGPT,V2 empathetic vs V1 terse,Promises an outcome,10000,0.0007,0.0007,0.0,,1.0
+ChatGPT,V2 empathetic vs V1 terse,Mentions regulator / bureau,10000,0.0243,0.0257,-0.001400000000000002,,0.47955475499064554
+ChatGPT,V2 empathetic vs V1 terse,Markdown formatting,10000,0.0,0.0,0.0,,1.0
+ChatGPT,V2 empathetic vs V1 terse,Echoes XXXX redaction,10000,0.0125,0.0125,0.0,,1.0
+ChatGPT,V2 empathetic vs V1 terse,Thanks the customer,10000,0.7851,0.2448,0.5403,,0.0
+ChatGPT,V2 empathetic vs V1 terse,Leaves a [placeholder],10000,0.4004,0.1175,0.2829,,0.0
+ChatGPT,V2 empathetic vs V1 terse,v3_all_labels,10000,0.0,0.0,0.0,,1.0
+ChatGPT,V2 empathetic vs V1 terse,v3_nothing_needed,10000,0.0,0.0,0.0,,1.0
+ChatGPT,V2 empathetic vs V1 terse,sentence_compliant,10000,0.4578,0.9905,-0.5327000000000001,,0.0
+ChatGPT,V2 empathetic vs V1 terse,truncated,10000,0.0,0.0,0.0,,1.0
+ChatGPT,V3 structured vs V1 terse,Length (chars),10000,384.3534,295.3695,88.9839,1.5961054454126509,0.0
+ChatGPT,V3 structured vs V1 terse,Length (words),10000,61.5686,45.2793,16.289300000000004,1.8139052061313037,0.0
+ChatGPT,V3 structured vs V1 terse,Sentences,10000,3.0067,2.0092,0.9975,8.06555385136701,0.0
+ChatGPT,V3 structured vs V1 terse,VADER compound,10000,-0.11490686999999998,0.51790568,-0.63281255,-1.1840516290009655,0.0
+ChatGPT,V3 structured vs V1 terse,VADER positive share,10000,0.045014099999999994,0.20874830000000003,-0.16373420000000002,-2.4513414374633187,0.0
+ChatGPT,V3 structured vs V1 terse,VADER negative share,10000,0.05793979999999999,0.0890932,-0.031153400000000005,-0.5767197336196311,0.0
+ChatGPT,V3 structured vs V1 terse,Flesch reading ease,10000,52.392406,35.88915,16.503256,1.4562356850767733,0.0
+ChatGPT,V3 structured vs V1 terse,Flesch-Kincaid grade,10000,11.009139999999999,13.8518,-2.842660000000002,-1.4340933957526585,0.0
+ChatGPT,V3 structured vs V1 terse,Latency (s),10000,1.057373,0.888705,0.16866799999999993,0.3652667856123628,0.0
+ChatGPT,V3 structured vs V1 terse,Completion tokens,10000,73.1373,49.0758,24.061499999999995,2.3656528878011556,0.0
+ChatGPT,V3 structured vs V1 terse,Apology,10000,0.0003,0.6965,-0.6962,,0.0
+ChatGPT,V3 structured vs V1 terse,Empathy / acknowledgement,10000,0.9885,0.8124,0.17610000000000003,,0.0
+ChatGPT,V3 structured vs V1 terse,Ownership,10000,0.9895,0.3239,0.6656,,0.0
+ChatGPT,V3 structured vs V1 terse,Time-bound commitment,10000,0.8337,0.0038,0.8299,,0.0
+ChatGPT,V3 structured vs V1 terse,Hedging,10000,0.0231,0.0401,-0.016999999999999998,,5.7110722386630106e-12
+ChatGPT,V3 structured vs V1 terse,Asks for information,10000,0.0052,0.4468,-0.4416,,0.0
+ChatGPT,V3 structured vs V1 terse,Escalation,10000,0.0346,0.0695,-0.03490000000000001,,3.899341615615009e-34
+ChatGPT,V3 structured vs V1 terse,Promises an outcome,10000,0.0,0.0007,-0.0007,,0.015625
+ChatGPT,V3 structured vs V1 terse,Mentions regulator / bureau,10000,0.0454,0.0257,0.019700000000000002,,5.613164266249174e-18
+ChatGPT,V3 structured vs V1 terse,Markdown formatting,10000,0.0016,0.0,0.0016,,3.0517578125e-05
+ChatGPT,V3 structured vs V1 terse,Echoes XXXX redaction,10000,0.004,0.0125,-0.0085,,8.434512390658763e-12
+ChatGPT,V3 structured vs V1 terse,Thanks the customer,10000,0.0245,0.2448,-0.2203,,0.0
+ChatGPT,V3 structured vs V1 terse,Leaves a [placeholder],10000,0.0277,0.1175,-0.08979999999999999,,4.673564236187923e-138
+ChatGPT,V3 structured vs V1 terse,v3_all_labels,10000,0.9967,0.0,0.9967,,0.0
+ChatGPT,V3 structured vs V1 terse,v3_nothing_needed,10000,0.9935,0.0,0.9935,,0.0
+ChatGPT,V3 structured vs V1 terse,sentence_compliant,10000,0.9967,0.9905,0.006199999999999983,,3.81094538709223e-08
+ChatGPT,V3 structured vs V1 terse,truncated,10000,0.0,0.0,0.0,,1.0
+Mistral,V2 empathetic vs V1 terse,Length (chars),10000,435.7271,282.6244,153.10270000000003,1.8705383506316797,0.0
+Mistral,V2 empathetic vs V1 terse,Length (words),10000,71.8931,43.0415,28.851600000000005,2.229493233999687,0.0
+Mistral,V2 empathetic vs V1 terse,Sentences,10000,3.4982,2.1706,1.3276000000000003,2.0998596856758547,0.0
+Mistral,V2 empathetic vs V1 terse,VADER compound,10000,-0.06588616,0.291764,-0.35765016000000005,-0.5190914850988347,0.0
+Mistral,V2 empathetic vs V1 terse,VADER positive share,10000,0.1131503,0.1858733,-0.072723,-0.9105776140245524,0.0
+Mistral,V2 empathetic vs V1 terse,VADER negative share,10000,0.1216463,0.1149864,0.006659899999999996,0.10125587060625223,2.8610929467683636e-34
+Mistral,V2 empathetic vs V1 terse,Flesch reading ease,10000,52.818213,39.388436999999996,13.429776000000004,0.9894547570120683,0.0
+Mistral,V2 empathetic vs V1 terse,Flesch-Kincaid grade,10000,10.9088,12.63903,-1.7302300000000006,-0.6788222471918295,0.0
+Mistral,V2 empathetic vs V1 terse,Latency (s),10000,1.0754270000000001,0.8042990000000001,0.27112800000000004,1.0357015743255469,0.0
+Mistral,V2 empathetic vs V1 terse,Completion tokens,10000,87.9701,52.4897,35.4804,2.0660950952147763,0.0
+Mistral,V2 empathetic vs V1 terse,Apology,10000,0.9976,0.6575,0.34010000000000007,,0.0
+Mistral,V2 empathetic vs V1 terse,Empathy / acknowledgement,10000,0.9037,0.7023,0.2013999999999999,,6.218965893e-315
+Mistral,V2 empathetic vs V1 terse,Ownership,10000,0.9907,0.3703,0.6204000000000001,,0.0
+Mistral,V2 empathetic vs V1 terse,Time-bound commitment,10000,0.6879,0.126,0.5619,,0.0
+Mistral,V2 empathetic vs V1 terse,Hedging,10000,0.0167,0.0637,-0.04700000000000001,,3.677150983892213e-71
+Mistral,V2 empathetic vs V1 terse,Asks for information,10000,0.0067,0.4916,-0.4849,,0.0
+Mistral,V2 empathetic vs V1 terse,Escalation,10000,0.696,0.2133,0.48269999999999996,,0.0
+Mistral,V2 empathetic vs V1 terse,Promises an outcome,10000,0.0045,0.0042,0.0002999999999999999,,0.8175538505509841
+Mistral,V2 empathetic vs V1 terse,Mentions regulator / bureau,10000,0.0411,0.1277,-0.08660000000000001,,2.4933359611684665e-138
+Mistral,V2 empathetic vs V1 terse,Markdown formatting,10000,0.0,0.0083,-0.0083,,2.0679515313825692e-25
+Mistral,V2 empathetic vs V1 terse,Echoes XXXX redaction,10000,0.0052,0.007,-0.0018000000000000004,,0.07897554800108206
+Mistral,V2 empathetic vs V1 terse,Thanks the customer,10000,0.0721,0.1018,-0.029700000000000004,,3.1966512778531764e-16
+Mistral,V2 empathetic vs V1 terse,Leaves a [placeholder],10000,0.1498,0.1198,0.029999999999999985,,5.458534659564083e-10
+Mistral,V2 empathetic vs V1 terse,v3_all_labels,10000,0.0,0.0,0.0,,1.0
+Mistral,V2 empathetic vs V1 terse,v3_nothing_needed,10000,0.0,0.0,0.0,,1.0
+Mistral,V2 empathetic vs V1 terse,sentence_compliant,10000,0.9925,0.831,0.1615000000000001,,0.0
+Mistral,V2 empathetic vs V1 terse,truncated,10000,0.0,0.0003,-0.0003,,0.25
+Mistral,V3 structured vs V1 terse,Length (chars),10000,383.0099,282.6244,100.38550000000004,1.1964139567665812,0.0
+Mistral,V3 structured vs V1 terse,Length (words),10000,58.2791,43.0415,15.2376,1.1877509737688767,0.0
+Mistral,V3 structured vs V1 terse,Sentences,10000,3.0081,2.1706,0.8375000000000004,2.158757542006817,0.0
+Mistral,V3 structured vs V1 terse,VADER compound,10000,0.12420266000000002,0.291764,-0.16756134,-0.27603958345875595,3.367589571581124e-165
+Mistral,V3 structured vs V1 terse,VADER positive share,10000,0.06921210000000001,0.1858733,-0.11666119999999998,-1.4650723546051136,0.0
+Mistral,V3 structured vs V1 terse,VADER negative share,10000,0.047874,0.1149864,-0.0671124,-1.0087505620082549,0.0
+Mistral,V3 structured vs V1 terse,Flesch reading ease,10000,50.80401,39.388436999999996,11.415573000000002,0.8198962974710967,0.0
+Mistral,V3 structured vs V1 terse,Flesch-Kincaid grade,10000,10.928889999999999,12.63903,-1.7101400000000009,-0.6423357449719685,0.0
+Mistral,V3 structured vs V1 terse,Latency (s),10000,0.915919,0.8042990000000001,0.11161999999999994,0.4275100714523001,0.0
+Mistral,V3 structured vs V1 terse,Completion tokens,10000,74.8172,52.4897,22.3275,1.363256143076335,0.0
+Mistral,V3 structured vs V1 terse,Apology,10000,0.0009,0.6575,-0.6566,,0.0
+Mistral,V3 structured vs V1 terse,Empathy / acknowledgement,10000,0.825,0.7023,0.12269999999999992,,2.4190807476359575e-93
+Mistral,V3 structured vs V1 terse,Ownership,10000,0.9987,0.3703,0.6284000000000001,,0.0
+Mistral,V3 structured vs V1 terse,Time-bound commitment,10000,0.9453,0.126,0.8193,,0.0
+Mistral,V3 structured vs V1 terse,Hedging,10000,0.0632,0.0637,-0.0005000000000000004,,0.9063136134572447
+Mistral,V3 structured vs V1 terse,Asks for information,10000,0.0906,0.4916,-0.40099999999999997,,0.0
+Mistral,V3 structured vs V1 terse,Escalation,10000,0.1906,0.2133,-0.022699999999999998,,5.106352942555222e-07
+Mistral,V3 structured vs V1 terse,Promises an outcome,10000,0.0001,0.0042,-0.0040999999999999995,,1.000444171950221e-11
+Mistral,V3 structured vs V1 terse,Mentions regulator / bureau,10000,0.0544,0.1277,-0.0733,,1.1214134553136331e-97
+Mistral,V3 structured vs V1 terse,Markdown formatting,10000,0.9778,0.0083,0.9695,,0.0
+Mistral,V3 structured vs V1 terse,Echoes XXXX redaction,10000,0.0085,0.007,0.0015000000000000005,,0.23493150329059748
+Mistral,V3 structured vs V1 terse,Thanks the customer,10000,0.0,0.1018,-0.1018,,7.120236347223045e-307
+Mistral,V3 structured vs V1 terse,Leaves a [placeholder],10000,0.0355,0.1198,-0.08430000000000001,,8.444766797151963e-114
+Mistral,V3 structured vs V1 terse,v3_all_labels,10000,1.0,0.0,1.0,,0.0
+Mistral,V3 structured vs V1 terse,v3_nothing_needed,10000,0.6217,0.0,0.6217,,0.0
+Mistral,V3 structured vs V1 terse,sentence_compliant,10000,1.0,0.831,0.16900000000000004,,0.0
+Mistral,V3 structured vs V1 terse,truncated,10000,0.0,0.0003,-0.0003,,0.25

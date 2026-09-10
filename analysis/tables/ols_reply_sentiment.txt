@@ -1,0 +1,39 @@
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:               compound   R-squared:                       0.319
+Model:                            OLS   Adj. R-squared:                  0.319
+Method:                 Least Squares   F-statistic:                     2236.
+Date:                Thu, 10 Sep 2026   Prob (F-statistic):               0.00
+Time:                        15:44:14   Log-Likelihood:                -38223.
+No. Observations:               60000   AIC:                         7.648e+04
+Df Residuals:                   59984   BIC:                         7.662e+04
+Df Model:                          15                                         
+Covariance Type:              cluster                                         
+==========================================================================================================================
+                                                             coef    std err          z      P>|z|      [0.025      0.975]
+--------------------------------------------------------------------------------------------------------------------------
+Intercept                                                  0.3892      0.030     12.995      0.000       0.330       0.448
+C(Model)[T.Mistral]                                       -0.2261      0.006    -38.709      0.000      -0.238      -0.215
+C(Prompt_Variant)[T.v2_empathetic]                         0.0903      0.005     16.948      0.000       0.080       0.101
+C(Prompt_Variant)[T.v3_structured]                        -0.6328      0.005   -118.390      0.000      -0.643      -0.622
+C(Product_family)[T.Credit card / prepaid card]            0.0415      0.012      3.603      0.000       0.019       0.064
+C(Product_family)[T.Credit reporting]                      0.1100      0.014      7.990      0.000       0.083       0.137
+C(Product_family)[T.Debt collection]                      -0.0933      0.011     -8.711      0.000      -0.114      -0.072
+C(Product_family)[T.Mortgage]                              0.0872      0.011      7.810      0.000       0.065       0.109
+C(Product_family)[T.Payday / personal loan]                0.1143      0.014      8.325      0.000       0.087       0.141
+C(Product_family)[T.Student loan]                          0.0682      0.014      4.939      0.000       0.041       0.095
+C(Product_family)[T.Vehicle loan or lease]                 0.0817      0.013      6.353      0.000       0.056       0.107
+C(Model)[T.Mistral]:C(Prompt_Variant)[T.v2_empathetic]    -0.4479      0.008    -53.184      0.000      -0.464      -0.431
+C(Model)[T.Mistral]:C(Prompt_Variant)[T.v3_structured]     0.4653      0.008     62.026      0.000       0.451       0.480
+narr_compound                                              0.1597      0.004     43.547      0.000       0.153       0.167
+log_narr_chars                                             0.0200      0.004      4.615      0.000       0.012       0.028
+redaction_ratio                                            0.0202      0.124      0.163      0.871      -0.223       0.263
+==============================================================================
+Omnibus:                     1909.400   Durbin-Watson:                   1.891
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):             1879.555
+Skew:                          -0.398   Prob(JB):                         0.00
+Kurtosis:                       2.656   Cond. No.                         333.
+==============================================================================
+
+Notes:
+[1] Standard Errors are robust to cluster correlation (CRV1)
