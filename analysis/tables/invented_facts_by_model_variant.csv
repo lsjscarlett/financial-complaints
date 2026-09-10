@@ -1,0 +1,7 @@
+Model,Prompt_Variant,date,phone,salutation_name,amount_any,amount_invented,company_named,company_invented,deadline,any_invented
+ChatGPT,V1 terse,0.0,0.0002,0.0007,0.0023,0.0006,0.1188,0.0081,0.0014,0.0015
+ChatGPT,V2 empathetic,0.0,0.0,0.0004,0.0061,0.0029,0.1708,0.0103,0.0556,0.0033
+ChatGPT,V3 structured,0.0021,0.0,0.0,0.0075,0.0023,0.2313,0.0112,0.829,0.0044
+Mistral,V1 terse,0.0,0.0157,0.0008,0.0118,0.0058,0.1986,0.007,0.0649,0.0223
+Mistral,V2 empathetic,0.0,0.0,0.0001,0.0225,0.0156,0.1973,0.0088,0.6549,0.0157
+Mistral,V3 structured,0.0,0.0001,0.0,0.0092,0.0039,0.2891,0.0122,0.9149,0.004
