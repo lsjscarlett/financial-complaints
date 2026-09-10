@@ -363,16 +363,82 @@ ChatGPT, 12.6 Mistral). The V2 request for plain language brings ChatGPT to grad
 10.9; V3 puts both near grade 11 (Figure 8). Only ChatGPT under V2 approaches the grade 8-9 level
 usually recommended for consumer communications [cite].
 
-### 5.7 Evaluation instruments disagree
+### 5.7 What the judges say, and how the instruments disagree
 
-*[To be completed from `analysis/tables/transformer_vs_vader.csv` and `judge_ratings.csv`.]*
+**Rubric ratings.** Table 7 and Figure 10 give the mean rubric scores from the two blind LLM judges
+on the 300-complaint subsample (1,794 replies with both ratings; six calls failed to parse). The
+judges agree on the shape of the results: both prompts improve on V1 on every criterion except
+grounding (paired *d* 0.3-1.6); Mistral's V2 replies are the best cell for acknowledgement,
+concreteness, tone, and overall quality under both judges (overall 4.21 and 3.99 out of 5); and under
+V3 the two models are rated within 0.15 of each other, mirroring the collapse of stylistic
+differences in Section 5.1. ChatGPT's V2 replies, the warmest by lexicon sentiment, are rated well
+below Mistral's on concreteness (3.18 vs 4.12 by the GPT judge; 2.62 vs 4.19 by the Mistral judge).
 
-- RoBERTa vs VADER: correlation over replies; does the V2 model ordering hold?
-- Judge ratings by model × prompt for each judge: acknowledgement, concreteness, tone, grounding,
-  overall.
-- Inter-judge agreement (Spearman on overall; agreement on the boolean flags).
-- Self-preference: does each judge rate its own model's replies higher than the other judge does?
-- Judge flags vs regex flags for placeholders and promised outcomes.
+**Table 7. Mean rubric scores (1-5) and flag rates by judge, prompt, and model. n = 299 per cell.**
+
+| Judge | Prompt | Model | Acknowl. | Concrete. | Tone | Grounding | Overall | Placeholder | Promises outcome | Admits liability |
+| --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| gpt-4o-mini | V1 | ChatGPT | 3.32 | 2.34 | 4.45 | 5.00 | 2.96 | 26% | 3% | 10% |
+| gpt-4o-mini | V1 | Mistral | 3.70 | 2.93 | 4.61 | 4.98 | 3.36 | 17% | 16% | 22% |
+| gpt-4o-mini | V2 | ChatGPT | 4.20 | 3.18 | 4.97 | 4.99 | 3.80 | 43% | 12% | 10% |
+| gpt-4o-mini | V2 | Mistral | 4.71 | 4.12 | 5.00 | 4.99 | 4.21 | 17% | 49% | 52% |
+| gpt-4o-mini | V3 | ChatGPT | 4.56 | 3.24 | 4.75 | 5.00 | 3.72 | 3% | 2% | 1% |
+| gpt-4o-mini | V3 | Mistral | 4.44 | 3.23 | 4.70 | 4.99 | 3.69 | 8% | 2% | 1% |
+| mistral-small | V1 | ChatGPT | 2.81 | 2.11 | 4.12 | 4.59 | 2.46 | 11% | 1% | 0% |
+| mistral-small | V1 | Mistral | 3.36 | 2.94 | 4.39 | 4.66 | 3.10 | 8% | 9% | 2% |
+| mistral-small | V2 | ChatGPT | 3.17 | 2.62 | 4.38 | 3.97 | 3.02 | 40% | 2% | 0% |
+| mistral-small | V2 | Mistral | 4.20 | 4.19 | 4.84 | 4.33 | 3.99 | 16% | 21% | 18% |
+| mistral-small | V3 | ChatGPT | 3.93 | 3.52 | 4.50 | 4.98 | 3.51 | 3% | 0% | 0% |
+| mistral-small | V3 | Mistral | 3.81 | 3.38 | 4.40 | 4.96 | 3.38 | 5% | 0% | 0% |
+
+**The concreteness that the judges reward comes with a compliance cost.** The same Mistral V2
+replies that score highest overall are flagged by the judges as promising a specific outcome in
+21-49% of cases and as admitting liability in 18-52% ("I take full ownership of the miscommunication",
+"it's completely unacceptable that you're not getting the full refund you're owed"). ChatGPT's V2
+replies, and both models' V3 replies, are flagged for these in 0-12% of cases. The regex marker for
+promised outcomes (Section 5.5) caught ≤ 0.4% because it looked for explicit "will be refunded"
+phrasing; the judges read "ensure the refund is processed" as a promise. The V3 constraints work as
+intended here: both flags fall to ≤ 2% under V3 for both models.
+
+**Grounding.** The GPT judge rates grounding at 4.98-5.00 in every cell and is effectively
+insensitive. The Mistral judge is stricter and penalises V2 (3.97 ChatGPT, 4.33 Mistral vs 4.6-5.0
+elsewhere) for unsupported specifics such as "I'll escalate this to our compliance team today". This
+is consistent with the regex audit, which found almost no hard fabrication (Section 5.4): what the
+stricter judge is penalising is invented process, not invented facts.
+
+**Agreement and self-preference.** Inter-judge Spearman correlations are 0.71 for concreteness,
+0.59 for acknowledgement, 0.58 for overall, 0.38 for tone, and 0.06 for grounding (Table 8). On the
+placeholder flag the judges agree with each other (κ = 0.81) and with the regex marker (κ = 0.82 and
+0.92), which validates the regex used in Section 5.4. Agreement on the compliance flags is weaker
+(κ = 0.52 for promised outcomes, 0.31 for admitted liability), with the GPT judge flagging two to
+four times as often as the Mistral judge.
+
+Each judge does favour its own family: on the paired ChatGPT-minus-Mistral difference, the GPT
+judge is 0.23 points more favourable to ChatGPT than the Mistral judge is (overall; *d* = 0.27,
+*p* < 0.001), with similar shifts on every criterion. But the self-preference shifts the size of the
+gap, not its direction: both judges still rate Mistral's replies higher overall (GPT judge -0.26,
+Mistral judge -0.50). The Mistral judge is also harsher in general (its scores average 0.4 points
+lower).
+
+**Table 8. Inter-judge agreement and self-preference.**
+
+| Criterion | Spearman ρ (judges) | Within 1 point | ChatGPT − Mistral, GPT judge | ChatGPT − Mistral, Mistral judge | Self-preference shift (*d*) |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Acknowledgement | 0.59 | 84% | -0.26 | -0.49 | 0.22 |
+| Concreteness | 0.71 | 99% | -0.50 | -0.76 | 0.28 |
+| Tone | 0.38 | 100% | -0.04 | -0.21 | 0.23 |
+| Grounding | 0.06 | 84% | 0.00 | -0.14 | 0.13 |
+| Overall | 0.58 | 95% | -0.26 | -0.50 | 0.27 |
+
+**Sentiment is anti-correlated with judged quality.** Across the 1,800 rated replies, the VADER
+compound correlates *negatively* with the judges' overall score (Spearman -0.14 GPT judge, -0.26
+Mistral judge) and with concreteness (-0.24, -0.30). Length correlates positively with judged
+quality (0.49 and 0.27 for overall). The lexicon instrument therefore ranks replies in roughly the
+opposite order from a rubric-based judge on this task, and the GPT judge's length correlation is
+large enough that verbosity bias [cite] cannot be excluded as part of the reason V2 replies score
+well.
+
+**Transformer sentiment.** *[To be completed from `analysis/tables/transformer_vs_vader.csv`.]*
 
 ## 6. Discussion
 
