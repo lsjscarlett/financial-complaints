@@ -27,7 +27,9 @@ the empathetic prompt is interpreted in opposite emotional registers: ChatGPT be
 warm (79% of replies thank the customer; mean VADER compound 0.61) while Mistral restates the
 customer's grievance in the customer's own words and commits to a dated action (69% give a
 deadline; mean compound -0.07). Lexicon sentiment ranks these backwards from what a compliance
-reader would prefer. Third, the dominant deployment failure is not fabrication, which occurs in under
+reader would prefer: two blind LLM judges rate Mistral's empathetic replies highest on concreteness and
+overall quality, but also flag them for admitting liability and promising outcomes, and judged quality is
+negatively correlated with lexicon sentiment. Third, the dominant deployment failure is not fabrication, which occurs in under
 1% of replies, but unfilled template placeholders such as "[Customer's Name]", present in 14% of all
 replies and 40% of ChatGPT's empathetic replies; a structured output format reduces this to 3-4%. We
 also find that ChatGPT ignores an explicit "3-4 sentences" instruction more than half the time, that
@@ -449,12 +451,16 @@ model will behave the same on another: the empathetic prompt produced two quite 
 
 **Sentiment is the wrong yardstick for empathy.** The instrument that most analyses of "empathetic"
 AI reach for, lexicon sentiment, ranked the reply that restated the customer's problem and committed
-to a date below the reply that thanked the customer and promised to be in touch. A rubric that scores
-acknowledgement accuracy and concreteness separately from tone is needed, and Section 5.7 shows how
-far the instruments diverge.
+to a date below the reply that thanked the customer and promised to be in touch, and the two LLM judges
+confirmed the inversion: judged overall quality correlates negatively with VADER sentiment. A rubric that
+scores acknowledgement accuracy and concreteness separately from tone is needed, and it must be paired
+with compliance flags, because the replies the judges liked best were also the ones most likely to
+concede fault or promise a refund.
 
-**Constraints generalise.** "Do not admit liability" removed every apology. Deployers who want an
-apology and no admission need to say both.
+**Constraints generalise, in both directions.** "Do not admit liability" removed every apology, so
+deployers who want an apology and no admission need to say both. But the same constraint set also cut
+judged admissions of liability and promised outcomes to near zero, which the persona prompt alone did
+not: the empathetic persona, left unconstrained, made Mistral concede fault in up to half of its replies.
 
 **The realistic risk is not hallucination.** With inputs that redact every date, name, and amount,
 the models almost never invented one. What they did, in one reply out of seven, was leave a template
@@ -473,7 +479,9 @@ observed.
   marker is planned.
 - VADER is a social-media lexicon; the RoBERTa classifier is also trained on tweets. The judge
   ratings are from the same two model families that produced the replies, which raises
-  self-preference concerns that we test but cannot fully rule out.
+  self-preference concerns; we measure a self-preference shift of about a quarter of a standard
+  deviation, which changes the size but not the direction of the model gap. Judged quality also
+  correlates with length (ρ up to 0.49), so verbosity bias may inflate the ratings of longer replies.
 - The complaint set is category-stratified, not representative of complaint volume.
 - Everything here is descriptive. No human rated the replies, and we do not know how consumers would
   receive them.
