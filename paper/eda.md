@@ -4,10 +4,10 @@
 from `analysis/figures/`; every number comes from `analysis/eda_sentiment.py`, `robustness.py`, or
 the descriptive script run for this section.*
 
-The EDA has two halves. Section E.1 describes the complaints as the models saw them, because the
-input distribution bounds what any reply can do. Section E.2 describes the replies as distributions,
-before any hypothesis testing, so that the effect sizes in the Results are read against the right
-baseline shapes.
+The EDA has two halves and walks through all ten figures. Section E.1 describes the complaints as
+the models saw them (Figure 0), because the input distribution bounds what any reply can do. Section
+E.2 describes the replies as distributions (Figures 1-10), before any hypothesis testing, so that the
+effect sizes in the Results are read against the right baseline shapes.
 
 ## E.1 The complaints
 
@@ -147,6 +147,59 @@ is decided by a few words. Under V2, by contrast, ChatGPT keeps a high positive 
 Mistral's positive share drops to 0.11 and its negative share rises to 0.12: Mistral adds grievance
 vocabulary and removes gratitude.
 
+### Mirroring: replies track the complaint's tone, at different slopes
+
+![Figure 4](../analysis/figures/fig4_mirroring.png)
+
+**Figure 4. Reply sentiment as a function of narrative sentiment.** Narratives binned into ten
+equal-width VADER intervals; lines are cell means, bands 95% confidence intervals.
+
+Every line in Figure 4 slopes upward: in all six conditions, complaints with more positive lexicon
+scores get more positive replies (Spearman ρ 0.18 to 0.39). But the slopes and the gaps differ, and
+the difference is the interesting part.
+
+- Under **V1**, the two lines are nearly parallel and about 0.2 apart; both models mirror the input
+  to the same degree and ChatGPT sits uniformly higher. This is the baseline mirroring the task
+  itself induces: a two-sentence reply must name the problem, and naming the problem imports its
+  vocabulary.
+- Under **V2**, the ChatGPT line is high and almost flat (0.5 at the most negative narratives, 0.7 at
+  the most positive), while the Mistral line starts at -0.2 and climbs to +0.2. ChatGPT's persona
+  overrides the input: whatever the complaint said, the reply thanks and reassures. Mistral's persona
+  amplifies it: the angrier the complaint, the more grievance vocabulary the reply carries. The gap
+  between the models is therefore widest for the angriest complaints, which are the ones a
+  complaint-handling system most needs to get right.
+- Under **V3**, both lines are steep (ρ 0.39 and 0.38, the strongest mirroring in the corpus) and the
+  ordering flips, with ChatGPT lower. The `Acknowledgement:` field is a restatement by construction,
+  so the reply's lexicon is largely the complaint's lexicon, and ChatGPT's fuller restatements carry
+  more of it.
+
+The practical reading is that mirroring is not a fixed model property. The same model is nearly
+immune to the input under one prompt and highly sensitive under another, and the prompt that asks
+for a structured acknowledgement is the one that makes replies track the complaint most closely.
+
+### Product: the debt-collection gap
+
+![Figure 5](../analysis/figures/fig5_product.png)
+
+**Figure 5. Mean reply sentiment by complaint product family, pooled over the three prompts.**
+
+Across the eight product families, ChatGPT's mean reply sentiment sits in a narrow band (0.20 to
+0.45) and Mistral's in a wider one (-0.04 to 0.25), and Mistral is lower in every family. The
+ordering of families is nearly the same for both models: payday and personal loans, credit
+reporting, and credit cards draw the most positive replies; checking and savings accounts and debt
+collection the least. The debt-collection row stands out twice over. It is the largest family
+(3,140 complaints), and it has the widest gap: ChatGPT 0.20, Mistral -0.04, the only cell below
+zero.
+
+Section E.1 gives the mechanism. Debt-collection narratives are the most negative in the corpus by
+lexicon (73% below zero, mean -0.37), because they describe harassment, threats, and legal action.
+A model that restates the complaint imports that vocabulary; a model that reassures does not. The
+OLS in Section 5.6 confirms the effect survives controls for narrative sentiment and length, so it is
+not only that debt-collection narratives are angrier; the models also respond to the topic itself.
+For a deployer, this means a single global sentiment target for replies will be missed
+systematically in one product line, and any evaluation set that under-represents debt collection
+will overstate average reply warmth.
+
 ### Readability: the prompt lowers the grade level more than the model does
 
 ![Figure 8](../analysis/figures/fig8_readability.png)
@@ -212,6 +265,71 @@ replies; V3's fixed format is 15-23% cheaper than V2 and only marginally slower 
 the 30,000 replies per model were 7.9M prompt and 2.2M completion tokens for ChatGPT and 8.5M and
 2.2M for Mistral.
 
+### Where the variation comes from
+
+![Figure 9](../analysis/figures/fig9_variance_decomposition.png)
+
+**Figure 9. Share of each feature's variance explained by prompt, model, their interaction, the
+complaint, and residual.** Balanced design, so the components are orthogonal and sum to 100%.
+
+Figure 9 summarises the previous six figures in one picture. Read the dark-blue segment first: it
+is the prompt's share, and it is the largest component for every feature except VADER sentiment and
+placeholders. It exceeds half of the variance for sentence count (72%), apology (68%), length (60%),
+and ownership (53%). Then look for the mid-blue segment, the model's main effect: it is visible only
+for thanking (13%), time-bound commitments (8%), and sentiment (4%), and is a sliver or absent
+elsewhere. The light-blue interaction segment is as large as or larger than the model segment for
+sentiment (11%), sentence count (9%), and thanking (14%), which says the models differ mostly in how
+they react to a specific prompt rather than in a stable style.
+
+The grey segment, the complaint, is largest for sentiment (27%) and escalation (21%): which complaint
+is being answered matters for how the reply sounds and whether it escalates, but not much for how
+long it is or whether it apologises. The residual is largest for placeholders (72%) and requests for
+information (54%), i.e. these behaviours are close to random at the level of an individual reply,
+which is what one would expect of a sampling-temperature artefact rather than a systematic choice.
+Placeholders are the clearest case: 8% prompt, 1% model, 15% complaint, 72% noise. That is also why
+they are cheap to fix. A behaviour that is mostly noise is not being driven by anything the prompt
+says, so a single explicit instruction against it has nothing to fight.
+
+### How the replies are judged
+
+![Figure 10](../analysis/figures/fig10_judge_scores.png)
+
+**Figure 10. Mean rubric scores (1-5) from two blind LLM judges by prompt and model.** Circles and
+solid lines: gpt-4o-mini as judge. Squares and dashed lines: mistral-small as judge. Bars are 95%
+confidence intervals over 299 complaints per cell.
+
+Figure 10 is the only figure in which the y-axis is a quality judgement rather than a measured
+property, so it should be read alongside the others rather than on its own. Five patterns are
+visible.
+
+- **Both prompts beat the baseline.** Every line rises from V1 to V2 on acknowledgement,
+  concreteness, tone, and overall, for both models and both judges. The bare instruction produces the
+  worst replies by every criterion except grounding.
+- **V2 is where the models separate, and Mistral wins it.** On concreteness the orange V2 points
+  (Mistral) sit a full point above the blue ones (ChatGPT) under both judges; on overall they sit
+  0.4-1.0 higher. This is the same cell where lexicon sentiment ranked ChatGPT far ahead (Figure 2).
+  The two instruments disagree because they measure different things: VADER counts gratitude words,
+  the rubric counts a named action with an owner and a date.
+- **V3 collapses the model gap.** At V3 the blue and orange points coincide within 0.15 on every
+  criterion under both judges, the judged counterpart of the near-zero *d* values in Table 3. The
+  format, not the model, determines the reply.
+- **Grounding is the one criterion the judges cannot agree on.** The GPT judge (solid) scores it at
+  the ceiling everywhere; the Mistral judge (dashed) dips at V2, most for ChatGPT (3.97), penalising
+  unsupported specifics such as "I'll escalate this to our compliance team today". The inter-judge
+  correlation on this criterion is 0.06. Grounding as judged by an LLM is therefore not a stable
+  measure here, and the regex audit in Section 5.4, which finds under 1% hard fabrication, is the more
+  reliable instrument for invented facts.
+- **The dashed lines sit below the solid ones,** for both models, on every criterion. The Mistral
+  judge is harsher in general, by about 0.4 points. And the dashed lines are lower for ChatGPT by
+  more than they are for Mistral, which is the self-preference shift quantified in Table 8: each
+  judge favours its own family by about a quarter of a standard deviation, without changing which
+  model it ranks first.
+
+The overall picture is that the judges, the lexicon, and the regex markers agree on where the
+action is (V2, and the ChatGPT-Mistral split within it) and disagree on which side of it is better.
+That disagreement is the paper's evaluation finding, and it is visible in the raw distributions
+before any test is applied.
+
 ### How reply features relate to each other
 
 Within a single cell (ChatGPT, V2), reply length correlates with sentence count (Spearman 0.54), with
@@ -238,3 +356,11 @@ confound in both directions.
 6. The rhetorical markers behave as prompt-controlled switches with a handful of model-specific
    exceptions (thanks, markdown, V2 deadlines), which is the qualitative form of the variance
    decomposition in Section 5.1.
+7. Mirroring of the complaint's tone is prompt-dependent: ChatGPT under V2 is nearly immune to the
+   input, Mistral under V2 amplifies it, and V3 makes both track it closely.
+8. Debt collection is the product where the models diverge most, because its narratives carry the
+   most negative vocabulary and one model restates while the other reassures.
+9. The variance decomposition confirms the picture feature by feature: prompt first, complaint
+   second, model a distant third, and placeholders mostly noise.
+10. Two LLM judges agree with the lexicon on where the models differ (V2) and disagree with it on
+    which is better; grounding is the one criterion on which the judges do not agree with each other.
