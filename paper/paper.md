@@ -29,7 +29,9 @@ apologising, taking ownership, and committing to a deadline is attributable to t
 the factorial shows which part of the prompt does what: the structured format and the compliance
 constraints each remove apologies on their own, empathetic framing restores them against the
 constraints but not against the format, and constraints without positive instructions turn replies
-into hedged boilerplate. Third, the same "empathetic" instruction is read in opposite registers:
+into hedged boilerplate that two blind judges rate below the bare baseline; combined with a framing
+or a format, the same constraints cut judged admissions of liability from 52% to 5% at a cost of
+0.3 points on a five-point overall scale. Third, the same "empathetic" instruction is read in opposite registers:
 ChatGPT becomes uniformly warm while Mistral restates the grievance in the customer's own words and
 commits to a dated action, and two blind judges prefer Mistral's replies on concreteness while
 flagging them for admitting liability. Fourth, the dominant deployment failure is not fabrication,
@@ -69,8 +71,9 @@ Our contributions are:
    removed by format and by constraints independently, that constraints alone backfire, and that
    the models converge under a fixed format (Section 5.3).
 4. Evidence that "empathetic" is not a model-independent instruction: the same framing makes one
-   model warmer and the other more concrete and more negative in tone, and rubric judges prefer the
-   latter (Sections 5.4 and 5.9).
+   model warmer and the other more concrete and more negative in tone, rubric judges prefer the
+   latter, and the judged trade-off between concreteness and admitted liability across the
+   factorial cells is quantified (Sections 5.4 and 5.9).
 5. A characterisation of failure modes at scale, in which unfilled placeholders, silent length
    non-compliance, and unrequested markdown are far more common than invented facts, together with
    a measured mitigation (Sections 5.5 and 5.6).
@@ -684,10 +687,66 @@ models' V3 replies are flagged in 0-12% of cases. The regex marker for promised 
 is processed" as a promise. The V3 constraints work as intended here: both flags fall to ≤ 2% under
 V3 for both models.
 
-**Rubric ratings on the factorial cells.** *[To be filled from `analysis/tables/judge_ratings_study2.csv`
-once the run completes: which cube cell each judge prefers; whether the constraints-only cell's loss
-of concreteness is visible to a judge; whether the admitted-liability flag tracks the A × C
-interaction.]*
+**Rubric ratings on the factorial cells.** Both judges also rated the seven new cube cells for the
+299 overlapping complaints (Figure 12, Table 13; 8,344 ratings). Three results follow.
+
+![Figure 12](../analysis/figures/fig12_judge_factorial.png)
+
+**Figure 12. Judge ratings across the prompt factorial.** Circles and solid lines: gpt-4o-mini as
+judge; squares and dashed lines: mistral-small as judge. Bars are 95% confidence intervals over 299
+complaints per cell.
+
+*Constraints alone are judged the worst prompt in the design, below the bare baseline.* The
+constraints-only cell scores 2.15 and 2.51 overall (ChatGPT, Mistral) under the GPT judge and 1.93
+and 2.42 under the Mistral judge, against 3.25-3.63 for the bare baseline and 3.7-4.2 for the best
+cells; its concreteness scores (1.2-2.1) are the lowest of any cell. The C main effect on overall is
+-1.10 and -1.12 (GPT judge) and -0.59 and -0.89 (Mistral judge), and it is cancelled by positive
+A × C (+0.40 to +0.82) and B × C (+0.36 to +0.88) interactions. What the regex markers showed as a
+retreat into hedged boilerplate (Section 5.3), the judges score as a failure to reply.
+
+*The format is the improvement for ChatGPT; the empathetic framing is already the best for Mistral.*
+For ChatGPT every cell with the format on beats V2 overall (by +0.14 to +0.79 depending on judge),
+with `AB0` the best cell under both judges (4.00 and 3.80). The B main effect on ChatGPT's overall
+score is +0.69 (GPT judge) and +1.08 (Mistral judge), against +0.33 and +0.36 for Mistral. For
+Mistral no cell beats V2 under the GPT judge, and only `AB0` ties it under the Mistral judge
+(+0.02). The model that reads the empathetic framing as "restate and commit" needs nothing more;
+the model that reads it as "reassure" needs the format to become concrete.
+
+*The constraints separate "sorry" from "we were wrong".* Under the empathetic framing, adding the
+constraints leaves the regex apology rate at 90-100% (Section 5.3) but cuts the judges' admitted-
+liability flag on Mistral's replies from 52% to 20% (GPT judge) and from 18% to 3% (Mistral judge),
+and the promised-outcome flag from 49% to 11% and from 21% to 1%. The format alone cuts admissions
+(52% to 16%) but not promises (49% to 37%); format and constraints together bring both to 0-12%.
+The cost is measurable: moving Mistral from V2 to the full `ABC` cell lowers its overall score by
+0.29 (GPT judge) and 0.28 (Mistral judge) on the five-point scale and its concreteness by about
+0.45, while removing nearly all of the compliance exposure. A deployer can now price the trade.
+
+**Table 13. Judge ratings on the factorial cells: overall and concreteness (1-5), admitted-liability
+and promised-outcome flags (%). n = 299 per cell. Judge G = gpt-4o-mini, M = mistral-small.**
+
+| Cell | Model | Overall G | Overall M | Concrete. G | Concrete. M | Admits G | Admits M | Promises G | Promises M |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 000 | ChatGPT | 3.25 | 2.52 | 2.51 | 1.99 | 13 | 0 | 4 | 1 |
+| 000 | Mistral | 3.63 | 3.32 | 3.15 | 3.11 | 33 | 2 | 17 | 6 |
+| A00 (V2) | ChatGPT | 3.80 | 3.02 | 3.18 | 2.62 | 10 | 0 | 12 | 2 |
+| A00 (V2) | Mistral | 4.21 | 3.99 | 4.12 | 4.19 | 52 | 18 | 49 | 21 |
+| 0B0 | ChatGPT | 3.94 | 3.60 | 3.56 | 3.58 | 2 | 0 | 8 | 1 |
+| 0B0 | Mistral | 3.96 | 3.68 | 3.67 | 3.80 | 6 | 0 | 21 | 5 |
+| 00C | ChatGPT | 2.15 | 1.93 | 1.86 | 1.21 | 0 | 0 | 0 | 0 |
+| 00C | Mistral | 2.51 | 2.42 | 2.05 | 1.80 | 1 | 0 | 0 | 0 |
+| AB0 | ChatGPT | 4.00 | 3.80 | 3.81 | 3.90 | 2 | 0 | 10 | 1 |
+| AB0 | Mistral | 4.04 | 4.02 | 3.92 | 4.17 | 16 | 1 | 37 | 11 |
+| A0C | ChatGPT | 3.32 | 2.83 | 2.73 | 2.24 | 4 | 0 | 1 | 0 |
+| A0C | Mistral | 3.91 | 3.92 | 3.66 | 3.90 | 20 | 3 | 11 | 1 |
+| 0BC | ChatGPT | 3.72 | 3.41 | 3.21 | 3.41 | 1 | 0 | 1 | 0 |
+| 0BC | Mistral | 3.54 | 3.15 | 3.20 | 3.24 | 0 | 0 | 2 | 0 |
+| ABC | ChatGPT | 3.94 | 3.72 | 3.65 | 3.87 | 1 | 0 | 1 | 0 |
+| ABC | Mistral | 3.92 | 3.72 | 3.65 | 3.76 | 5 | 0 | 12 | 0 |
+
+The judges' placeholder flag tracks the regex marker across the cube as it did on the realistic
+prompts (96% and 94% for ChatGPT's bare-baseline replies), and the Mistral judge's grounding score,
+insensitive under the GPT judge, is lowest for exactly the cells whose replies write letters (3.46
+for ChatGPT's baseline), which suggests that judge reads an invented salutation as invented content.
 
 **Agreement and self-preference.** Inter-judge Spearman correlations on the realistic prompts are
 0.71 for concreteness, 0.59 for acknowledgement, 0.58 for overall, 0.38 for tone, and 0.06 for
@@ -764,8 +823,10 @@ should carry the paraphrase variance as part of the specification.
 the constraints-only prompt, so deployers who want an apology and no admission need to ask for both;
 but the same constraints, combined with a positive framing, left apologies at 90-100% while cutting
 judged admissions of liability and promised outcomes to near zero. Constraints without positive
-instructions produce hedged boilerplate; constraints on top of a positive instruction do what they
-say. The order of operations in a prompt matters as much as its content.
+instructions produce hedged boilerplate that the judges score as the worst prompt in the design;
+constraints on top of a positive instruction do what they say, separating "sorry" from "we were
+wrong" at a measurable and small cost in judged quality. The order of operations in a prompt
+matters as much as its content, and the trade between empathy and exposure can be priced.
 
 **Sentiment is the wrong yardstick for empathy.** The instrument that most analyses of "empathetic"
 AI reach for, lexicon sentiment, ranked the reply that restated the customer's problem and committed

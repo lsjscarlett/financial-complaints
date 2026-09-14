@@ -233,6 +233,9 @@ Three follow-up scripts build on the feature table:
 - `analysis/llm_judge.py` then `analysis/judge_analysis.py` — blind rubric ratings of a
   stratified 300-complaint sample by two LLM judges (`JUDGE_COMPLAINTS`, paid API calls), with
   agreement and self-preference tests
+- `analysis/study2_factorial.py` and `analysis/study2_judge_analysis.py` — the factorial
+  decomposition (cell means, A×B×C effects, hygiene and paraphrase contrasts) and the judges'
+  ratings of the factorial cells (`JUDGE_VARIANTS=... JUDGE_OUTPUT=judge_ratings_study2.csv`)
 - `analysis/transformer_sentiment.py` — RoBERTa sentiment on a subsample as a check on VADER
   (needs `torch` and `transformers`; downloads the model from Hugging Face on first run)
 
