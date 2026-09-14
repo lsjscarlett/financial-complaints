@@ -1,8 +1,8 @@
 # Prompt beats model, and wording moves both: how instruction framing shapes LLM replies to real consumer-finance complaints
 
 *Draft manuscript. Figures are in `analysis/figures/`, tables in `analysis/tables/`; every number is
-reproducible from the scripts in `analysis/`. Citations are marked `[cite]` where the author should
-insert references; none have been invented.*
+reproducible from the scripts in `analysis/`. Citations use the keys in `references.bib`; every entry was verified against its publisher or
+archive page.*
 
 ## Abstract
 
@@ -46,8 +46,11 @@ for prompt design and evaluation in regulated customer communication.
 
 Complaint handling is a high-volume, high-stakes text task. In the United States, the CFPB has
 published millions of consumer complaints since 2011, a substantial share with a free-text narrative
-written by the consumer, and requires companies to respond within a fixed period [cite]. Institutions
-are experimenting with LLMs to draft these responses [cite], and vendors market "empathetic" and
+written by the consumer, and expects companies to respond within 15 calendar days
+[cfpb_company_process; cfpb_database]. Consumers already use LLMs to write complaints, and
+LLM-written complaints are more likely to obtain relief [shin2026adoption]; on the company side,
+generative assistants measurably raise support-agent productivity [brynjolfsson2025generative], and
+vendors market "empathetic" and
 "compliant" reply generation. Yet the design choices a deployer actually controls, which model to
 call, what the instruction asks for, and how it is phrased, are rarely compared on the same inputs at
 scale.
@@ -83,12 +86,57 @@ Our contributions are:
 
 ## 2. Related work
 
-*To be expanded by the author.* Relevant strands: LLMs for customer service and complaint response
-[cite]; prompt sensitivity and instruction following in LLMs [cite]; empathy in dialogue systems and
-its measurement [cite]; sentiment analysis of consumer complaints, including prior work on the CFPB
-database [cite]; LLM-as-a-judge evaluation and its biases, including self-preference and verbosity
-bias [cite]; and hallucination taxonomies distinguishing fabricated specifics from unsupported
-claims [cite].
+**LLMs in customer service and complaint handling.** Field evidence on generative assistants in
+customer support shows productivity gains concentrated among less experienced agents, with the
+assistant propagating the phrasing of the most effective workers [brynjolfsson2025generative]. On the
+consumer side of the CFPB process, LLM-assisted complaint writing spread rapidly after ChatGPT's
+release and is associated with a higher likelihood of relief [shin2026adoption]. Response generation
+for public-facing customer text has been studied for review replies with self-improving LLM
+pipelines [azov2024review]. The CFPB complaint narratives themselves have been mined with topic
+models to track regulatory themes over time [bastani2019lda]. We are not aware of prior work that
+generates and audits institutional replies to real CFPB complaints at scale, or that separates the
+contribution of model, instruction content, and instruction wording on that task.
+
+**Prompt sensitivity and instruction following.** Language models are sensitive to spurious
+features of prompt formatting, with accuracy swings of tens of points across semantically equivalent
+templates [sclar2024formatting], and single-template evaluation is unreliable enough that multi-prompt
+evaluation has been proposed as a standard [mizrahi2024multiprompt]. Verifiable instruction-following
+benchmarks show that models often miss explicit constraints such as length [zhou2023ifeval], and
+adding personas to system prompts does not reliably improve objective performance
+[zheng2024persona]. Our paraphrase and factorial cells extend these findings from classification and
+QA to a generation task with compliance stakes, and show that wording effects on content features
+(placeholders, deadlines, admissions) are as large as model effects.
+
+**Empathy in generated text.** Empathetic response generation has been benchmarked with
+emotionally grounded dialogue data [rashkin2019empathetic], and empathy in text has been
+decomposed into emotional reaction, interpretation, and exploration components that can be scored
+separately from tone [sharma2020empathy]. In service-recovery research, an apology's empathy
+component has the largest effect on satisfaction after a failure, comparable to compensation for
+process failures [roschk2013apology]. Our finding that the same "empathetic" instruction yields a
+warm-but-vague reply from one model and a concrete-but-negative one from another speaks to the gap
+between tone and the interpretive components of empathy.
+
+**Sentiment instruments.** VADER is a lexicon-and-rules model built for social-media text
+[hutto2014vader]; the RoBERTa classifier we use is trained on TweetEval and updated Twitter corpora
+[barbieri2020tweeteval; loureiro2022timelms]. Neither was designed for institutional replies, and we
+treat their disagreement as a finding about the instruments rather than the replies.
+
+**LLM-as-a-judge.** Strong LLM judges reach human-level agreement on open-ended chat quality but
+exhibit position, verbosity, and self-enhancement biases [zheng2023judge], and form-filling rubric
+evaluation with chain-of-thought improves alignment with human ratings while showing a preference
+for LLM-generated text [liu2023geval]. Evaluators recognise and favour their own generations, with
+self-preference proportional to self-recognition [panickssery2024selfpreference], and length bias in
+automatic evaluators can be large enough to require explicit control [dubois2024lengthcontrolled];
+recent surveys catalogue these biases and mitigations [gu2024judgesurvey]. We use two judges from the
+two families that produced the replies precisely so that self-preference can be measured rather
+than assumed away, and we report the length correlation of judged quality.
+
+**Hallucination.** Surveys distinguish intrinsic from extrinsic hallucination and fabricated
+specifics from unsupported claims [ji2023hallucination; huang2023hallucination], and human
+evaluation of summarisers established that fluent models hallucinate content unfaithful to the
+source at high rates [maynez2020faithfulness]. The CFPB's redaction of names, dates, and amounts gives
+us an unusually clean fabrication test, on which hard fabrication turns out to be rare and the
+operative failure is a different one.
 
 ## 3. Data
 
@@ -229,11 +277,12 @@ writing. All 119,980 calls succeeded; no reply hit its token cap.
 For every reply we compute:
 
 - **Length**: characters, words, sentences (regex splitter).
-- **Sentiment**: VADER compound, positive, negative, and neutral shares [cite]; on 3,000 complaints of
+- **Sentiment**: VADER compound, positive, negative, and neutral shares [hutto2014vader]; on 3,000 complaints of
   the full corpus (18,000 replies) also the positive-minus-negative probability from a RoBERTa
-  sentiment classifier (`cardiffnlp/twitter-roberta-base-sentiment-latest`) [cite]. The same VADER
+  sentiment classifier (`cardiffnlp/twitter-roberta-base-sentiment-latest`)
+  [barbieri2020tweeteval; loureiro2022timelms]. The same VADER
   score is computed for the complaint narrative.
-- **Readability**: Flesch reading ease and Flesch-Kincaid grade (`textstat`).
+- **Readability**: Flesch reading ease and Flesch-Kincaid grade [kincaid1975readability] (`textstat`).
 - **Rhetorical markers**: twelve case-insensitive regular expressions, after normalising typographic
   apostrophes, for apology, empathy / acknowledgement, ownership, time-bound commitment, hedging,
   requests for information, escalation, promised outcomes, mention of a regulator or credit bureau,
@@ -269,7 +318,8 @@ scores its own model's replies higher than the other judge does.
 Both layers are fully crossed and balanced: each complaint has exactly one reply per model × prompt
 cell. Model comparisons are therefore paired on the complaint within a prompt, and prompt comparisons
 are paired on the complaint within a model. For continuous measures we report paired Cohen's *d* and
-the Wilcoxon signed-rank test; for binary markers, the exact McNemar test. With thousands of pairs
+the Wilcoxon signed-rank test [wilcoxon1945]; for binary markers, the exact McNemar test
+[mcnemar1947]. With thousands of pairs
 essentially every difference is significant at *p* < 0.001, so we emphasise effect sizes and raw
 rates. The balanced full-corpus design permits an orthogonal decomposition of each feature's total
 sum of squares into prompt, model, model × prompt, complaint, and residual components, reported as
@@ -323,7 +373,9 @@ near-neutral restatement whose sign is decided by a few words.
 **Readability.** Unconstrained, both models write at a college reading level (V1 median grade 13.8
 and 12.7). The V2 request for plain language brings ChatGPT to 9.7 and Mistral to 10.9; V3 lands both
 near 11 without asking, because the three-field format shortens sentences by construction. No
-condition reaches the grade 8-9 level usually recommended for consumer communications [cite].
+condition reaches the middle-school reading levels commonly targeted in consumer communication;
+the Federal Plain Language Guidelines prescribe writing for the audience rather than a fixed grade
+[plainlanguage2011], and complainants are a general audience.
 
 ### 5.2 The prompt explains more than the model
 
@@ -750,7 +802,7 @@ for ChatGPT's baseline), which suggests that judge reads an invented salutation 
 
 **Agreement and self-preference.** Inter-judge Spearman correlations on the realistic prompts are
 0.71 for concreteness, 0.59 for acknowledgement, 0.58 for overall, 0.38 for tone, and 0.06 for
-grounding (Table 11). On the placeholder flag the judges agree with each other (κ = 0.81) and with the
+grounding (Table 11). On the placeholder flag the judges agree with each other (Cohen's κ [cohen1960kappa] = 0.81) and with the
 regex marker (κ = 0.82 and 0.92), which validates the regex used in Section 5.6. Agreement on the
 compliance flags is weaker (κ = 0.52 for promised outcomes, 0.31 for admitted liability), with the GPT
 judge flagging two to four times as often as the Mistral judge. The GPT judge rates grounding at
@@ -777,7 +829,8 @@ direction: both judges still rate Mistral's replies higher overall (GPT judge -0
 **Sentiment is anti-correlated with judged quality.** Across the 1,800 rated realistic-prompt
 replies, the VADER compound correlates negatively with the judges' overall score (Spearman -0.14 GPT
 judge, -0.26 Mistral judge) and with concreteness (-0.24, -0.30). Length correlates positively with
-judged quality (0.49 and 0.27 for overall), so verbosity bias [cite] cannot be excluded as part of the
+judged quality (0.49 and 0.27 for overall), so verbosity bias [zheng2023judge;
+dubois2024lengthcontrolled] cannot be excluded as part of the
 reason V2 replies score well.
 
 **Transformer sentiment disagrees with the lexicon on level but not on order.** On 18,000 replies from
@@ -816,8 +869,9 @@ located in one model's reading of one instruction.
 instruction moved reply features by up to a standard deviation and pushed ChatGPT's placeholder rate
 from 40% to 95%. Any study that reports "prompt X beats prompt Y" on a single wording of each,
 including the full-corpus layer of this one, is reporting a wording as much as a content effect.
-Prompt comparisons should be run over several paraphrases of each condition, and prompt libraries
-should carry the paraphrase variance as part of the specification.
+Prompt comparisons should be run over several paraphrases of each condition, as multi-prompt
+evaluation already argues for benchmarks [mizrahi2024multiprompt; sclar2024formatting], and prompt
+libraries should carry the paraphrase variance as part of the specification.
 
 **Constraints generalise, in both directions.** "Do not admit liability" removed every apology under
 the constraints-only prompt, so deployers who want an apology and no admission need to ask for both;
@@ -857,7 +911,8 @@ predictable output is a feature.
   typographic apostrophes (a bug found and fixed during analysis). The judges' broader reading of
   "promise" versus the regex's narrow one is an instance of the same gap.
 - VADER is a social-media lexicon and the RoBERTa classifier is trained on tweets. The judge ratings
-  are from the same two model families that produced the replies; we measure a self-preference shift
+  are from the same two model families that produced the replies [panickssery2024selfpreference]; we
+  measure a self-preference shift
   of about a quarter of a standard deviation, which changes the size but not the direction of the
   model gap. Judged quality also correlates with length (ρ up to 0.49), so verbosity bias may inflate
   the ratings of longer replies.
@@ -874,6 +929,68 @@ meaningful share of the instruction's effect is its phrasing; the same "empathet
 yielded opposite registers from two models; and the operational risk that materialised was the
 unfilled placeholder, not the invented fact, with a one-line fix whose cost we measured. The corpus,
 code, and feature tables are released for further work.
+
+## References
+
+Azov, G., Pelc, T., Fledel Alon, A., & Kamhi, G. (2024). Self-improving customer review response generation based on LLMs. *Proceedings of the Seventh Workshop on e-Commerce and NLP (ECNLP 7)*. https://aclanthology.org/2024.ecnlp-1.5/
+
+Barbieri, F., Camacho-Collados, J., Espinosa Anke, L., & Neves, L. (2020). TweetEval: Unified benchmark and comparative evaluation for tweet classification. *Findings of EMNLP 2020*, 1644–1650. https://aclanthology.org/2020.findings-emnlp.148/
+
+Bastani, K., Namavari, H., & Shaffer, J. (2019). Latent Dirichlet allocation (LDA) for topic modeling of the CFPB consumer complaints. *Expert Systems with Applications, 127*, 256–271.
+
+Brynjolfsson, E., Li, D., & Raymond, L. R. (2025). Generative AI at work. *The Quarterly Journal of Economics, 140*(2), 889–942. (NBER Working Paper 31161, 2023.)
+
+Cohen, J. (1960). A coefficient of agreement for nominal scales. *Educational and Psychological Measurement, 20*(1), 37–46.
+
+Consumer Financial Protection Bureau. (2026). Consumer Complaint Database. https://www.consumerfinance.gov/data-research/consumer-complaints/ (accessed September 2026).
+
+Consumer Financial Protection Bureau. (2026). Your company's role in the complaint process. https://www.consumerfinance.gov/compliance/consumer-complaint-program/company-process/ (accessed September 2026).
+
+Dubois, Y., Galambosi, B., Liang, P., & Hashimoto, T. B. (2024). Length-controlled AlpacaEval: A simple way to debias automatic evaluators. *arXiv:2404.04475*.
+
+Gu, J., Jiang, X., Shi, Z., Tan, H., Zhai, X., Xu, C., Li, W., Shen, Y., Ma, S., Liu, H., Wang, S., Zhang, K., Wang, Y., Gao, W., Ni, L., & Guo, J. (2024). A survey on LLM-as-a-judge. *arXiv:2411.15594*.
+
+Huang, L., Yu, W., Ma, W., Zhong, W., Feng, Z., Wang, H., Chen, Q., Peng, W., Feng, X., Qin, B., & Liu, T. (2023). A survey on hallucination in large language models: Principles, taxonomy, challenges, and open questions. *arXiv:2311.05232*.
+
+Hutto, C. J., & Gilbert, E. (2014). VADER: A parsimonious rule-based model for sentiment analysis of social media text. *Proceedings of the International AAAI Conference on Web and Social Media, 8*(1), 216–225.
+
+Ji, Z., Lee, N., Frieske, R., Yu, T., Su, D., Xu, Y., Ishii, E., Bang, Y. J., Madotto, A., & Fung, P. (2023). Survey of hallucination in natural language generation. *ACM Computing Surveys, 55*(12), 1–38.
+
+Kincaid, J. P., Fishburne, R. P., Rogers, R. L., & Chissom, B. S. (1975). *Derivation of new readability formulas (Automated Readability Index, Fog Count and Flesch Reading Ease Formula) for Navy enlisted personnel* (Research Branch Report 8-75). Naval Technical Training Command.
+
+Krippendorff, K. (2004). *Content analysis: An introduction to its methodology* (2nd ed.). Sage.
+
+Liu, Y., Iter, D., Xu, Y., Wang, S., Xu, R., & Zhu, C. (2023). G-Eval: NLG evaluation using GPT-4 with better human alignment. *Proceedings of EMNLP 2023*, 2511–2522. https://aclanthology.org/2023.emnlp-main.153/
+
+Loureiro, D., Barbieri, F., Neves, L., Espinosa Anke, L., & Camacho-Collados, J. (2022). TimeLMs: Diachronic language models from Twitter. *Proceedings of ACL 2022: System Demonstrations*.
+
+Maynez, J., Narayan, S., Bohnet, B., & McDonald, R. (2020). On faithfulness and factuality in abstractive summarization. *Proceedings of ACL 2020*, 1906–1919. https://aclanthology.org/2020.acl-main.173/
+
+McNemar, Q. (1947). Note on the sampling error of the difference between correlated proportions or percentages. *Psychometrika, 12*(2), 153–157.
+
+Mizrahi, M., Kaplan, G., Malkin, D., Dror, R., Shahaf, D., & Stanovsky, G. (2024). State of what art? A call for multi-prompt LLM evaluation. *Transactions of the Association for Computational Linguistics, 12*, 933–949. https://doi.org/10.1162/tacl_a_00681
+
+Panickssery, A., Bowman, S. R., & Feng, S. (2024). LLM evaluators recognize and favor their own generations. *Advances in Neural Information Processing Systems 37*. https://arxiv.org/abs/2404.13076
+
+Plain Language Action and Information Network. (2011). *Federal Plain Language Guidelines*. https://www.plainlanguage.gov/guidelines/
+
+Rashkin, H., Smith, E. M., Li, M., & Boureau, Y.-L. (2019). Towards empathetic open-domain conversation models: A new benchmark and dataset. *Proceedings of ACL 2019*, 5370–5381. https://aclanthology.org/P19-1534/
+
+Roschk, H., & Kaiser, S. (2013). The nature of an apology: An experimental study on how to apologize after a service failure. *Marketing Letters, 24*, 293–309. https://doi.org/10.1007/s11002-012-9218-x
+
+Sclar, M., Choi, Y., Tsvetkov, Y., & Suhr, A. (2024). Quantifying language models' sensitivity to spurious features in prompt design or: How I learned to start worrying about prompt formatting. *ICLR 2024*. https://arxiv.org/abs/2310.11324
+
+Sharma, A., Miner, A., Atkins, D., & Althoff, T. (2020). A computational approach to understanding empathy expressed in text-based mental health support. *Proceedings of EMNLP 2020*, 5263–5276. https://aclanthology.org/2020.emnlp-main.425/
+
+Shin, M., Kim, J., & Shin, J. (2026). The adoption and efficacy of large language models in US consumer financial complaints. *Nature Human Behaviour*. (arXiv:2311.16466.)
+
+Wilcoxon, F. (1945). Individual comparisons by ranking methods. *Biometrics Bulletin, 1*(6), 80–83.
+
+Zheng, L., Chiang, W.-L., Sheng, Y., Zhuang, S., Wu, Z., Zhuang, Y., Lin, Z., Li, Z., Li, D., Xing, E. P., Zhang, H., Gonzalez, J. E., & Stoica, I. (2023). Judging LLM-as-a-judge with MT-Bench and Chatbot Arena. *Advances in Neural Information Processing Systems 36*. https://arxiv.org/abs/2306.05685
+
+Zheng, M., Pei, J., Logeswaran, L., Lee, M., & Jurgens, D. (2024). When "a helpful assistant" is not really helpful: Personas in system prompts do not improve performances of large language models. *Findings of EMNLP 2024*. https://arxiv.org/abs/2311.10054
+
+Zhou, J., Lu, T., Mishra, S., Brahma, S., Basu, S., Luan, Y., Zhou, D., & Hou, L. (2023). Instruction-following evaluation for large language models. *arXiv:2311.07911*.
 
 ## Appendix A. Prompt templates
 

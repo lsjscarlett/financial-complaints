@@ -1,0 +1,961 @@
+item_id,Row,Model,Prompt_Variant,cell
+R20750c23,3644,ChatGPT,v1_terse,V1
+R4e1d3284,3644,Mistral,v1_terse,V1
+R2588f048,3644,ChatGPT,v2_empathetic,V2 / A00
+R20585aff,3644,Mistral,v2_empathetic,V2 / A00
+R08995ee3,3644,ChatGPT,v3_structured,V3
+R8b870ccf,3644,Mistral,v3_structured,V3
+R55f66854,3644,ChatGPT,f_000_base,000
+R9bfced07,3644,Mistral,f_000_base,000
+Rbe429ac7,3644,ChatGPT,f_A0C_empathetic_constraints,A0C
+R4cc1ce2e,3644,Mistral,f_A0C_empathetic_constraints,A0C
+R01b411d7,3644,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+R36afc6d4,3644,Mistral,f_ABC_empathetic_format_constraints,ABC
+Rb5e1269a,1767,ChatGPT,v1_terse,V1
+R43adbb0f,1767,Mistral,v1_terse,V1
+R3101236d,1767,ChatGPT,v2_empathetic,V2 / A00
+Rb6328fa9,1767,Mistral,v2_empathetic,V2 / A00
+R171e3797,1767,ChatGPT,v3_structured,V3
+R543d0537,1767,Mistral,v3_structured,V3
+Rc730e63f,1767,ChatGPT,f_000_base,000
+Ra6302244,1767,Mistral,f_000_base,000
+R8b753c3a,1767,ChatGPT,f_A0C_empathetic_constraints,A0C
+R5e72a280,1767,Mistral,f_A0C_empathetic_constraints,A0C
+Ra32593f6,1767,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+Rd7df77d9,1767,Mistral,f_ABC_empathetic_format_constraints,ABC
+R95e97df9,7307,ChatGPT,v1_terse,V1
+R102c9b98,7307,Mistral,v1_terse,V1
+R03341a17,7307,ChatGPT,v2_empathetic,V2 / A00
+R7e627093,7307,Mistral,v2_empathetic,V2 / A00
+Rc2e4a96f,7307,ChatGPT,v3_structured,V3
+Rdd9c8f4d,7307,Mistral,v3_structured,V3
+R3b6b778a,7307,ChatGPT,f_000_base,000
+Ra41ac800,7307,Mistral,f_000_base,000
+R34780260,7307,ChatGPT,f_A0C_empathetic_constraints,A0C
+R03d240bd,7307,Mistral,f_A0C_empathetic_constraints,A0C
+R1a5b13e6,7307,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+R50a82e1a,7307,Mistral,f_ABC_empathetic_format_constraints,ABC
+Rb38f191c,5416,ChatGPT,v1_terse,V1
+R892f604e,5416,Mistral,v1_terse,V1
+R44ce7c72,5416,ChatGPT,v2_empathetic,V2 / A00
+Rf2b20f48,5416,Mistral,v2_empathetic,V2 / A00
+R6bcc9aec,5416,ChatGPT,v3_structured,V3
+Ra16e249a,5416,Mistral,v3_structured,V3
+R037f8cea,5416,ChatGPT,f_000_base,000
+Rb392af5a,5416,Mistral,f_000_base,000
+R3c4d338e,5416,ChatGPT,f_A0C_empathetic_constraints,A0C
+Rc1b7307d,5416,Mistral,f_A0C_empathetic_constraints,A0C
+R3568afa8,5416,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+Rdd9e1215,5416,Mistral,f_ABC_empathetic_format_constraints,ABC
+Rc8897e29,6008,ChatGPT,v1_terse,V1
+Rb9dbea67,6008,Mistral,v1_terse,V1
+Rddda9b0e,6008,ChatGPT,v2_empathetic,V2 / A00
+R3270370b,6008,Mistral,v2_empathetic,V2 / A00
+Re6f38c59,6008,ChatGPT,v3_structured,V3
+R30a6cd44,6008,Mistral,v3_structured,V3
+R75e14e01,6008,ChatGPT,f_000_base,000
+R44a08c72,6008,Mistral,f_000_base,000
+Rc546cce6,6008,ChatGPT,f_A0C_empathetic_constraints,A0C
+R8670431b,6008,Mistral,f_A0C_empathetic_constraints,A0C
+R70e95a41,6008,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+R65247ef4,6008,Mistral,f_ABC_empathetic_format_constraints,ABC
+R186a9c62,793,ChatGPT,v1_terse,V1
+R8b22583f,793,Mistral,v1_terse,V1
+Ref8dd64d,793,ChatGPT,v2_empathetic,V2 / A00
+R16fae1f7,793,Mistral,v2_empathetic,V2 / A00
+R51b52cb3,793,ChatGPT,v3_structured,V3
+R066b6fce,793,Mistral,v3_structured,V3
+Radb8bf03,793,ChatGPT,f_000_base,000
+R5fffdafa,793,Mistral,f_000_base,000
+Rf83a56fd,793,ChatGPT,f_A0C_empathetic_constraints,A0C
+R59400bda,793,Mistral,f_A0C_empathetic_constraints,A0C
+Re80cc84c,793,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+R5d9d2a83,793,Mistral,f_ABC_empathetic_format_constraints,ABC
+Ra95618cf,7330,ChatGPT,v1_terse,V1
+R9da518db,7330,Mistral,v1_terse,V1
+R7c5dd354,7330,ChatGPT,v2_empathetic,V2 / A00
+Rbdc2c98a,7330,Mistral,v2_empathetic,V2 / A00
+R92b13c8b,7330,ChatGPT,v3_structured,V3
+R685da3d8,7330,Mistral,v3_structured,V3
+R756190eb,7330,ChatGPT,f_000_base,000
+R3796dd5d,7330,Mistral,f_000_base,000
+R33585de5,7330,ChatGPT,f_A0C_empathetic_constraints,A0C
+Re3d802b4,7330,Mistral,f_A0C_empathetic_constraints,A0C
+R6f61227e,7330,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+R0696b681,7330,Mistral,f_ABC_empathetic_format_constraints,ABC
+Rc31b1258,4945,ChatGPT,v1_terse,V1
+R27271235,4945,Mistral,v1_terse,V1
+Rd33e1de2,4945,ChatGPT,v2_empathetic,V2 / A00
+R930eab2e,4945,Mistral,v2_empathetic,V2 / A00
+R3a64ea6f,4945,ChatGPT,v3_structured,V3
+R301e2949,4945,Mistral,v3_structured,V3
+R7e2f3c2a,4945,ChatGPT,f_000_base,000
+R389ef6f6,4945,Mistral,f_000_base,000
+Rc59cbdba,4945,ChatGPT,f_A0C_empathetic_constraints,A0C
+R60dde3d2,4945,Mistral,f_A0C_empathetic_constraints,A0C
+R52d58593,4945,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+R27b7cfea,4945,Mistral,f_ABC_empathetic_format_constraints,ABC
+R8cc4ebcf,272,ChatGPT,v1_terse,V1
+R9ebb6aca,272,Mistral,v1_terse,V1
+R925b9d1d,272,ChatGPT,v2_empathetic,V2 / A00
+R32ab465d,272,Mistral,v2_empathetic,V2 / A00
+R003e26ee,272,ChatGPT,v3_structured,V3
+Rb1823776,272,Mistral,v3_structured,V3
+R660cb043,272,ChatGPT,f_000_base,000
+R4b2c09e2,272,Mistral,f_000_base,000
+R7d0bb074,272,ChatGPT,f_A0C_empathetic_constraints,A0C
+R7f437548,272,Mistral,f_A0C_empathetic_constraints,A0C
+Re628874f,272,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+R86d66ea3,272,Mistral,f_ABC_empathetic_format_constraints,ABC
+R603f6887,9919,ChatGPT,v1_terse,V1
+R32befa56,9919,Mistral,v1_terse,V1
+R79aa0a16,9919,ChatGPT,v2_empathetic,V2 / A00
+Rc283b6c5,9919,Mistral,v2_empathetic,V2 / A00
+R50e9286a,9919,ChatGPT,v3_structured,V3
+R013af74c,9919,Mistral,v3_structured,V3
+Rb6b0945b,9919,ChatGPT,f_000_base,000
+R0d70ab23,9919,Mistral,f_000_base,000
+R4dd9ddbc,9919,ChatGPT,f_A0C_empathetic_constraints,A0C
+R89f5d91f,9919,Mistral,f_A0C_empathetic_constraints,A0C
+R0715428e,9919,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+Rfbb4e563,9919,Mistral,f_ABC_empathetic_format_constraints,ABC
+R6ce274dc,2206,ChatGPT,v1_terse,V1
+R059ec75f,2206,Mistral,v1_terse,V1
+Re305322a,2206,ChatGPT,v2_empathetic,V2 / A00
+Rf5f6ba0a,2206,Mistral,v2_empathetic,V2 / A00
+R75b229f7,2206,ChatGPT,v3_structured,V3
+Rbf51709f,2206,Mistral,v3_structured,V3
+R06975140,2206,ChatGPT,f_000_base,000
+R5c2892e7,2206,Mistral,f_000_base,000
+R9978f50d,2206,ChatGPT,f_A0C_empathetic_constraints,A0C
+Rcd831819,2206,Mistral,f_A0C_empathetic_constraints,A0C
+Re97ef3ef,2206,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+R9852ae47,2206,Mistral,f_ABC_empathetic_format_constraints,ABC
+Rf1d66a0c,5469,ChatGPT,v1_terse,V1
+R24ae7cfa,5469,Mistral,v1_terse,V1
+Rc9cea6ca,5469,ChatGPT,v2_empathetic,V2 / A00
+Raf0d0f2e,5469,Mistral,v2_empathetic,V2 / A00
+Rf209fe2a,5469,ChatGPT,v3_structured,V3
+R197ff3ce,5469,Mistral,v3_structured,V3
+R3431b8f0,5469,ChatGPT,f_000_base,000
+Rd800a97f,5469,Mistral,f_000_base,000
+Ra23fb6c1,5469,ChatGPT,f_A0C_empathetic_constraints,A0C
+Ra8427a75,5469,Mistral,f_A0C_empathetic_constraints,A0C
+R4f9948de,5469,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+R3d428275,5469,Mistral,f_ABC_empathetic_format_constraints,ABC
+R6d4523fb,2318,ChatGPT,v1_terse,V1
+Rac1dbf15,2318,Mistral,v1_terse,V1
+R301e35eb,2318,ChatGPT,v2_empathetic,V2 / A00
+R47433ed4,2318,Mistral,v2_empathetic,V2 / A00
+R2d5d0373,2318,ChatGPT,v3_structured,V3
+Rbe9446f8,2318,Mistral,v3_structured,V3
+Rcee8ad11,2318,ChatGPT,f_000_base,000
+R524fb6df,2318,Mistral,f_000_base,000
+R229d7d0b,2318,ChatGPT,f_A0C_empathetic_constraints,A0C
+Rfc6d1a12,2318,Mistral,f_A0C_empathetic_constraints,A0C
+Ra47d858c,2318,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+R93a64f40,2318,Mistral,f_ABC_empathetic_format_constraints,ABC
+Re0e1cf71,9277,ChatGPT,v1_terse,V1
+Rfa9f4c7a,9277,Mistral,v1_terse,V1
+R0ab38dad,9277,ChatGPT,v2_empathetic,V2 / A00
+R1756a323,9277,Mistral,v2_empathetic,V2 / A00
+R1293fb26,9277,ChatGPT,v3_structured,V3
+R82e6d4ba,9277,Mistral,v3_structured,V3
+R4df28f4b,9277,ChatGPT,f_000_base,000
+R6778a061,9277,Mistral,f_000_base,000
+R860d59ac,9277,ChatGPT,f_A0C_empathetic_constraints,A0C
+Rf5e3119b,9277,Mistral,f_A0C_empathetic_constraints,A0C
+R23dde0f2,9277,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+R86b7bc01,9277,Mistral,f_ABC_empathetic_format_constraints,ABC
+R8b81ddf0,7982,ChatGPT,v1_terse,V1
+R9829e3ce,7982,Mistral,v1_terse,V1
+R69139504,7982,ChatGPT,v2_empathetic,V2 / A00
+Rd6028c01,7982,Mistral,v2_empathetic,V2 / A00
+R4a68cbe9,7982,ChatGPT,v3_structured,V3
+Rd279540c,7982,Mistral,v3_structured,V3
+Reb19724c,7982,ChatGPT,f_000_base,000
+Rd7ba64d8,7982,Mistral,f_000_base,000
+R6d22881c,7982,ChatGPT,f_A0C_empathetic_constraints,A0C
+R5ddb10ec,7982,Mistral,f_A0C_empathetic_constraints,A0C
+R1d0a7bb5,7982,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+R2d954f8a,7982,Mistral,f_ABC_empathetic_format_constraints,ABC
+Rcddf7586,6203,ChatGPT,v1_terse,V1
+R97cba7b3,6203,Mistral,v1_terse,V1
+R26236569,6203,ChatGPT,v2_empathetic,V2 / A00
+R6d1e8707,6203,Mistral,v2_empathetic,V2 / A00
+R4330ee41,6203,ChatGPT,v3_structured,V3
+R717c3883,6203,Mistral,v3_structured,V3
+Rcdaac789,6203,ChatGPT,f_000_base,000
+Rcd174883,6203,Mistral,f_000_base,000
+R708602f4,6203,ChatGPT,f_A0C_empathetic_constraints,A0C
+R43be4f5e,6203,Mistral,f_A0C_empathetic_constraints,A0C
+Rd2873c65,6203,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+R6af10399,6203,Mistral,f_ABC_empathetic_format_constraints,ABC
+R48e2ca76,5470,ChatGPT,v1_terse,V1
+R25cf5f3c,5470,Mistral,v1_terse,V1
+R3cf9656a,5470,ChatGPT,v2_empathetic,V2 / A00
+R0d352c2c,5470,Mistral,v2_empathetic,V2 / A00
+Rbb1a9866,5470,ChatGPT,v3_structured,V3
+R53ff2194,5470,Mistral,v3_structured,V3
+R75c2092a,5470,ChatGPT,f_000_base,000
+Rb5c9b8bb,5470,Mistral,f_000_base,000
+R6ae20108,5470,ChatGPT,f_A0C_empathetic_constraints,A0C
+Rb5ad597e,5470,Mistral,f_A0C_empathetic_constraints,A0C
+R6f2395a7,5470,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+Rc3ab5870,5470,Mistral,f_ABC_empathetic_format_constraints,ABC
+R5dfe4c8b,1515,ChatGPT,v1_terse,V1
+R2b2e6eb2,1515,Mistral,v1_terse,V1
+Rebcd14aa,1515,ChatGPT,v2_empathetic,V2 / A00
+R61c847ee,1515,Mistral,v2_empathetic,V2 / A00
+R253d7ce2,1515,ChatGPT,v3_structured,V3
+Rae0ab1af,1515,Mistral,v3_structured,V3
+Rbe5c40f8,1515,ChatGPT,f_000_base,000
+R9953b6e8,1515,Mistral,f_000_base,000
+R321f08e6,1515,ChatGPT,f_A0C_empathetic_constraints,A0C
+R181a128a,1515,Mistral,f_A0C_empathetic_constraints,A0C
+R2753a072,1515,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+Rbed5bea6,1515,Mistral,f_ABC_empathetic_format_constraints,ABC
+Rb622473a,5674,ChatGPT,v1_terse,V1
+R5f17641c,5674,Mistral,v1_terse,V1
+Ra3ea9b01,5674,ChatGPT,v2_empathetic,V2 / A00
+Rf6e589ad,5674,Mistral,v2_empathetic,V2 / A00
+R785a2277,5674,ChatGPT,v3_structured,V3
+Rcacb6f0b,5674,Mistral,v3_structured,V3
+R8b0476fb,5674,ChatGPT,f_000_base,000
+R4c4c6321,5674,Mistral,f_000_base,000
+Ra74e8ac5,5674,ChatGPT,f_A0C_empathetic_constraints,A0C
+Rbf770407,5674,Mistral,f_A0C_empathetic_constraints,A0C
+Rf35532d4,5674,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+R4d94f07b,5674,Mistral,f_ABC_empathetic_format_constraints,ABC
+R68746da0,6491,ChatGPT,v1_terse,V1
+R0ada1f7d,6491,Mistral,v1_terse,V1
+Rc7d7f074,6491,ChatGPT,v2_empathetic,V2 / A00
+R3e2b2d8e,6491,Mistral,v2_empathetic,V2 / A00
+Rf01ab778,6491,ChatGPT,v3_structured,V3
+Rb8699c60,6491,Mistral,v3_structured,V3
+Rf633bfef,6491,ChatGPT,f_000_base,000
+Rbc5ee3c9,6491,Mistral,f_000_base,000
+R323cf8b0,6491,ChatGPT,f_A0C_empathetic_constraints,A0C
+R172bb791,6491,Mistral,f_A0C_empathetic_constraints,A0C
+R0446d043,6491,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+Rc04d1adf,6491,Mistral,f_ABC_empathetic_format_constraints,ABC
+Rfe7b4357,3511,ChatGPT,v1_terse,V1
+R961e0c29,3511,Mistral,v1_terse,V1
+R56cc1d85,3511,ChatGPT,v2_empathetic,V2 / A00
+Re7031b2b,3511,Mistral,v2_empathetic,V2 / A00
+R8beb71a4,3511,ChatGPT,v3_structured,V3
+R7c2c596e,3511,Mistral,v3_structured,V3
+Rabde480b,3511,ChatGPT,f_000_base,000
+R8fc25fb9,3511,Mistral,f_000_base,000
+Rb47317cb,3511,ChatGPT,f_A0C_empathetic_constraints,A0C
+R15c8bf2b,3511,Mistral,f_A0C_empathetic_constraints,A0C
+Rdf392b12,3511,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+R710afe91,3511,Mistral,f_ABC_empathetic_format_constraints,ABC
+R3030b6a4,177,ChatGPT,v1_terse,V1
+R705f192d,177,Mistral,v1_terse,V1
+R51d432ed,177,ChatGPT,v2_empathetic,V2 / A00
+Rd4f939e7,177,Mistral,v2_empathetic,V2 / A00
+R3bc186bb,177,ChatGPT,v3_structured,V3
+R075ecafa,177,Mistral,v3_structured,V3
+R91a99971,177,ChatGPT,f_000_base,000
+Re8f5d35c,177,Mistral,f_000_base,000
+Rd37b05ad,177,ChatGPT,f_A0C_empathetic_constraints,A0C
+Ra6db9541,177,Mistral,f_A0C_empathetic_constraints,A0C
+R3d0ff4fd,177,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+R8ebbe172,177,Mistral,f_ABC_empathetic_format_constraints,ABC
+R51cf73a7,1656,ChatGPT,v1_terse,V1
+Rc43db317,1656,Mistral,v1_terse,V1
+R1abc6b0d,1656,ChatGPT,v2_empathetic,V2 / A00
+R0c386857,1656,Mistral,v2_empathetic,V2 / A00
+Raf8995c3,1656,ChatGPT,v3_structured,V3
+Rd768b6a3,1656,Mistral,v3_structured,V3
+R260fb973,1656,ChatGPT,f_000_base,000
+R828845b7,1656,Mistral,f_000_base,000
+Rbfc0a17e,1656,ChatGPT,f_A0C_empathetic_constraints,A0C
+R39017092,1656,Mistral,f_A0C_empathetic_constraints,A0C
+R5d3358d4,1656,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+R7385c19a,1656,Mistral,f_ABC_empathetic_format_constraints,ABC
+R1be85025,4338,ChatGPT,v1_terse,V1
+R1b6c42d9,4338,Mistral,v1_terse,V1
+R70863e8f,4338,ChatGPT,v2_empathetic,V2 / A00
+R00921c8d,4338,Mistral,v2_empathetic,V2 / A00
+R1c2b093c,4338,ChatGPT,v3_structured,V3
+R6454b333,4338,Mistral,v3_structured,V3
+R2fc40f89,4338,ChatGPT,f_000_base,000
+Re624fbb9,4338,Mistral,f_000_base,000
+Rf6fb6f63,4338,ChatGPT,f_A0C_empathetic_constraints,A0C
+Rfbd9b8c3,4338,Mistral,f_A0C_empathetic_constraints,A0C
+R4957949f,4338,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+Rfc09c5b1,4338,Mistral,f_ABC_empathetic_format_constraints,ABC
+R40a52d29,9595,ChatGPT,v1_terse,V1
+R1166d051,9595,Mistral,v1_terse,V1
+R840064d4,9595,ChatGPT,v2_empathetic,V2 / A00
+R505b33f8,9595,Mistral,v2_empathetic,V2 / A00
+R904cfb52,9595,ChatGPT,v3_structured,V3
+R36b1238d,9595,Mistral,v3_structured,V3
+Re9f18af0,9595,ChatGPT,f_000_base,000
+R9e671018,9595,Mistral,f_000_base,000
+Re08e02ba,9595,ChatGPT,f_A0C_empathetic_constraints,A0C
+R30f62fa9,9595,Mistral,f_A0C_empathetic_constraints,A0C
+R8d60c249,9595,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+Re975356e,9595,Mistral,f_ABC_empathetic_format_constraints,ABC
+R0d74e923,6214,ChatGPT,v1_terse,V1
+R80a43c53,6214,Mistral,v1_terse,V1
+Rb1880c25,6214,ChatGPT,v2_empathetic,V2 / A00
+R398d49db,6214,Mistral,v2_empathetic,V2 / A00
+R5052c393,6214,ChatGPT,v3_structured,V3
+Re5af0fdd,6214,Mistral,v3_structured,V3
+R47d86b20,6214,ChatGPT,f_000_base,000
+Rcc95dd8c,6214,Mistral,f_000_base,000
+R48806652,6214,ChatGPT,f_A0C_empathetic_constraints,A0C
+Rd913a1c9,6214,Mistral,f_A0C_empathetic_constraints,A0C
+R4d0e5388,6214,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+R1893bd2e,6214,Mistral,f_ABC_empathetic_format_constraints,ABC
+Re419ec1a,832,ChatGPT,v1_terse,V1
+R3d3cfbca,832,Mistral,v1_terse,V1
+R07bf2e5b,832,ChatGPT,v2_empathetic,V2 / A00
+R37e25426,832,Mistral,v2_empathetic,V2 / A00
+R7c38b537,832,ChatGPT,v3_structured,V3
+R29cd3183,832,Mistral,v3_structured,V3
+R2803e912,832,ChatGPT,f_000_base,000
+R1583fe40,832,Mistral,f_000_base,000
+R98802aae,832,ChatGPT,f_A0C_empathetic_constraints,A0C
+Rf93257ed,832,Mistral,f_A0C_empathetic_constraints,A0C
+R9e4f6287,832,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+R8664138b,832,Mistral,f_ABC_empathetic_format_constraints,ABC
+Rd773fe9f,5140,ChatGPT,v1_terse,V1
+R287d0032,5140,Mistral,v1_terse,V1
+Rd9fcbd65,5140,ChatGPT,v2_empathetic,V2 / A00
+R27996bb1,5140,Mistral,v2_empathetic,V2 / A00
+R27911fc6,5140,ChatGPT,v3_structured,V3
+Re73a5f62,5140,Mistral,v3_structured,V3
+Rc9344bfa,5140,ChatGPT,f_000_base,000
+R97556cb7,5140,Mistral,f_000_base,000
+Rc63f7f56,5140,ChatGPT,f_A0C_empathetic_constraints,A0C
+R685fb822,5140,Mistral,f_A0C_empathetic_constraints,A0C
+Rf2ab8791,5140,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+R5fe30e89,5140,Mistral,f_ABC_empathetic_format_constraints,ABC
+R6ccdb823,2564,ChatGPT,v1_terse,V1
+R155f11f6,2564,Mistral,v1_terse,V1
+R72fad61f,2564,ChatGPT,v2_empathetic,V2 / A00
+Rf4e6d2de,2564,Mistral,v2_empathetic,V2 / A00
+R4d8a2f18,2564,ChatGPT,v3_structured,V3
+R9654db65,2564,Mistral,v3_structured,V3
+R645fc325,2564,ChatGPT,f_000_base,000
+R203498ad,2564,Mistral,f_000_base,000
+R7faa7731,2564,ChatGPT,f_A0C_empathetic_constraints,A0C
+Rac6c8ee9,2564,Mistral,f_A0C_empathetic_constraints,A0C
+R5325a386,2564,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+R02e9c7f7,2564,Mistral,f_ABC_empathetic_format_constraints,ABC
+R2d1d8828,9145,ChatGPT,v1_terse,V1
+R3cd52d1e,9145,Mistral,v1_terse,V1
+R364799e0,9145,ChatGPT,v2_empathetic,V2 / A00
+Rc6ccda56,9145,Mistral,v2_empathetic,V2 / A00
+Rc54766b5,9145,ChatGPT,v3_structured,V3
+Ra85cb5d5,9145,Mistral,v3_structured,V3
+Rf1279a6c,9145,ChatGPT,f_000_base,000
+Rc2bb4e54,9145,Mistral,f_000_base,000
+Re9ff6915,9145,ChatGPT,f_A0C_empathetic_constraints,A0C
+R6eb401ae,9145,Mistral,f_A0C_empathetic_constraints,A0C
+R4d4f36ad,9145,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+Rf2487512,9145,Mistral,f_ABC_empathetic_format_constraints,ABC
+Rf5f570da,7967,ChatGPT,v1_terse,V1
+R88f12b5d,7967,Mistral,v1_terse,V1
+Re100964c,7967,ChatGPT,v2_empathetic,V2 / A00
+R9d4148de,7967,Mistral,v2_empathetic,V2 / A00
+R48d17925,7967,ChatGPT,v3_structured,V3
+Re76b77da,7967,Mistral,v3_structured,V3
+R01e0a9cf,7967,ChatGPT,f_000_base,000
+R70e0bf66,7967,Mistral,f_000_base,000
+R326779f4,7967,ChatGPT,f_A0C_empathetic_constraints,A0C
+R8de96cbc,7967,Mistral,f_A0C_empathetic_constraints,A0C
+Reb056c7c,7967,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+R6d137687,7967,Mistral,f_ABC_empathetic_format_constraints,ABC
+Rb3565079,5267,ChatGPT,v1_terse,V1
+R956be17f,5267,Mistral,v1_terse,V1
+R76cbf754,5267,ChatGPT,v2_empathetic,V2 / A00
+Rd4f8359e,5267,Mistral,v2_empathetic,V2 / A00
+R8615746e,5267,ChatGPT,v3_structured,V3
+Rae5df4f0,5267,Mistral,v3_structured,V3
+R7f68e73d,5267,ChatGPT,f_000_base,000
+R929d7dab,5267,Mistral,f_000_base,000
+R255acb12,5267,ChatGPT,f_A0C_empathetic_constraints,A0C
+Ra2def604,5267,Mistral,f_A0C_empathetic_constraints,A0C
+Rfed285cc,5267,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+R1267ef05,5267,Mistral,f_ABC_empathetic_format_constraints,ABC
+R9962bdcc,6557,ChatGPT,v1_terse,V1
+Re5c1387d,6557,Mistral,v1_terse,V1
+Rdda42c5d,6557,ChatGPT,v2_empathetic,V2 / A00
+R43354a7a,6557,Mistral,v2_empathetic,V2 / A00
+Rb1b6c9b8,6557,ChatGPT,v3_structured,V3
+Re0629154,6557,Mistral,v3_structured,V3
+R9cbb363e,6557,ChatGPT,f_000_base,000
+Redd54ff4,6557,Mistral,f_000_base,000
+R3b7437aa,6557,ChatGPT,f_A0C_empathetic_constraints,A0C
+R988bb68b,6557,Mistral,f_A0C_empathetic_constraints,A0C
+R6106a278,6557,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+Ref75b75d,6557,Mistral,f_ABC_empathetic_format_constraints,ABC
+R41fea3cb,1466,ChatGPT,v1_terse,V1
+R9304c1f6,1466,Mistral,v1_terse,V1
+R4ccbd203,1466,ChatGPT,v2_empathetic,V2 / A00
+Rba29e870,1466,Mistral,v2_empathetic,V2 / A00
+R7ea78e0e,1466,ChatGPT,v3_structured,V3
+R01d74482,1466,Mistral,v3_structured,V3
+R916eee5f,1466,ChatGPT,f_000_base,000
+R6a4b5a53,1466,Mistral,f_000_base,000
+Ra2eecc01,1466,ChatGPT,f_A0C_empathetic_constraints,A0C
+Rb461c1b4,1466,Mistral,f_A0C_empathetic_constraints,A0C
+R85ca5700,1466,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+R1cd696d4,1466,Mistral,f_ABC_empathetic_format_constraints,ABC
+R9c997595,3371,ChatGPT,v1_terse,V1
+R8f989a95,3371,Mistral,v1_terse,V1
+Rc83d3f01,3371,ChatGPT,v2_empathetic,V2 / A00
+R482207c2,3371,Mistral,v2_empathetic,V2 / A00
+Rcf20d4cb,3371,ChatGPT,v3_structured,V3
+R4447f2d8,3371,Mistral,v3_structured,V3
+Rd54edd5a,3371,ChatGPT,f_000_base,000
+Rff0d0beb,3371,Mistral,f_000_base,000
+Rf6801a57,3371,ChatGPT,f_A0C_empathetic_constraints,A0C
+Rbf053e83,3371,Mistral,f_A0C_empathetic_constraints,A0C
+R88301966,3371,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+Rde7395c9,3371,Mistral,f_ABC_empathetic_format_constraints,ABC
+R39c3ad86,14,ChatGPT,v1_terse,V1
+R8167510b,14,Mistral,v1_terse,V1
+Rb0dd171d,14,ChatGPT,v2_empathetic,V2 / A00
+Rc0547b33,14,Mistral,v2_empathetic,V2 / A00
+R330bc794,14,ChatGPT,v3_structured,V3
+R3c397753,14,Mistral,v3_structured,V3
+R1fcf628a,14,ChatGPT,f_000_base,000
+R10bc449e,14,Mistral,f_000_base,000
+Rb53bca81,14,ChatGPT,f_A0C_empathetic_constraints,A0C
+R2c6e6b10,14,Mistral,f_A0C_empathetic_constraints,A0C
+R7537d578,14,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+Rb2895b54,14,Mistral,f_ABC_empathetic_format_constraints,ABC
+Re18812e5,3932,ChatGPT,v1_terse,V1
+R6c59cea8,3932,Mistral,v1_terse,V1
+R4e7be7ba,3932,ChatGPT,v2_empathetic,V2 / A00
+Rf14a95fd,3932,Mistral,v2_empathetic,V2 / A00
+R4f40ac18,3932,ChatGPT,v3_structured,V3
+R5d87f81f,3932,Mistral,v3_structured,V3
+Ref3480f1,3932,ChatGPT,f_000_base,000
+Rc5da5e17,3932,Mistral,f_000_base,000
+R64ca32bb,3932,ChatGPT,f_A0C_empathetic_constraints,A0C
+R2be109ce,3932,Mistral,f_A0C_empathetic_constraints,A0C
+R0e18854c,3932,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+R18de7271,3932,Mistral,f_ABC_empathetic_format_constraints,ABC
+R0e4209b5,7095,ChatGPT,v1_terse,V1
+R4184d4e1,7095,Mistral,v1_terse,V1
+Rc63c18c1,7095,ChatGPT,v2_empathetic,V2 / A00
+R90ef9fe3,7095,Mistral,v2_empathetic,V2 / A00
+R9778cfd7,7095,ChatGPT,v3_structured,V3
+R08e3759d,7095,Mistral,v3_structured,V3
+R9ae78e63,7095,ChatGPT,f_000_base,000
+R1688bf3d,7095,Mistral,f_000_base,000
+Rde94225f,7095,ChatGPT,f_A0C_empathetic_constraints,A0C
+Rfd38f953,7095,Mistral,f_A0C_empathetic_constraints,A0C
+R0db5861a,7095,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+R1ac1e5d0,7095,Mistral,f_ABC_empathetic_format_constraints,ABC
+R0c74e0c2,2163,ChatGPT,v1_terse,V1
+R93c61ab0,2163,Mistral,v1_terse,V1
+R0b5a052a,2163,ChatGPT,v2_empathetic,V2 / A00
+Ra7b9f753,2163,Mistral,v2_empathetic,V2 / A00
+R66a0853a,2163,ChatGPT,v3_structured,V3
+R9570791f,2163,Mistral,v3_structured,V3
+Rf7dcbd20,2163,ChatGPT,f_000_base,000
+R74fc0fdb,2163,Mistral,f_000_base,000
+R13e067b9,2163,ChatGPT,f_A0C_empathetic_constraints,A0C
+R101f0cd0,2163,Mistral,f_A0C_empathetic_constraints,A0C
+R4f0f4f43,2163,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+Rd6df8f86,2163,Mistral,f_ABC_empathetic_format_constraints,ABC
+R3bb5e844,9495,ChatGPT,v1_terse,V1
+Re77312ab,9495,Mistral,v1_terse,V1
+Raae552dc,9495,ChatGPT,v2_empathetic,V2 / A00
+R3ad4ae55,9495,Mistral,v2_empathetic,V2 / A00
+R7587b132,9495,ChatGPT,v3_structured,V3
+R1ce93bf9,9495,Mistral,v3_structured,V3
+R6342c10f,9495,ChatGPT,f_000_base,000
+R6b1ba98d,9495,Mistral,f_000_base,000
+R15ae863d,9495,ChatGPT,f_A0C_empathetic_constraints,A0C
+R73de1370,9495,Mistral,f_A0C_empathetic_constraints,A0C
+R69daa2e1,9495,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+Ra4b9b245,9495,Mistral,f_ABC_empathetic_format_constraints,ABC
+R507d6982,4451,ChatGPT,v1_terse,V1
+R90f47653,4451,Mistral,v1_terse,V1
+R9ec696f9,4451,ChatGPT,v2_empathetic,V2 / A00
+R52e55abb,4451,Mistral,v2_empathetic,V2 / A00
+R11712bb6,4451,ChatGPT,v3_structured,V3
+Ra70a42b7,4451,Mistral,v3_structured,V3
+R9a7f947b,4451,ChatGPT,f_000_base,000
+Rfc61e3b5,4451,Mistral,f_000_base,000
+R041d5fb9,4451,ChatGPT,f_A0C_empathetic_constraints,A0C
+R9d346a80,4451,Mistral,f_A0C_empathetic_constraints,A0C
+Rbc3b537e,4451,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+R446f0e6b,4451,Mistral,f_ABC_empathetic_format_constraints,ABC
+R1667c7a3,8690,ChatGPT,v1_terse,V1
+Reb54f255,8690,Mistral,v1_terse,V1
+Rb97e3f69,8690,ChatGPT,v2_empathetic,V2 / A00
+R034428a2,8690,Mistral,v2_empathetic,V2 / A00
+R556650a4,8690,ChatGPT,v3_structured,V3
+Rc304a4fe,8690,Mistral,v3_structured,V3
+R4d3c85d5,8690,ChatGPT,f_000_base,000
+R9d0a961e,8690,Mistral,f_000_base,000
+R41c03e56,8690,ChatGPT,f_A0C_empathetic_constraints,A0C
+Rd54bfd97,8690,Mistral,f_A0C_empathetic_constraints,A0C
+Rff8d4cb0,8690,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+Rdbbbbced,8690,Mistral,f_ABC_empathetic_format_constraints,ABC
+Rb4ed447d,7248,ChatGPT,v1_terse,V1
+R6d876a65,7248,Mistral,v1_terse,V1
+R57849f66,7248,ChatGPT,v2_empathetic,V2 / A00
+R2522baa1,7248,Mistral,v2_empathetic,V2 / A00
+Rdfd53a6c,7248,ChatGPT,v3_structured,V3
+R3cc2b59f,7248,Mistral,v3_structured,V3
+Raa35c1a8,7248,ChatGPT,f_000_base,000
+R778cffc4,7248,Mistral,f_000_base,000
+R71ffeb02,7248,ChatGPT,f_A0C_empathetic_constraints,A0C
+R7c10ad09,7248,Mistral,f_A0C_empathetic_constraints,A0C
+Re3ad457b,7248,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+Rbe3c66a6,7248,Mistral,f_ABC_empathetic_format_constraints,ABC
+R13986db4,3918,ChatGPT,v1_terse,V1
+Rd50de077,3918,Mistral,v1_terse,V1
+Rc835f604,3918,ChatGPT,v2_empathetic,V2 / A00
+R4d4806ef,3918,Mistral,v2_empathetic,V2 / A00
+R2ed932ef,3918,ChatGPT,v3_structured,V3
+Re4b1ee54,3918,Mistral,v3_structured,V3
+R4068f44b,3918,ChatGPT,f_000_base,000
+R2921926f,3918,Mistral,f_000_base,000
+Rf6b4d260,3918,ChatGPT,f_A0C_empathetic_constraints,A0C
+R2e2a577a,3918,Mistral,f_A0C_empathetic_constraints,A0C
+R51350c75,3918,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+Rf3524ea3,3918,Mistral,f_ABC_empathetic_format_constraints,ABC
+Rd910cc5b,2729,ChatGPT,v1_terse,V1
+Rb7885d8e,2729,Mistral,v1_terse,V1
+R018d7dc2,2729,ChatGPT,v2_empathetic,V2 / A00
+R2f9be510,2729,Mistral,v2_empathetic,V2 / A00
+R81db7786,2729,ChatGPT,v3_structured,V3
+Ra913e2d0,2729,Mistral,v3_structured,V3
+Ra88d2b82,2729,ChatGPT,f_000_base,000
+Rac8705bd,2729,Mistral,f_000_base,000
+Ra7ce3b32,2729,ChatGPT,f_A0C_empathetic_constraints,A0C
+R68334334,2729,Mistral,f_A0C_empathetic_constraints,A0C
+R5a7c0ea1,2729,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+Rb3d4d3b3,2729,Mistral,f_ABC_empathetic_format_constraints,ABC
+R39a5276f,9255,ChatGPT,v1_terse,V1
+R2bb20b34,9255,Mistral,v1_terse,V1
+Red217c77,9255,ChatGPT,v2_empathetic,V2 / A00
+R2ff5d8f3,9255,Mistral,v2_empathetic,V2 / A00
+Rc275cd18,9255,ChatGPT,v3_structured,V3
+R7a708a8a,9255,Mistral,v3_structured,V3
+Rf2b5df42,9255,ChatGPT,f_000_base,000
+R1f9592cf,9255,Mistral,f_000_base,000
+R9de7a963,9255,ChatGPT,f_A0C_empathetic_constraints,A0C
+R829f0d38,9255,Mistral,f_A0C_empathetic_constraints,A0C
+R4b8e21e6,9255,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+Rff1510f4,9255,Mistral,f_ABC_empathetic_format_constraints,ABC
+R5cf02d5c,8224,ChatGPT,v1_terse,V1
+R7b29de02,8224,Mistral,v1_terse,V1
+R252fb8e2,8224,ChatGPT,v2_empathetic,V2 / A00
+Rbd4838c6,8224,Mistral,v2_empathetic,V2 / A00
+Rf2d4bc45,8224,ChatGPT,v3_structured,V3
+R5c8d6d6d,8224,Mistral,v3_structured,V3
+R320834ea,8224,ChatGPT,f_000_base,000
+R2115d9ec,8224,Mistral,f_000_base,000
+R15dd0310,8224,ChatGPT,f_A0C_empathetic_constraints,A0C
+R5774f884,8224,Mistral,f_A0C_empathetic_constraints,A0C
+R06ae0439,8224,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+R0499c690,8224,Mistral,f_ABC_empathetic_format_constraints,ABC
+Rfa084688,3813,ChatGPT,v1_terse,V1
+R438b47de,3813,Mistral,v1_terse,V1
+R207f7bd8,3813,ChatGPT,v2_empathetic,V2 / A00
+Rc6891fa9,3813,Mistral,v2_empathetic,V2 / A00
+R9e14d491,3813,ChatGPT,v3_structured,V3
+R9f111b45,3813,Mistral,v3_structured,V3
+R37c6f682,3813,ChatGPT,f_000_base,000
+Rf08bdbe1,3813,Mistral,f_000_base,000
+Rac929ddc,3813,ChatGPT,f_A0C_empathetic_constraints,A0C
+R4851a787,3813,Mistral,f_A0C_empathetic_constraints,A0C
+Rb9c52221,3813,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+Rd95287b3,3813,Mistral,f_ABC_empathetic_format_constraints,ABC
+Re02f57a5,377,ChatGPT,v1_terse,V1
+R7ef37714,377,Mistral,v1_terse,V1
+Rf636708c,377,ChatGPT,v2_empathetic,V2 / A00
+Rfa6913db,377,Mistral,v2_empathetic,V2 / A00
+R5c8fadc5,377,ChatGPT,v3_structured,V3
+Rc7e41b35,377,Mistral,v3_structured,V3
+R5763bf46,377,ChatGPT,f_000_base,000
+R7ab46c27,377,Mistral,f_000_base,000
+R3f016b89,377,ChatGPT,f_A0C_empathetic_constraints,A0C
+Rb6e926f6,377,Mistral,f_A0C_empathetic_constraints,A0C
+R37f02cc6,377,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+R9cebd75f,377,Mistral,f_ABC_empathetic_format_constraints,ABC
+Rd7ea3d82,1276,ChatGPT,v1_terse,V1
+R67c76873,1276,Mistral,v1_terse,V1
+R8f82923d,1276,ChatGPT,v2_empathetic,V2 / A00
+Ra77ff5c0,1276,Mistral,v2_empathetic,V2 / A00
+R1ebc63aa,1276,ChatGPT,v3_structured,V3
+R91079f6c,1276,Mistral,v3_structured,V3
+R0905b0bd,1276,ChatGPT,f_000_base,000
+R5c87fb5f,1276,Mistral,f_000_base,000
+Re1174bec,1276,ChatGPT,f_A0C_empathetic_constraints,A0C
+R74d4ba02,1276,Mistral,f_A0C_empathetic_constraints,A0C
+R7e5cfb7d,1276,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+R8a81664a,1276,Mistral,f_ABC_empathetic_format_constraints,ABC
+R889ab239,6544,ChatGPT,v1_terse,V1
+Rc48a038f,6544,Mistral,v1_terse,V1
+R36ed32c5,6544,ChatGPT,v2_empathetic,V2 / A00
+Ra17abf66,6544,Mistral,v2_empathetic,V2 / A00
+Rdf2e30e5,6544,ChatGPT,v3_structured,V3
+R5e436118,6544,Mistral,v3_structured,V3
+R393a8d91,6544,ChatGPT,f_000_base,000
+Rd4b6d4b6,6544,Mistral,f_000_base,000
+R03697545,6544,ChatGPT,f_A0C_empathetic_constraints,A0C
+Rf3cda7bc,6544,Mistral,f_A0C_empathetic_constraints,A0C
+R1d711121,6544,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+R7c373bbd,6544,Mistral,f_ABC_empathetic_format_constraints,ABC
+Raa63baac,5764,ChatGPT,v1_terse,V1
+R3bd4c209,5764,Mistral,v1_terse,V1
+R3c31f675,5764,ChatGPT,v2_empathetic,V2 / A00
+Rb55b2b96,5764,Mistral,v2_empathetic,V2 / A00
+Rd7236e6d,5764,ChatGPT,v3_structured,V3
+R725f1af4,5764,Mistral,v3_structured,V3
+R9bf82058,5764,ChatGPT,f_000_base,000
+R1a6a6752,5764,Mistral,f_000_base,000
+R451cea28,5764,ChatGPT,f_A0C_empathetic_constraints,A0C
+Ra7f9d63a,5764,Mistral,f_A0C_empathetic_constraints,A0C
+Ra59733f0,5764,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+R35b4a665,5764,Mistral,f_ABC_empathetic_format_constraints,ABC
+R6cce0e7a,4526,ChatGPT,v1_terse,V1
+Ra70c62b0,4526,Mistral,v1_terse,V1
+Rc5654e5b,4526,ChatGPT,v2_empathetic,V2 / A00
+R8b2ed4ae,4526,Mistral,v2_empathetic,V2 / A00
+Rcc3af518,4526,ChatGPT,v3_structured,V3
+R33a59904,4526,Mistral,v3_structured,V3
+Rc295b8b0,4526,ChatGPT,f_000_base,000
+R79e5a5c9,4526,Mistral,f_000_base,000
+R46a99d62,4526,ChatGPT,f_A0C_empathetic_constraints,A0C
+R63c53d2d,4526,Mistral,f_A0C_empathetic_constraints,A0C
+R3771f844,4526,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+Rada72ac1,4526,Mistral,f_ABC_empathetic_format_constraints,ABC
+Reb947ce3,997,ChatGPT,v1_terse,V1
+R5334ddf1,997,Mistral,v1_terse,V1
+R21eca929,997,ChatGPT,v2_empathetic,V2 / A00
+Rb3f295e8,997,Mistral,v2_empathetic,V2 / A00
+Rc8c3a332,997,ChatGPT,v3_structured,V3
+R91d0abe4,997,Mistral,v3_structured,V3
+R02701888,997,ChatGPT,f_000_base,000
+Raebc4f22,997,Mistral,f_000_base,000
+Rab39c7d2,997,ChatGPT,f_A0C_empathetic_constraints,A0C
+R60ff598e,997,Mistral,f_A0C_empathetic_constraints,A0C
+R3bcfcb8f,997,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+R1421cc28,997,Mistral,f_ABC_empathetic_format_constraints,ABC
+Rffb24bf3,9908,ChatGPT,v1_terse,V1
+R9ca3fecb,9908,Mistral,v1_terse,V1
+Rd8eae53b,9908,ChatGPT,v2_empathetic,V2 / A00
+Re79c3aec,9908,Mistral,v2_empathetic,V2 / A00
+R87ecb507,9908,ChatGPT,v3_structured,V3
+Rc0332a59,9908,Mistral,v3_structured,V3
+R128750ad,9908,ChatGPT,f_000_base,000
+R7b7ba657,9908,Mistral,f_000_base,000
+Ref40d93c,9908,ChatGPT,f_A0C_empathetic_constraints,A0C
+Rc9f7db7c,9908,Mistral,f_A0C_empathetic_constraints,A0C
+Ref0f42a3,9908,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+R6a4f4f17,9908,Mistral,f_ABC_empathetic_format_constraints,ABC
+Rb1b24e19,6749,ChatGPT,v1_terse,V1
+R0eb19ed8,6749,Mistral,v1_terse,V1
+R4bec411e,6749,ChatGPT,v2_empathetic,V2 / A00
+R7aa5f6f1,6749,Mistral,v2_empathetic,V2 / A00
+R7a212390,6749,ChatGPT,v3_structured,V3
+Rc3c7d0d1,6749,Mistral,v3_structured,V3
+R6e621f43,6749,ChatGPT,f_000_base,000
+Rbced3c99,6749,Mistral,f_000_base,000
+R61a376a9,6749,ChatGPT,f_A0C_empathetic_constraints,A0C
+R5c91410a,6749,Mistral,f_A0C_empathetic_constraints,A0C
+R1b5f1dbb,6749,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+R5d4af4f1,6749,Mistral,f_ABC_empathetic_format_constraints,ABC
+Rc7dc3a15,4839,ChatGPT,v1_terse,V1
+R3031fa0b,4839,Mistral,v1_terse,V1
+R88cf8049,4839,ChatGPT,v2_empathetic,V2 / A00
+R79a0e730,4839,Mistral,v2_empathetic,V2 / A00
+R70092111,4839,ChatGPT,v3_structured,V3
+Rc30d4f58,4839,Mistral,v3_structured,V3
+R1d92ed96,4839,ChatGPT,f_000_base,000
+R6dff27db,4839,Mistral,f_000_base,000
+R83fe91ef,4839,ChatGPT,f_A0C_empathetic_constraints,A0C
+R671d073f,4839,Mistral,f_A0C_empathetic_constraints,A0C
+R401859e0,4839,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+R5280247a,4839,Mistral,f_ABC_empathetic_format_constraints,ABC
+Rf7fcf68e,1817,ChatGPT,v1_terse,V1
+R915d815f,1817,Mistral,v1_terse,V1
+R0546f429,1817,ChatGPT,v2_empathetic,V2 / A00
+Rd6bbecff,1817,Mistral,v2_empathetic,V2 / A00
+R2abf3bad,1817,ChatGPT,v3_structured,V3
+R41282d44,1817,Mistral,v3_structured,V3
+Rf0d72829,1817,ChatGPT,f_000_base,000
+R351b7069,1817,Mistral,f_000_base,000
+R87325ff5,1817,ChatGPT,f_A0C_empathetic_constraints,A0C
+Rf386d101,1817,Mistral,f_A0C_empathetic_constraints,A0C
+R02c661d0,1817,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+Rf849ecc1,1817,Mistral,f_ABC_empathetic_format_constraints,ABC
+Ra6bd2b3f,5010,ChatGPT,v1_terse,V1
+R82aff881,5010,Mistral,v1_terse,V1
+R4d1da8fc,5010,ChatGPT,v2_empathetic,V2 / A00
+R9dbea66b,5010,Mistral,v2_empathetic,V2 / A00
+Rcee15562,5010,ChatGPT,v3_structured,V3
+Rdad9df8a,5010,Mistral,v3_structured,V3
+R2954b398,5010,ChatGPT,f_000_base,000
+R6b617c6e,5010,Mistral,f_000_base,000
+R069835c7,5010,ChatGPT,f_A0C_empathetic_constraints,A0C
+R8469d4bd,5010,Mistral,f_A0C_empathetic_constraints,A0C
+Rb714da32,5010,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+Rea2d7e7b,5010,Mistral,f_ABC_empathetic_format_constraints,ABC
+Rc73cfe11,2637,ChatGPT,v1_terse,V1
+Rf1c15ee6,2637,Mistral,v1_terse,V1
+Rdc3ee597,2637,ChatGPT,v2_empathetic,V2 / A00
+R3c07fc38,2637,Mistral,v2_empathetic,V2 / A00
+Rd6d04b27,2637,ChatGPT,v3_structured,V3
+R45dc1a31,2637,Mistral,v3_structured,V3
+R75261706,2637,ChatGPT,f_000_base,000
+R9c3cd7d0,2637,Mistral,f_000_base,000
+Rd489128d,2637,ChatGPT,f_A0C_empathetic_constraints,A0C
+R15c24936,2637,Mistral,f_A0C_empathetic_constraints,A0C
+R82c9067a,2637,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+R2be621a7,2637,Mistral,f_ABC_empathetic_format_constraints,ABC
+R7dc0aba6,565,ChatGPT,v1_terse,V1
+R8599c77c,565,Mistral,v1_terse,V1
+R3927a75a,565,ChatGPT,v2_empathetic,V2 / A00
+Re116eec3,565,Mistral,v2_empathetic,V2 / A00
+R5fd8202b,565,ChatGPT,v3_structured,V3
+Re11def55,565,Mistral,v3_structured,V3
+Rd3449b30,565,ChatGPT,f_000_base,000
+R76d8dc24,565,Mistral,f_000_base,000
+Rcfcb7271,565,ChatGPT,f_A0C_empathetic_constraints,A0C
+R363ae162,565,Mistral,f_A0C_empathetic_constraints,A0C
+Rcba3cde3,565,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+R739f68f9,565,Mistral,f_ABC_empathetic_format_constraints,ABC
+R31cf8c15,9222,ChatGPT,v1_terse,V1
+R696a9c4a,9222,Mistral,v1_terse,V1
+Rd4ab1a81,9222,ChatGPT,v2_empathetic,V2 / A00
+R1d30dea5,9222,Mistral,v2_empathetic,V2 / A00
+R027d8e34,9222,ChatGPT,v3_structured,V3
+Rf5dc7dba,9222,Mistral,v3_structured,V3
+R3cef9a21,9222,ChatGPT,f_000_base,000
+R6bc04725,9222,Mistral,f_000_base,000
+Reffc06d2,9222,ChatGPT,f_A0C_empathetic_constraints,A0C
+Rdf0dc70b,9222,Mistral,f_A0C_empathetic_constraints,A0C
+Rece5abff,9222,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+Rfb8e0ca0,9222,Mistral,f_ABC_empathetic_format_constraints,ABC
+R0ceb9b45,6106,ChatGPT,v1_terse,V1
+R4c15aeeb,6106,Mistral,v1_terse,V1
+R05bbe7c6,6106,ChatGPT,v2_empathetic,V2 / A00
+R5b0fb12c,6106,Mistral,v2_empathetic,V2 / A00
+R3bfb6ca1,6106,ChatGPT,v3_structured,V3
+Rf9a73bcd,6106,Mistral,v3_structured,V3
+Rfdeeda1f,6106,ChatGPT,f_000_base,000
+R23568b80,6106,Mistral,f_000_base,000
+R886c9622,6106,ChatGPT,f_A0C_empathetic_constraints,A0C
+R1403abd8,6106,Mistral,f_A0C_empathetic_constraints,A0C
+R7530500d,6106,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+R59f9d966,6106,Mistral,f_ABC_empathetic_format_constraints,ABC
+R4a753453,4774,ChatGPT,v1_terse,V1
+R4f44ead9,4774,Mistral,v1_terse,V1
+R9ebfcae8,4774,ChatGPT,v2_empathetic,V2 / A00
+R37f6a89c,4774,Mistral,v2_empathetic,V2 / A00
+R826f62b3,4774,ChatGPT,v3_structured,V3
+R0128fd5a,4774,Mistral,v3_structured,V3
+R0375b93f,4774,ChatGPT,f_000_base,000
+R84cb41cc,4774,Mistral,f_000_base,000
+R80d8fda2,4774,ChatGPT,f_A0C_empathetic_constraints,A0C
+R48219e68,4774,Mistral,f_A0C_empathetic_constraints,A0C
+R1d914af3,4774,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+R4fd3ad04,4774,Mistral,f_ABC_empathetic_format_constraints,ABC
+R5ca33327,8302,ChatGPT,v1_terse,V1
+Ra4b42958,8302,Mistral,v1_terse,V1
+R61143562,8302,ChatGPT,v2_empathetic,V2 / A00
+R566bf9f6,8302,Mistral,v2_empathetic,V2 / A00
+R865a4afb,8302,ChatGPT,v3_structured,V3
+Rf1072d40,8302,Mistral,v3_structured,V3
+R6a95c165,8302,ChatGPT,f_000_base,000
+Re43fab26,8302,Mistral,f_000_base,000
+R03727bbe,8302,ChatGPT,f_A0C_empathetic_constraints,A0C
+Rc48160db,8302,Mistral,f_A0C_empathetic_constraints,A0C
+R2c9fc428,8302,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+Ra643af80,8302,Mistral,f_ABC_empathetic_format_constraints,ABC
+R75596e33,1526,ChatGPT,v1_terse,V1
+Rda95e386,1526,Mistral,v1_terse,V1
+Re7b259c8,1526,ChatGPT,v2_empathetic,V2 / A00
+R5b771433,1526,Mistral,v2_empathetic,V2 / A00
+Rabdbfda1,1526,ChatGPT,v3_structured,V3
+R469ec646,1526,Mistral,v3_structured,V3
+Re4d1e958,1526,ChatGPT,f_000_base,000
+R5570301f,1526,Mistral,f_000_base,000
+Rc404a3b0,1526,ChatGPT,f_A0C_empathetic_constraints,A0C
+Rf76cb5fb,1526,Mistral,f_A0C_empathetic_constraints,A0C
+R422dd9f2,1526,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+R1260716f,1526,Mistral,f_ABC_empathetic_format_constraints,ABC
+Rfcf290a1,3925,ChatGPT,v1_terse,V1
+R7052fd29,3925,Mistral,v1_terse,V1
+Rf2a8a433,3925,ChatGPT,v2_empathetic,V2 / A00
+R99ec9e47,3925,Mistral,v2_empathetic,V2 / A00
+Rf870b137,3925,ChatGPT,v3_structured,V3
+Rfaff0ed1,3925,Mistral,v3_structured,V3
+R003bc09d,3925,ChatGPT,f_000_base,000
+Re8173b17,3925,Mistral,f_000_base,000
+R739bcc61,3925,ChatGPT,f_A0C_empathetic_constraints,A0C
+Rd81f49be,3925,Mistral,f_A0C_empathetic_constraints,A0C
+R22a54a63,3925,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+R96aedeae,3925,Mistral,f_ABC_empathetic_format_constraints,ABC
+R8b6b3b4c,6140,ChatGPT,v1_terse,V1
+R26da218f,6140,Mistral,v1_terse,V1
+R529bdebf,6140,ChatGPT,v2_empathetic,V2 / A00
+R39a5f28d,6140,Mistral,v2_empathetic,V2 / A00
+Rc32f74df,6140,ChatGPT,v3_structured,V3
+R737bfa27,6140,Mistral,v3_structured,V3
+Rb7d924a0,6140,ChatGPT,f_000_base,000
+R582312ba,6140,Mistral,f_000_base,000
+R85590f2b,6140,ChatGPT,f_A0C_empathetic_constraints,A0C
+Rbb7cb20a,6140,Mistral,f_A0C_empathetic_constraints,A0C
+R8900d0f0,6140,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+Rcd29e702,6140,Mistral,f_ABC_empathetic_format_constraints,ABC
+R80455b05,5435,ChatGPT,v1_terse,V1
+Rd736c4e8,5435,Mistral,v1_terse,V1
+R1f8c0399,5435,ChatGPT,v2_empathetic,V2 / A00
+R656497e5,5435,Mistral,v2_empathetic,V2 / A00
+R12e2ecc1,5435,ChatGPT,v3_structured,V3
+R3a6be51e,5435,Mistral,v3_structured,V3
+R96facb0a,5435,ChatGPT,f_000_base,000
+R0f3b1028,5435,Mistral,f_000_base,000
+R540d0a8b,5435,ChatGPT,f_A0C_empathetic_constraints,A0C
+R28fb6ac0,5435,Mistral,f_A0C_empathetic_constraints,A0C
+R26996192,5435,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+R8140dee9,5435,Mistral,f_ABC_empathetic_format_constraints,ABC
+R10a1782d,1827,ChatGPT,v1_terse,V1
+R7f776969,1827,Mistral,v1_terse,V1
+Rff72b260,1827,ChatGPT,v2_empathetic,V2 / A00
+Re5c51f16,1827,Mistral,v2_empathetic,V2 / A00
+R161b198c,1827,ChatGPT,v3_structured,V3
+R31be3dac,1827,Mistral,v3_structured,V3
+R42ce3658,1827,ChatGPT,f_000_base,000
+Rfa6c553b,1827,Mistral,f_000_base,000
+R891defaf,1827,ChatGPT,f_A0C_empathetic_constraints,A0C
+Rf4ca9ed6,1827,Mistral,f_A0C_empathetic_constraints,A0C
+R638eb366,1827,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+R77603d3b,1827,Mistral,f_ABC_empathetic_format_constraints,ABC
+Raee919e5,9985,ChatGPT,v1_terse,V1
+Rcec636f1,9985,Mistral,v1_terse,V1
+R2d555e37,9985,ChatGPT,v2_empathetic,V2 / A00
+R319e9d94,9985,Mistral,v2_empathetic,V2 / A00
+Rd695d08c,9985,ChatGPT,v3_structured,V3
+Rb8678b4e,9985,Mistral,v3_structured,V3
+R3aa8f8b7,9985,ChatGPT,f_000_base,000
+R58bd264b,9985,Mistral,f_000_base,000
+R5aab9fd7,9985,ChatGPT,f_A0C_empathetic_constraints,A0C
+R278b30e3,9985,Mistral,f_A0C_empathetic_constraints,A0C
+Reaca92af,9985,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+Rb573d0b3,9985,Mistral,f_ABC_empathetic_format_constraints,ABC
+R8f626e33,4154,ChatGPT,v1_terse,V1
+Rfc77665b,4154,Mistral,v1_terse,V1
+R52c9a5fd,4154,ChatGPT,v2_empathetic,V2 / A00
+R2c99fef8,4154,Mistral,v2_empathetic,V2 / A00
+Rc5e73b07,4154,ChatGPT,v3_structured,V3
+R273aa4d0,4154,Mistral,v3_structured,V3
+R8ab4e0d8,4154,ChatGPT,f_000_base,000
+R4489ef32,4154,Mistral,f_000_base,000
+R0ac3cf29,4154,ChatGPT,f_A0C_empathetic_constraints,A0C
+R76b4df95,4154,Mistral,f_A0C_empathetic_constraints,A0C
+R4b1979c1,4154,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+Re7e2b4af,4154,Mistral,f_ABC_empathetic_format_constraints,ABC
+R6bf7fa22,6439,ChatGPT,v1_terse,V1
+R4ab9052c,6439,Mistral,v1_terse,V1
+R9e2502d4,6439,ChatGPT,v2_empathetic,V2 / A00
+R965c41f4,6439,Mistral,v2_empathetic,V2 / A00
+Rb75764f4,6439,ChatGPT,v3_structured,V3
+R3d4d888f,6439,Mistral,v3_structured,V3
+R7d31d3e7,6439,ChatGPT,f_000_base,000
+R43d8cd45,6439,Mistral,f_000_base,000
+R9697aaa0,6439,ChatGPT,f_A0C_empathetic_constraints,A0C
+Rea611c5c,6439,Mistral,f_A0C_empathetic_constraints,A0C
+R5853c5c2,6439,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+R02af5579,6439,Mistral,f_ABC_empathetic_format_constraints,ABC
+R2ba65445,282,ChatGPT,v1_terse,V1
+Rb708e5bf,282,Mistral,v1_terse,V1
+R69ed0d5c,282,ChatGPT,v2_empathetic,V2 / A00
+R8fab5462,282,Mistral,v2_empathetic,V2 / A00
+R3c00998b,282,ChatGPT,v3_structured,V3
+R1e65f4d6,282,Mistral,v3_structured,V3
+R4a536fd4,282,ChatGPT,f_000_base,000
+R70dfe5cc,282,Mistral,f_000_base,000
+Rffef1a66,282,ChatGPT,f_A0C_empathetic_constraints,A0C
+Rbe32a71d,282,Mistral,f_A0C_empathetic_constraints,A0C
+Rb92aba17,282,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+R53bff546,282,Mistral,f_ABC_empathetic_format_constraints,ABC
+R8b585ebb,2069,ChatGPT,v1_terse,V1
+R1a859676,2069,Mistral,v1_terse,V1
+R261a9a8f,2069,ChatGPT,v2_empathetic,V2 / A00
+R4e331d47,2069,Mistral,v2_empathetic,V2 / A00
+Re53a186b,2069,ChatGPT,v3_structured,V3
+R2d09efcc,2069,Mistral,v3_structured,V3
+Rbbd6ffa8,2069,ChatGPT,f_000_base,000
+Rd3e2ffc2,2069,Mistral,f_000_base,000
+R76055fa0,2069,ChatGPT,f_A0C_empathetic_constraints,A0C
+R359f1f43,2069,Mistral,f_A0C_empathetic_constraints,A0C
+Rf09b2544,2069,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+Rdf5ec5a1,2069,Mistral,f_ABC_empathetic_format_constraints,ABC
+R5df4fa98,5472,ChatGPT,v1_terse,V1
+R3eb620ef,5472,Mistral,v1_terse,V1
+R5b41b962,5472,ChatGPT,v2_empathetic,V2 / A00
+Rbc93b4ba,5472,Mistral,v2_empathetic,V2 / A00
+R3615d9c8,5472,ChatGPT,v3_structured,V3
+R94cc3104,5472,Mistral,v3_structured,V3
+R10489591,5472,ChatGPT,f_000_base,000
+R67f8325d,5472,Mistral,f_000_base,000
+R3da2f3ff,5472,ChatGPT,f_A0C_empathetic_constraints,A0C
+R86bdfb3f,5472,Mistral,f_A0C_empathetic_constraints,A0C
+R84b72a1b,5472,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+R8aead990,5472,Mistral,f_ABC_empathetic_format_constraints,ABC
+R0d98b1f4,2595,ChatGPT,v1_terse,V1
+R6a094766,2595,Mistral,v1_terse,V1
+R63a25825,2595,ChatGPT,v2_empathetic,V2 / A00
+R0191f7d6,2595,Mistral,v2_empathetic,V2 / A00
+R43f83e20,2595,ChatGPT,v3_structured,V3
+Rf5642427,2595,Mistral,v3_structured,V3
+R6da8875a,2595,ChatGPT,f_000_base,000
+Rc7d7e6d9,2595,Mistral,f_000_base,000
+R1457ed36,2595,ChatGPT,f_A0C_empathetic_constraints,A0C
+R0ba1d96e,2595,Mistral,f_A0C_empathetic_constraints,A0C
+R3c83637b,2595,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+R14f3c7d9,2595,Mistral,f_ABC_empathetic_format_constraints,ABC
+R3fe9f4eb,9251,ChatGPT,v1_terse,V1
+Raf830875,9251,Mistral,v1_terse,V1
+R74520886,9251,ChatGPT,v2_empathetic,V2 / A00
+R2cbe46de,9251,Mistral,v2_empathetic,V2 / A00
+Rd9b2fcf2,9251,ChatGPT,v3_structured,V3
+R1c6daa4e,9251,Mistral,v3_structured,V3
+R40e7b9ba,9251,ChatGPT,f_000_base,000
+Rc582f8ca,9251,Mistral,f_000_base,000
+Rb8a29882,9251,ChatGPT,f_A0C_empathetic_constraints,A0C
+R42046ee1,9251,Mistral,f_A0C_empathetic_constraints,A0C
+R38df9e7d,9251,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+R2f664973,9251,Mistral,f_ABC_empathetic_format_constraints,ABC
+Rd19dd782,4353,ChatGPT,v1_terse,V1
+R3cd70a1d,4353,Mistral,v1_terse,V1
+R5b868c20,4353,ChatGPT,v2_empathetic,V2 / A00
+Ree2591e0,4353,Mistral,v2_empathetic,V2 / A00
+R965277cd,4353,ChatGPT,v3_structured,V3
+Rcf0b92ec,4353,Mistral,v3_structured,V3
+R69cc5456,4353,ChatGPT,f_000_base,000
+Rabf88d6a,4353,Mistral,f_000_base,000
+R4e76a807,4353,ChatGPT,f_A0C_empathetic_constraints,A0C
+R371b6c93,4353,Mistral,f_A0C_empathetic_constraints,A0C
+Rfda15a47,4353,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+R63619391,4353,Mistral,f_ABC_empathetic_format_constraints,ABC
+Rb8fcec8b,6228,ChatGPT,v1_terse,V1
+R787a2d36,6228,Mistral,v1_terse,V1
+R7ea12f6f,6228,ChatGPT,v2_empathetic,V2 / A00
+R7506fa64,6228,Mistral,v2_empathetic,V2 / A00
+Rf3fd2d61,6228,ChatGPT,v3_structured,V3
+R824e49bb,6228,Mistral,v3_structured,V3
+Rda93ab7f,6228,ChatGPT,f_000_base,000
+R3216fd35,6228,Mistral,f_000_base,000
+R43119da1,6228,ChatGPT,f_A0C_empathetic_constraints,A0C
+R4a18182e,6228,Mistral,f_A0C_empathetic_constraints,A0C
+Rd9cad1d2,6228,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+Rb8b1b51a,6228,Mistral,f_ABC_empathetic_format_constraints,ABC

@@ -239,7 +239,10 @@ Three follow-up scripts build on the feature table:
 - `analysis/transformer_sentiment.py` — RoBERTa sentiment on a subsample as a check on VADER
   (needs `torch` and `transformers`; downloads the model from Hugging Face on first run)
 
-The manuscript draft is in `paper/paper.md`, with worked examples in `paper/appendix_examples.md`.
+The manuscript draft is in `paper/paper.md` (references in `paper/references.bib`), with worked
+examples in `paper/appendix_examples.md`. `paper/human_rating_protocol.md` describes the human
+rating pass; `analysis/human_rating_build.py` writes the blinded rating sheets to
+`analysis/human_rating/` and `analysis/human_rating_analysis.py` scores the returned sheets.
 
 ## Study 2: factorial prompts
 
