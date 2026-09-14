@@ -12,7 +12,9 @@ family with a fixed seed, all 6 replies each -> 1,800 replies x 2 judges.
 Ratings are appended to analysis/tables/judge_ratings.csv as they arrive and the
 script resumes from it, like generate_llm_responses.py.
 
-Environment: OPENAI_API_KEY, MISTRAL_API_KEY; JUDGE_COMPLAINTS, JUDGE_CONCURRENCY (4).
+Environment: OPENAI_API_KEY, MISTRAL_API_KEY; JUDGE_COMPLAINTS, JUDGE_CONCURRENCY (4),
+JUDGE_VARIANTS (comma list, default the Study 1 prompts), JUDGE_OUTPUT (file name in
+analysis/tables, default judge_ratings.csv).
 """
 
 import csv
@@ -33,7 +35,10 @@ load_dotenv()
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 TAB = os.path.join(HERE, "tables")
-OUT = os.path.join(TAB, "judge_ratings.csv")
+OUT = os.path.join(TAB, os.getenv("JUDGE_OUTPUT") or "judge_ratings.csv")
+# Which prompt variants to rate (default: the three Study 1 prompts). Study 2 cells live in
+# dataset/llm_responses_study2_long.csv, which is read alongside the Study 1 file.
+JUDGE_VARIANTS = [v.strip() for v in (os.getenv("JUDGE_VARIANTS") or "v1_terse,v2_empathetic,v3_structured").split(",") if v.strip()]
 
 N_COMPLAINTS = int(os.getenv("JUDGE_COMPLAINTS") or "300")
 CONCURRENCY = int(os.getenv("JUDGE_CONCURRENCY") or "4")
@@ -140,11 +145,16 @@ def call(fn, prompt):
 
 
 def main():
-    long_path = os.path.join(ROOT, "dataset", "llm_responses_long.csv")
-    if not os.path.exists(long_path):
-        long_path += ".gz"
-    replies = pd.read_csv(long_path, dtype=str, keep_default_na=False)
-    replies = replies[(replies["Is_Error"].str.lower() != "true") & replies["Model"].isin(["ChatGPT", "Mistral"])]
+    frames = []
+    for name in ("llm_responses_long.csv", "llm_responses_study2_long.csv"):
+        long_path = os.path.join(ROOT, "dataset", name)
+        if not os.path.exists(long_path):
+            long_path += ".gz"
+        if os.path.exists(long_path):
+            frames.append(pd.read_csv(long_path, dtype=str, keep_default_na=False))
+    replies = pd.concat(frames, ignore_index=True)
+    replies = replies[(replies["Is_Error"].str.lower() != "true") & replies["Model"].isin(["ChatGPT", "Mistral"])
+                      & replies["Prompt_Variant"].isin(JUDGE_VARIANTS)]
     comp = pd.read_csv(os.path.join(ROOT, "dataset", "complaints_10k.csv"), dtype=str, keep_default_na=False)
     comp = comp.rename(columns={"row_id": "Row"})
 
