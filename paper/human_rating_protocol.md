@@ -49,8 +49,11 @@ calibration set.
   of the sample so they do not overlap the main pass), used in Step 4.
 - `rubric.md`: the rubric with anchors, printed below, for the raters.
 
-Replies are shown verbatim, including any markdown asterisks and any `[placeholder]` text, because
-those are things the paper measures.
+Replies are shown verbatim, including any markdown asterisks, any `[placeholder]` text, and any
+preamble the model wrote before the reply itself (such as a bare "**Response:**" line), because
+those are things the paper measures. About half the replies run over several lines, so rows are
+sized to show the whole cell; if a rater's spreadsheet program still shows only the first line
+(for example "Dear [Consumer's Name],"), select all rows and auto-fit row height before rating.
 
 ## 3. The rubric
 

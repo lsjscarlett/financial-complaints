@@ -94,6 +94,13 @@ def item_id(row, model, variant):
     return "R" + hashlib.sha1(f"{SEED}:{row}:{model}:{variant}".encode()).hexdigest()[:8]
 
 
+def wrapped_lines(text, width):
+    """Estimate how many display lines a wrapped cell needs at the given column width."""
+    text = str(text or "")
+    per_line = max(10, int(width * 1.1))
+    return sum(max(1, -(-len(par) // per_line)) for par in text.split("\n"))
+
+
 def make_sheet(items, path, rater_seed):
     rng = random.Random(rater_seed)
     order = list(range(len(items)))
@@ -124,8 +131,14 @@ def make_sheet(items, path, rater_seed):
         for c in cols:
             ws.column_dimensions[get_column_letter(cols.index(c) + 1)].width = widths.get(c, 14)
         for r in range(2, n + 1):
+            lines = 1
             for c in ("complaint", "reply"):
-                ws.cell(row=r, column=cols.index(c) + 1).alignment = Alignment(wrap_text=True, vertical="top")
+                cell = ws.cell(row=r, column=cols.index(c) + 1)
+                cell.alignment = Alignment(wrap_text=True, vertical="top")
+                lines = max(lines, wrapped_lines(cell.value, widths[c]))
+            # Excel does not auto-fit wrapped rows written by openpyxl: at the default height a
+            # multi-line reply shows only its first line ("Dear [Customer's Name],"). Size the row.
+            ws.row_dimensions[r].height = min(409, 15 * lines + 4)
         ws.freeze_panes = "F2"
     return df
 
