@@ -4,7 +4,13 @@ Writes analysis/human_rating/{rater_A.xlsx, rater_B.xlsx, calibration.xlsx, key.
 calibration_key.csv, rubric.md}. Raters get item_id, the complaint as the models saw it, and the
 reply; the key maps item_id -> (Row, Model, cell). Order is randomised per rater.
 
-Environment: HR_COMPLAINTS (default 80), HR_SEED (default 7).
+Design: HR_COMPLAINTS complaints (default 50) x 6 cells x 2 models. The first HR_DOUBLE complaints
+(default 15) are rated by both raters (all 12 replies each) and give the agreement estimates; the
+remaining complaints are split between the raters by complaint, so every reply is rated once and
+each rater reads a complaint once for all of its replies. HR_DOUBLE=HR_COMPLAINTS gives full
+double coding.
+
+Environment: HR_COMPLAINTS (default 50), HR_DOUBLE (default 15), HR_SEED (default 7).
 """
 
 import hashlib
@@ -19,7 +25,8 @@ DATA = os.path.join(ROOT, "dataset")
 OUT = os.path.join(HERE, "human_rating")
 os.makedirs(OUT, exist_ok=True)
 
-N = int(os.getenv("HR_COMPLAINTS") or "80")
+N = int(os.getenv("HR_COMPLAINTS") or "50")
+N_DOUBLE = min(N, int(os.getenv("HR_DOUBLE") or "15"))
 SEED = int(os.getenv("HR_SEED") or "7")
 CELLS = {"v1_terse": "V1", "v2_empathetic": "V2 / A00", "v3_structured": "V3", "f_000_base": "000",
          "f_A0C_empathetic_constraints": "A0C", "f_ABC_empathetic_format_constraints": "ABC"}
@@ -167,10 +174,20 @@ def main():
     rng = random.Random(SEED)
     calib = items_for(calib_rows, lambda v: [rng.choice(MODELS)])
 
-    pd.DataFrame(items)[["item_id", "Row", "Model", "Prompt_Variant", "cell"]].to_csv(os.path.join(OUT, "key.csv"), index=False)
+    # assignment: the first N_DOUBLE complaints go to both raters; the rest alternate A/B by complaint
+    double = set(main_rows[:N_DOUBLE])
+    single = main_rows[N_DOUBLE:]
+    to_A = double | set(single[0::2])
+    to_B = double | set(single[1::2])
+    for it in items:
+        it["raters"] = "AB" if it["Row"] in double else ("A" if it["Row"] in to_A else "B")
+    items_A = [it for it in items if it["Row"] in to_A]
+    items_B = [it for it in items if it["Row"] in to_B]
+
+    pd.DataFrame(items)[["item_id", "Row", "Model", "Prompt_Variant", "cell", "raters"]].to_csv(os.path.join(OUT, "key.csv"), index=False)
     pd.DataFrame(calib)[["item_id", "Row", "Model", "Prompt_Variant", "cell"]].to_csv(os.path.join(OUT, "calibration_key.csv"), index=False)
-    make_sheet(items, os.path.join(OUT, "rater_A.xlsx"), SEED * 10 + 1)
-    make_sheet(items, os.path.join(OUT, "rater_B.xlsx"), SEED * 10 + 2)
+    make_sheet(items_A, os.path.join(OUT, "rater_A.xlsx"), SEED * 10 + 1)
+    make_sheet(items_B, os.path.join(OUT, "rater_B.xlsx"), SEED * 10 + 2)
     make_sheet(calib, os.path.join(OUT, "calibration.xlsx"), SEED * 10 + 3)
 
     # rubric for the raters: the anchors section of the protocol
@@ -178,7 +195,9 @@ def main():
     start = proto.index("## 3. The rubric"); end = proto.index("## 4. Procedure")
     open(os.path.join(OUT, "rubric.md"), "w").write("# Rating rubric\n\n" + proto[start + len("## 3. The rubric"):end].strip() + "\n")
 
-    print(f"{len(main_rows)} complaints, {len(items)} main items, {len(calib)} calibration items")
+    print(f"{len(main_rows)} complaints ({N_DOUBLE} double-coded), {len(items)} main items, {len(calib)} calibration items")
+    print(f"rater A: {len(items_A)} items ({len(to_A)} complaints); rater B: {len(items_B)} items ({len(to_B)} complaints); "
+          f"double-coded: {sum(it['raters'] == 'AB' for it in items)}")
     print(pd.DataFrame(items).groupby(["Model", "cell"]).size().unstack(0).to_string())
     print("wrote", OUT)
 

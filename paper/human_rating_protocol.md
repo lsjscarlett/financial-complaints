@@ -10,7 +10,7 @@ unchanged.
 
 ## 1. What gets rated
 
-**Sample.** 80 complaints, drawn as the first 80 of the 300-complaint judge sample in its stratified
+**Sample.** 50 complaints, drawn as the first 50 of the 300-complaint judge sample in its stratified
 order (so they are also in the 2,999-complaint factorial subset, and every reply already has both
 LLM-judge ratings). For each complaint, six replies per model:
 
@@ -23,10 +23,23 @@ LLM-judge ratings). For each complaint, six replies per model:
 | A0C (framing + constraints) | the "sorry but not liable" cell |
 | ABC (framing + format + constraints) | the factorial corner closest to V3 |
 
-That is 80 × 6 × 2 = **960 replies**. At a realistic pace of 60-75 seconds per reply including
-reading the complaint once per block, that is 16-20 hours per rater. Two raters rate all 960
-(full double coding). If that is too much, drop to 60 complaints (720 replies, about 12-15 hours);
-do not drop cells, because the cell contrasts are the point.
+That is 50 × 6 × 2 = **600 replies**, of which every one is rated at least once and a subset
+twice:
+
+- **Double-coded block**: the first 15 complaints (15 × 12 = 180 replies) are rated by both raters.
+  These give the inter-rater agreement estimates. 180 items is enough to put Krippendorff's α
+  within about ±0.1.
+- **Split block**: the remaining 35 complaints are divided between the raters by complaint (18 to
+  rater A, 17 to rater B), so each reply there is rated once and each rater reads a complaint once
+  for all twelve of its replies.
+
+Rater A therefore rates 396 replies (33 complaints) and rater B 384 (32 complaints). At a realistic
+pace of 60-75 seconds per reply, that is about 7-8 hours per rater, against 16-20 hours for full
+double coding of 80 complaints. Cell means use the mean of the two raters where both rated an item
+and the single rating elsewhere; every cell keeps 50 complaints per model. If more time is
+available, raise `HR_DOUBLE` (more agreement precision) or `HR_COMPLAINTS` (more power for cell
+contrasts) in the build script; `HR_COMPLAINTS=80 HR_DOUBLE=80` reproduces the full design. Do not
+drop cells, because the cell contrasts are the point.
 
 **Raters.** Two people who have read customer complaints professionally (customer service,
 compliance, ombudsman, legal), or failing that two trained graduate raters plus a calibration round.
@@ -38,14 +51,16 @@ calibration set.
 
 `analysis/human_rating_build.py` produces, in `analysis/human_rating/`:
 
-- `rater_A.xlsx` and `rater_B.xlsx`: one row per reply, in an order randomised separately for each
-  rater, with columns `item_id`, `complaint_id`, the complaint as the models saw it (issue,
-  sub-issue, narrative), the reply, then empty score columns with 1-5 drop-downs and yes/no
-  drop-downs, and a free-text `note` column. Replies within a complaint are **not** grouped, so a
-  rater cannot line the six cells up and infer the prompt from the pattern.
-- `key.csv`: the mapping from `item_id` to model and cell. The coordinator keeps it; raters never
-  open it. Do not put it on the shared drive with the sheets.
-- `calibration.xlsx`: 30 replies (5 complaints × 6 cells, one model each, drawn from complaints 81-85
+- `rater_A.xlsx` and `rater_B.xlsx`: one row per reply assigned to that rater, in an order
+  randomised separately for each rater, with columns `item_id`, `complaint_id`, the complaint as
+  the models saw it (issue, sub-issue, narrative), the reply, then empty score columns with 1-5
+  drop-downs and yes/no drop-downs, and a free-text `note` column. Replies within a complaint are
+  **not** grouped, so a rater cannot line the six cells up and infer the prompt from the pattern.
+  The two sheets share the 180 double-coded replies and otherwise differ; do not tell the raters
+  which items are shared.
+- `key.csv`: the mapping from `item_id` to model, cell, and which rater(s) it was assigned to. The
+  coordinator keeps it; raters never open it. Do not put it on the shared drive with the sheets.
+- `calibration.xlsx`: 30 replies (5 complaints × 6 cells, one model each, drawn from complaints 51-55
   of the sample so they do not overlap the main pass), used in Step 4.
 - `rubric.md`: the rubric with anchors, printed below, for the raters.
 
@@ -111,10 +126,10 @@ Also: `would_send` (yes/no): if you were the agent, would you send this reply un
 3. **Main pass.** Each rater works through their own sheet in the given order, in sessions of no
    more than two hours, over no more than two weeks. No discussion between raters until both are
    finished. Raters may leave a note on any item.
-4. **Adjudication (optional).** For items where overall differs by 2 or more, a third person, or the
-   two raters together, records an adjudicated score in a separate column. Report agreement on the
-   original scores; use adjudicated scores only for the cell means if you want a single human
-   number per reply.
+4. **Adjudication (optional).** For double-coded items where overall differs by 2 or more, a third
+   person, or the two raters together, records an adjudicated score in a separate column. Report
+   agreement on the original scores; use adjudicated scores only for the cell means if you want a
+   single human number per reply.
 5. **Analysis.** `python3 analysis/human_rating_analysis.py` reads the two returned sheets, joins
    the key, and produces the four numbers above plus the tables listed in Section 6.
 
@@ -131,8 +146,8 @@ anchors.
 
 `human_rating_analysis.py` writes to `analysis/tables/human_*.csv` and prints:
 
-- **Inter-rater agreement**: Krippendorff's α (ordinal) and quadratic-weighted κ per 1-5 criterion;
-  Cohen's κ per flag; exact and within-one agreement.
+- **Inter-rater agreement** on the 180 double-coded items: Krippendorff's α (ordinal) and
+  quadratic-weighted κ per 1-5 criterion; Cohen's κ per flag; exact and within-one agreement.
 - **Human vs each LLM judge**: Spearman ρ and within-one agreement per criterion, using the mean of
   the two human scores; κ per flag against each judge and against the regex markers.
 - **Instrument validity**: Spearman ρ between human overall and VADER compound, RoBERTa score, GPT
@@ -143,10 +158,14 @@ anchors.
   against ground truth).
 - **Calibration report**: agreement on the 30-item set before discussion.
 
-Sample-size note: with 80 complaints, a paired difference of 0.25 points on a 1-5 scale with SD of
-differences around 1.0 is detectable at α = 0.05 with power about 0.6, and 0.35 points at power
-about 0.85. Cell contrasts smaller than that will come out as "not distinguishable", which is
-itself a result given that the LLM judges report gaps of 0.3-1.7.
+Sample-size note: with 50 complaints, a paired difference of 0.35 points on a 1-5 scale with SD of
+differences around 1.0 is detectable at α = 0.05 with power about 0.7, and 0.45 points at power
+about 0.9 (80 complaints would give 0.6 and 0.85 for 0.25 and 0.35 points). The contrasts the paper
+leans on are larger than that: the LLM judges report cell gaps of 0.3-1.7 and a model gap on V2 of
+about 0.5, so the design can confirm or overturn them; contrasts under about 0.35 will come out as
+"not distinguishable", which is itself a result. Single rating on the split block adds rater noise
+to the cell means but does not bias them, because the split is by complaint and each rater sees
+every cell of every complaint they rate.
 
 ## 7. Ethics and data handling
 

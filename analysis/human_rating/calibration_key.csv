@@ -1,31 +1,31 @@
 item_id,Row,Model,Prompt_Variant,cell
-R0b37ddc6,8342,Mistral,v1_terse,V1
-R083a4d02,8342,ChatGPT,v2_empathetic,V2 / A00
-R14257067,8342,Mistral,v3_structured,V3
-Re0ebe790,8342,ChatGPT,f_000_base,000
-R37e3ec05,8342,ChatGPT,f_A0C_empathetic_constraints,A0C
-R8ac96a28,8342,ChatGPT,f_ABC_empathetic_format_constraints,ABC
-Rbb53eb22,1251,Mistral,v1_terse,V1
-R36a03095,1251,ChatGPT,v2_empathetic,V2 / A00
-R1ab1fd2a,1251,ChatGPT,v3_structured,V3
-Rfc19e6c1,1251,ChatGPT,f_000_base,000
-Rf9b166c7,1251,ChatGPT,f_A0C_empathetic_constraints,A0C
-R1b18a023,1251,Mistral,f_ABC_empathetic_format_constraints,ABC
-R48d7e9be,3373,Mistral,v1_terse,V1
-R8bf2aa63,3373,ChatGPT,v2_empathetic,V2 / A00
-Rb4de1579,3373,ChatGPT,v3_structured,V3
-R6f65a54f,3373,ChatGPT,f_000_base,000
-R9bda61ba,3373,Mistral,f_A0C_empathetic_constraints,A0C
-R991985b9,3373,ChatGPT,f_ABC_empathetic_format_constraints,ABC
-R3bd67254,9865,ChatGPT,v1_terse,V1
-R8c999635,9865,ChatGPT,v2_empathetic,V2 / A00
-R60145ed1,9865,ChatGPT,v3_structured,V3
-R1605b745,9865,Mistral,f_000_base,000
-R7853349d,9865,ChatGPT,f_A0C_empathetic_constraints,A0C
-Ra83f44e1,9865,ChatGPT,f_ABC_empathetic_format_constraints,ABC
-R1921d57d,3444,ChatGPT,v1_terse,V1
-R8faca829,3444,ChatGPT,v2_empathetic,V2 / A00
-Rd881425b,3444,Mistral,v3_structured,V3
-Ra4cc7f0c,3444,Mistral,f_000_base,000
-R3e8550e0,3444,ChatGPT,f_A0C_empathetic_constraints,A0C
-R7430997e,3444,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+Rc48a038f,6544,Mistral,v1_terse,V1
+R36ed32c5,6544,ChatGPT,v2_empathetic,V2 / A00
+R5e436118,6544,Mistral,v3_structured,V3
+R393a8d91,6544,ChatGPT,f_000_base,000
+R03697545,6544,ChatGPT,f_A0C_empathetic_constraints,A0C
+R1d711121,6544,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+R3bd4c209,5764,Mistral,v1_terse,V1
+R3c31f675,5764,ChatGPT,v2_empathetic,V2 / A00
+Rd7236e6d,5764,ChatGPT,v3_structured,V3
+R9bf82058,5764,ChatGPT,f_000_base,000
+R451cea28,5764,ChatGPT,f_A0C_empathetic_constraints,A0C
+R35b4a665,5764,Mistral,f_ABC_empathetic_format_constraints,ABC
+Ra70c62b0,4526,Mistral,v1_terse,V1
+Rc5654e5b,4526,ChatGPT,v2_empathetic,V2 / A00
+Rcc3af518,4526,ChatGPT,v3_structured,V3
+Rc295b8b0,4526,ChatGPT,f_000_base,000
+R63c53d2d,4526,Mistral,f_A0C_empathetic_constraints,A0C
+R3771f844,4526,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+Reb947ce3,997,ChatGPT,v1_terse,V1
+R21eca929,997,ChatGPT,v2_empathetic,V2 / A00
+Rc8c3a332,997,ChatGPT,v3_structured,V3
+Raebc4f22,997,Mistral,f_000_base,000
+Rab39c7d2,997,ChatGPT,f_A0C_empathetic_constraints,A0C
+R3bcfcb8f,997,ChatGPT,f_ABC_empathetic_format_constraints,ABC
+Rffb24bf3,9908,ChatGPT,v1_terse,V1
+Rd8eae53b,9908,ChatGPT,v2_empathetic,V2 / A00
+Rc0332a59,9908,Mistral,v3_structured,V3
+R7b7ba657,9908,Mistral,f_000_base,000
+Ref40d93c,9908,ChatGPT,f_A0C_empathetic_constraints,A0C
+Ref0f42a3,9908,ChatGPT,f_ABC_empathetic_format_constraints,ABC

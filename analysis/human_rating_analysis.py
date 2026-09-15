@@ -2,6 +2,8 @@
 
 Usage
   python3 analysis/human_rating_analysis.py                 # main pass: rater_A.xlsx + rater_B.xlsx
+                                                            # (agreement on the items both rated; cell
+                                                            # means on every item, averaged where both rated)
   python3 analysis/human_rating_analysis.py --calibration   # calibration.xlsx returned by both raters
                                                             # as calibration_A.xlsx / calibration_B.xlsx
 
@@ -114,16 +116,19 @@ def main():
         return
 
     A = read_sheet(os.path.join(HR, "rater_A.xlsx"), "A").set_index("item_id")
-    B = read_sheet(os.path.join(HR, "rater_B.xlsx"), "B").set_index("item_id").reindex(A.index)
+    B = read_sheet(os.path.join(HR, "rater_B.xlsx"), "B").set_index("item_id")
     key = pd.read_csv(os.path.join(HR, "key.csv"), dtype=str).set_index("item_id")
-    agr = agreement_table(A, B, "main")
+    # agreement on the double-coded items (both raters rated them)
+    both = A.index.intersection(B.index)
+    agr = agreement_table(A.loc[both], B.loc[both], f"double-coded (n={len(both)})")
     agr.to_csv(os.path.join(TAB, "human_agreement.csv"), index=False)
-    print("=== Inter-rater agreement ===")
+    print(f"=== Inter-rater agreement on {len(both)} double-coded items ===")
     print(agr.to_string(index=False))
 
-    # human mean scores per item
-    H = pd.DataFrame({c: (A[c] + B[c]) / 2 for c in SCORES + FLAGS})
-    H = H.join(key)
+    # human score per item: mean of the raters who rated it (both on the double-coded items, one elsewhere)
+    H = pd.concat([A[SCORES + FLAGS], B[SCORES + FLAGS]]).groupby(level=0).mean()
+    H = H.reindex(key.index).join(key)
+    print(f"\n{H[SCORES[0]].notna().sum()} of {len(key)} items rated")
 
     # LLM judge ratings for the same items
     jr = pd.concat([pd.read_csv(os.path.join(TAB, f), dtype=str, keep_default_na=False)
