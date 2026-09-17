@@ -45,7 +45,7 @@ def load():
         p += ".gz"
     d = pd.read_csv(p, dtype=str, keep_default_na=False)
     d = d[(d["Is_Error"].str.lower() != "true")].copy()
-    for c in ("Response_Chars",):
+    for c in ("Response_Chars", "Prompt_Tokens", "Completion_Tokens", "Latency_s"):
         d[c] = pd.to_numeric(d[c], errors="coerce")
     comp = pd.read_csv(os.path.join(DATA, "complaints_10k.csv"), dtype=str, keep_default_na=False)
     comp = comp.rename(columns={"row_id": "Row"})

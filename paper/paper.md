@@ -600,6 +600,38 @@ and deadline rates are within a few points of each other. Section 5.9 shows that
 classifier keeps the direction of the gap and that two rubric judges rank Mistral's V2 replies above
 ChatGPT's on concreteness and overall quality.
 
+**Is the V2 split sampling noise?** Every reply in the full corpus is a single draw at the models'
+default temperature, so a sceptic can ask whether the gap between ChatGPT and Mistral under V2 would
+survive a second draw. The sampling layer answers this directly: five independent replies per model
+and prompt for the 299 judge-sample complaints (Table 5b). Within a (complaint, model, prompt) cell
+the draws do vary: the draw accounts for 30-80% of a feature's variance within a prompt, and under
+V2 the five draws disagree on whether the reply thanks the customer in 39% of cells, on whether it
+names a deadline in 45%, and on whether it leaves a placeholder in 58%. But the model gap is much
+larger than that noise. Under V2 the gap on the VADER compound is 0.66 (95% bootstrap interval
+0.63-0.70), 1.6 times the within-cell draw-to-draw standard deviation; on thanking it is 69 points
+(2.3 within-cell SDs); on time-bound commitments −63 points (1.9 SDs); on placeholders +26 points
+(0.7 SDs). Re-estimating each gap from a single random draw per cell, as the main layers do, 200
+times over, moves it by a standard deviation of 0.02-0.03 on the compound and 2-3 points on the
+markers, and never changes its sign for any of these features. The model's share of variance
+within V2 is 31% for the compound, 49% for thanking, and 42% for deadlines, against 0-9% under V1
+and V3 for every feature: the split is specific to the prompt, and it is not a property of which
+draw happened to be recorded.
+
+**Table 5b. Sampling layer: ChatGPT − Mistral gap under V2 from five draws per cell, 299
+complaints.** Within-cell SD is the draw-to-draw standard deviation of the feature within a
+(complaint, model) cell, pooled. Single-draw SD is the standard deviation of the gap re-estimated
+from one random draw per cell (200 repetitions). Shares are percentage points.
+
+| Feature | Within-cell SD | Gap, 5-draw means (95% CI) | Gap / within-cell SD | Single-draw SD of gap | Cells whose draws disagree |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| VADER compound | 0.40 | 0.66 (0.63 to 0.70) | 1.6 | 0.03 | — |
+| Length (chars) | 53 | 60 (55 to 66) | 1.1 | 3.8 | — |
+| Thanks the customer | 0.31 | +69 (66 to 73) | 2.3 | 2.1 | 39% |
+| Time-bound commitment | 0.33 | −63 (−66 to −59) | −1.9 | 2.5 | 45% |
+| Leaves a [placeholder] | 0.38 | +26 (21 to 30) | 0.7 | 2.7 | 58% |
+| Escalation | 0.40 | −18 (−21 to −14) | −0.4 | 3.1 | 63% |
+| Apology | 0.13 | −3.5 (−4.9 to −2.4) | −0.3 | 1.0 | 7% |
+
 ### 5.5 Instruction following
 
 ![Figure 6](../analysis/figures/fig6_compliance.png)
