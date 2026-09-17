@@ -973,6 +973,59 @@ gaps are the paired ChatGPT − Mistral difference in mean score.**
 | Grounding | 0.06 | 0.04 | 0.24 | 0.00 | -0.14 | +0.51 | 0.13 |
 | Overall | 0.58 | 0.34 | 0.36 | -0.26 | -0.50 | +0.04 | 0.27 |
 
+**Head-to-head verdicts and position bias.** The pairwise layer (Section 4.5; 2,700 pairs on 150
+complaints, each judged in both orders by the Mistral judge and by gpt-4.1; the small GPT judge's
+verdicts are reported in the same table once complete) makes two things visible that absolute
+scores hide. First, both judges have a substantial position bias, and it runs towards the reply
+shown *second*: gpt-4.1 names reply B the better one in 62% of verdicts and reply A in 38%, and the
+Mistral judge 59% against 41%. When the same pair is shown in both orders, the winner changes with
+the order in 25% of pairs for gpt-4.1 and 32% for the Mistral judge on the overall criterion, and
+in 24-25% on concreteness. On tone the Mistral judge declares a tie in 58% of verdicts, so tone is
+effectively not judged pairwise by that model. A single-order pairwise evaluation with either judge
+would therefore carry a quarter to a third of noise that looks like signal; every win rate below
+uses only the pairs whose winner survived the swap (Table 11b).
+
+Second, on those consistent pairs the head-to-head verdicts are more one-sided than the absolute
+scores, and for the outside judge they reverse one of its own absolute rankings. Both judges prefer
+Mistral's reply to ChatGPT's under the bare baseline, the empathetic prompt, the empathetic-plus-
+constraints cell, and the terse prompt: ChatGPT wins 17%, 20%, 11%, and 26% of decided pairs under
+gpt-4.1 and 3%, 2%, 1%, and 12% under the Mistral judge. Under the two format cells (V3, ABC) the
+verdicts are near even (48-56% for ChatGPT). The gpt-4.1 verdict on the empathetic prompt is the
+notable one: its absolute scores put ChatGPT's V2 0.19 points above Mistral's, because of the
+grounding penalty discussed above, but shown the two replies side by side it chooses Mistral's four
+times out of five. Asked to score each reply alone, the outside judge penalises the invented
+process; asked which reply it would send, it prefers the concrete one. Among the cell contrasts the
+constraints-only prompt loses to the bare baseline in 96-100% of decided pairs under both judges
+and both models, the sharpest verdict in the design; the empathetic prompt beats the terse one
+88-100%; and adding format and constraints to the empathetic framing (`A0C` vs `ABC`) is preferred
+by gpt-4.1 for both models (96% and 65% for `ABC`) and by the Mistral judge for ChatGPT (76%) but
+not for Mistral (7%), whose judge prefers its own model's least-constrained replies. The pairwise
+verdicts agree in direction with the same judge's absolute mean difference in 14 of 18 contrasts
+for gpt-4.1 and 17 of 18 for the Mistral judge; the exceptions are contrasts whose absolute
+difference is under 0.45 points.
+
+**Table 11b. Order-swapped pairwise verdicts, overall criterion, 150 complaints. Position bias
+is the share of pairs whose winner changed with the presentation order. Win rates are for the
+first-named reply among pairs decided consistently in both orders, with 95% bootstrap intervals
+over complaints.**
+
+| | gpt-4.1 | Mistral judge |
+| --- | ---: | ---: |
+| Verdicts choosing the second-shown reply | 62% | 59% |
+| Pairs decided by position (overall) | 25% | 32% |
+| Pairs decided by position (concreteness) | 24% | 25% |
+| Pairs tied on tone | 9% | 58% |
+| ChatGPT beats Mistral, bare baseline 000 | 17% (10-23) | 3% (0-7) |
+| ChatGPT beats Mistral, V2 / A00 | 20% (13-28) | 2% (0-5) |
+| ChatGPT beats Mistral, A0C | 11% (5-17) | 1% (0-2) |
+| ChatGPT beats Mistral, V1 | 26% (19-34) | 12% (3-21) |
+| ChatGPT beats Mistral, V3 | 56% (48-67) | 51% (42-60) |
+| ChatGPT beats Mistral, ABC | 48% (37-59) | 24% (16-32) |
+| Bare baseline beats constraints-only, ChatGPT / Mistral | 100% / 96% | 99% / 98% |
+| V2 beats V1, ChatGPT / Mistral | 96% / 88% | 93% / 100% |
+| V2 beats V3, ChatGPT / Mistral | 30% / 60% | 88% / 98% |
+| ABC beats A0C, ChatGPT / Mistral | 96% / 65% | 76% / 7% |
+
 **Sentiment is anti-correlated with judged quality.** Across the 1,800 rated realistic-prompt
 replies, the VADER compound correlates negatively with the judges' overall score (Spearman -0.14 GPT
 judge, -0.26 Mistral judge, -0.15 gpt-4.1) and with concreteness (-0.24, -0.30, -0.34). Length
