@@ -1099,7 +1099,10 @@ self-preference in the usual sense, since both small judges are more favourable 
 outside judge is; it is a weighting of concreteness against grounding, and a deployer's compliance
 team would have its own. The practical reading is that a rubric's per-criterion scores and flags are
 portable across judges and an "overall" score is not, so evaluations of customer-facing text should
-report the criteria and let the deployer supply the weights.
+report the criteria and let the deployer supply the weights. The pairwise layer adds a procedural
+warning: both judges preferred whichever reply was shown second in about 60% of verdicts, and a
+quarter to a third of pairs changed winner when the order was swapped. Pairwise LLM evaluation
+without an order swap is not a measurement of the replies.
 
 **The realistic risk is not hallucination.** With inputs that redact every date, name, and amount,
 the models almost never invented one. What they did, in one full-corpus reply out of seven and in
