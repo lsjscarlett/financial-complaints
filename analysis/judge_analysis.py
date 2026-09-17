@@ -22,7 +22,8 @@ FIG = os.path.join(HERE, "figures")
 MODELS = ["ChatGPT", "Mistral"]
 VARIANTS = ["v1_terse", "v2_empathetic", "v3_structured"]
 VARIANT_LABEL = {"v1_terse": "V1 terse", "v2_empathetic": "V2 empathetic", "v3_structured": "V3 structured"}
-JUDGES = ["gpt-4o-mini", "mistral-small"]
+JUDGES = ["gpt-4o-mini", "mistral-small", "gpt-4.1"]  # trimmed to those present in the data
+STYLE = {"gpt-4o-mini": ("o", "-", 1.0), "mistral-small": ("s", "--", 0.75), "gpt-4.1": ("^", ":", 0.75)}
 SCORES = ["acknowledgement", "concreteness", "tone", "grounding", "overall"]
 FLAGS = ["has_placeholder", "promises_outcome", "admits_liability"]
 COLOR = {"ChatGPT": "#2a78d6", "Mistral": "#eb6834"}
@@ -58,8 +59,10 @@ def kappa(a, b):
 
 
 def main():
+    global JUDGES
     d = load()
-    print(f"{len(d):,} ratings, {d['Row'].nunique()} complaints, judges: {sorted(d['Judge'].unique())}")
+    JUDGES = [j for j in JUDGES if j in set(d["Judge"])] + sorted(set(d["Judge"]) - set(JUDGES))
+    print(f"{len(d):,} ratings, {d['Row'].nunique()} complaints, judges: {JUDGES}")
 
     # means with CIs
     rows = []
@@ -76,23 +79,27 @@ def main():
     # inter-judge agreement, paired on (Row, Model, Variant)
     w = d.pivot_table(index=["Row", "Model", "Prompt_Variant"], columns="Judge", values=SCORES + FLAGS + ["placeholder", "promise_outcome"])
     agree = []
-    for k in SCORES:
-        a, b = w[(k, JUDGES[0])], w[(k, JUDGES[1])]
-        ok = a.notna() & b.notna()
-        rho, p = stats.spearmanr(a[ok], b[ok])
-        agree.append({"criterion": k, "type": "score", "spearman_rho": rho, "p": p,
-                      "exact_agreement": (a[ok] == b[ok]).mean(), "within_1": ((a[ok] - b[ok]).abs() <= 1).mean(),
-                      "n": int(ok.sum())})
-    for k in FLAGS:
-        a, b = w[(k, JUDGES[0])].astype(bool), w[(k, JUDGES[1])].astype(bool)
-        agree.append({"criterion": k, "type": "flag", "kappa": kappa(a, b), "exact_agreement": (a == b).mean(),
-                      f"rate_{JUDGES[0]}": a.mean(), f"rate_{JUDGES[1]}": b.mean(), "n": len(a)})
+    from itertools import combinations
+    for j1, j2 in combinations(JUDGES, 2):
+        for k in SCORES:
+            a, b = w[(k, j1)], w[(k, j2)]
+            ok = a.notna() & b.notna()
+            rho, p = stats.spearmanr(a[ok], b[ok])
+            agree.append({"judges": f"{j1} vs {j2}", "criterion": k, "type": "score", "spearman_rho": rho, "p": p,
+                          "exact_agreement": (a[ok] == b[ok]).mean(), "within_1": ((a[ok] - b[ok]).abs() <= 1).mean(),
+                          "n": int(ok.sum())})
+        for k in FLAGS:
+            ok = w[(k, j1)].notna() & w[(k, j2)].notna()
+            a, b = w[(k, j1)][ok].astype(bool), w[(k, j2)][ok].astype(bool)
+            agree.append({"judges": f"{j1} vs {j2}", "criterion": k, "type": "flag", "kappa": kappa(a, b),
+                          "exact_agreement": (a == b).mean(), "rate_first": a.mean(), "rate_second": b.mean(), "n": len(a)})
     # judges vs regex placeholder flag
     regex = w[("placeholder", JUDGES[0])].astype(bool)
     for j in JUDGES:
-        a = w[("has_placeholder", j)].astype(bool)
-        agree.append({"criterion": f"has_placeholder vs regex ({j})", "type": "validation", "kappa": kappa(a, regex),
-                      "exact_agreement": (a == regex).mean(), "judge_rate": a.mean(), "regex_rate": regex.mean(),
+        ok = w[("has_placeholder", j)].notna()
+        a = w[("has_placeholder", j)][ok].astype(bool)
+        agree.append({"judges": j, "criterion": "has_placeholder vs regex", "type": "validation", "kappa": kappa(a, regex[ok]),
+                      "exact_agreement": (a == regex[ok]).mean(), "judge_rate": a.mean(), "regex_rate": regex[ok].mean(),
                       "n": len(a)})
     agree = pd.DataFrame(agree)
     agree.to_csv(os.path.join(TAB, "judge_agreement.csv"), index=False)
@@ -107,17 +114,18 @@ def main():
                        "paired_d": diff.mean() / diff.std(ddof=1) if diff.std(ddof=1) else 0,
                        "wilcoxon_p": stats.wilcoxon(diff).pvalue if (diff != 0).any() else 1.0, "n": len(diff)})
     sp = pd.DataFrame(sp)
-    # interaction: does the gpt judge favour ChatGPT more than the mistral judge does?
+    # interaction: does one judge favour ChatGPT more than another does? (all judge pairs)
     inter = []
-    for k in SCORES:
-        a = d[d["Judge"] == JUDGES[0]].pivot_table(index=["Row", "Prompt_Variant"], columns="Model", values=k)
-        b = d[d["Judge"] == JUDGES[1]].pivot_table(index=["Row", "Prompt_Variant"], columns="Model", values=k)
-        da = (a["ChatGPT"] - a["Mistral"]); db = (b["ChatGPT"] - b["Mistral"])
-        both = pd.concat([da, db], axis=1, keys=["gpt", "mis"]).dropna()
-        dd = both["gpt"] - both["mis"]
-        inter.append({"Judge": "interaction (gpt judge - mistral judge)", "criterion": k,
-                      "ChatGPT - Mistral": dd.mean(), "ci95": ci(dd), "paired_d": dd.mean() / dd.std(ddof=1),
-                      "wilcoxon_p": stats.wilcoxon(dd).pvalue if (dd != 0).any() else 1.0, "n": len(dd)})
+    for j1, j2 in combinations(JUDGES, 2):
+        for k in SCORES:
+            a = d[d["Judge"] == j1].pivot_table(index=["Row", "Prompt_Variant"], columns="Model", values=k)
+            b = d[d["Judge"] == j2].pivot_table(index=["Row", "Prompt_Variant"], columns="Model", values=k)
+            da = (a["ChatGPT"] - a["Mistral"]); db = (b["ChatGPT"] - b["Mistral"])
+            both = pd.concat([da, db], axis=1, keys=["j1", "j2"]).dropna()
+            dd = both["j1"] - both["j2"]
+            inter.append({"Judge": f"interaction ({j1} - {j2})", "criterion": k,
+                          "ChatGPT - Mistral": dd.mean(), "ci95": ci(dd), "paired_d": dd.mean() / dd.std(ddof=1),
+                          "wilcoxon_p": stats.wilcoxon(dd).pvalue if (dd != 0).any() else 1.0, "n": len(dd)})
     sp = pd.concat([sp, pd.DataFrame(inter)])
     sp.to_csv(os.path.join(TAB, "judge_self_preference.csv"), index=False)
 
@@ -159,19 +167,20 @@ def main():
     fig, axes = plt.subplots(1, len(SCORES), figsize=(2.6 * len(SCORES), 3.4), sharey=True)
     x = np.arange(len(VARIANTS))
     for ax, k in zip(axes, SCORES):
-        for j, marker in zip(JUDGES, ("o", "s")):
+        for j in JUDGES:
+            marker, ls, alpha = STYLE.get(j, ("d", "-.", 0.75))
             for m in MODELS:
                 mm = means[(means["Judge"] == j) & (means["Model"] == m)].set_index("Variant").loc[[VARIANT_LABEL[v] for v in VARIANTS]]
                 off = -0.08 if m == "ChatGPT" else 0.08
                 ax.errorbar(x + off, mm[k], yerr=mm[k + "_ci"], fmt=marker, color=COLOR[m], markersize=5,
                             capsize=2, linewidth=1, markeredgecolor="white", label=f"{m} rated by {j}",
-                            linestyle="-" if j == JUDGES[0] else "--", alpha=1 if j == JUDGES[0] else 0.75)
+                            linestyle=ls, alpha=alpha)
         ax.set_xticks(x); ax.set_xticklabels(["V1", "V2", "V3"]); ax.set_title(k, fontsize=9)
         ax.set_ylim(1, 5); ax.grid(axis="x", visible=False)
     axes[0].set_ylabel("Mean score (1-5), 95% CI")
     h, l = axes[0].get_legend_handles_labels()
-    fig.legend(h, l, loc="upper center", bbox_to_anchor=(0.5, 1.12), ncol=2, fontsize=8)
-    fig.suptitle("Rubric ratings by two LLM judges (circles / solid: gpt-4o-mini; squares / dashed: mistral-small)",
+    fig.legend(h, l, loc="upper center", bbox_to_anchor=(0.5, 1.16), ncol=3, fontsize=8)
+    fig.suptitle(f"Rubric ratings by {len(JUDGES)} LLM judges (circles / solid: gpt-4o-mini; squares / dashed: mistral-small; triangles / dotted: gpt-4.1)",
                  fontsize=9, color=TEXT2, y=1.0)
     p = os.path.join(FIG, "fig10_judge_scores.png")
     plt.savefig(p); plt.close(); print("  wrote", p)

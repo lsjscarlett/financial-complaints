@@ -18,7 +18,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 TAB = os.path.join(HERE, "tables")
 FIG = os.path.join(HERE, "figures")
 MODELS = ["ChatGPT", "Mistral"]
-JUDGES = ["gpt-4o-mini", "mistral-small"]
+JUDGES = ["gpt-4o-mini", "mistral-small", "gpt-4.1"]  # trimmed to those present in the data
+STYLE = {"gpt-4o-mini": ("o", "-", 1.0), "mistral-small": ("s", "--", 0.75), "gpt-4.1": ("^", ":", 0.75)}
 SCORES = ["acknowledgement", "concreteness", "tone", "grounding", "overall"]
 FLAGS = ["has_placeholder", "promises_outcome", "admits_liability"]
 CELLS = {"f_000_base": "000", "v2_empathetic": "A00", "f_0B0_format": "0B0", "f_00C_constraints": "00C",
@@ -59,7 +60,9 @@ def ci(x):
 
 
 def main():
+    global JUDGES
     d = load()
+    JUDGES = [j for j in JUDGES if j in set(d["Judge"])] + sorted(set(d["Judge"]) - set(JUDGES))
     print(f"{len(d):,} ratings; complaints per judge x model:")
     print(d.groupby(["Judge", "Model"])["Row"].nunique().to_string())
 
@@ -122,22 +125,23 @@ def main():
     fig.subplots_adjust(hspace=0.6, wspace=0.3)
     x = np.arange(len(ORDER))
     for ax, (k, title, is_share) in zip(axes.flat, panels):
-        for j, marker, ls in zip(JUDGES, ("o", "s"), ("-", "--")):
+        for j in JUDGES:
+            marker, ls, alpha = STYLE.get(j, ("d", "-.", 0.75))
             for m in MODELS:
                 mm = means[(means["Judge"] == j) & (means["Model"] == m)].set_index("Cell").reindex(ORDER)
                 y = mm[k].values * (100 if is_share else 1)
                 e = mm[k + "_ci"].values * (100 if is_share else 1)
                 off = -0.08 if m == "ChatGPT" else 0.08
                 ax.errorbar(x + off, y, yerr=e, fmt=marker, linestyle=ls, color=COLOR[m], markersize=4.5,
-                            capsize=2, linewidth=1, markeredgecolor="white", alpha=1 if j == JUDGES[0] else 0.75,
+                            capsize=2, linewidth=1, markeredgecolor="white", alpha=alpha,
                             label=f"{m}, judged by {j}")
         ax.set_xticks(x); ax.set_xticklabels(ORDER, fontsize=7.5); ax.set_title(title, fontsize=9)
         ax.grid(axis="x", visible=False)
         ax.set_ylim(0, 105) if is_share else ax.set_ylim(1, 5.1)
     h, l = axes.flat[0].get_legend_handles_labels()
-    fig.legend(h, l, loc="upper center", ncol=4, bbox_to_anchor=(0.5, 1.03), fontsize=8)
-    fig.suptitle("Judge ratings across the prompt factorial (circles / solid: gpt-4o-mini judge; squares / dashed: mistral-small judge)",
-                 fontsize=9.5, color=TEXT, fontweight="bold", y=1.08)
+    fig.legend(h, l, loc="upper center", ncol=3, bbox_to_anchor=(0.5, 1.05), fontsize=8)
+    fig.suptitle("Judge ratings across the prompt factorial (circles / solid: gpt-4o-mini; squares / dashed: mistral-small; triangles / dotted: gpt-4.1)",
+                 fontsize=9.5, color=TEXT, fontweight="bold", y=1.11)
     p = os.path.join(FIG, "fig12_judge_factorial.png")
     plt.savefig(p); plt.close(); print("  wrote", p)
 

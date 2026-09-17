@@ -14,7 +14,10 @@ script resumes from it, like generate_llm_responses.py.
 
 Environment: OPENAI_API_KEY, MISTRAL_API_KEY; JUDGE_COMPLAINTS, JUDGE_CONCURRENCY (4),
 JUDGE_VARIANTS (comma list, default the Study 1 prompts), JUDGE_OUTPUT (file name in
-analysis/tables, default judge_ratings.csv).
+analysis/tables, default judge_ratings.csv), JUDGE_JUDGES (comma list of judges to run, default
+all three: gpt-4o-mini, mistral-small, and the larger OpenAI model named by JUDGE_OPENAI_LARGE,
+default gpt-4.1). Ratings already in the output file are skipped, so adding a judge later only
+runs the new one.
 """
 
 import csv
@@ -103,7 +106,22 @@ def judge_mistral(prompt):
     return r.choices[0].message.content
 
 
-JUDGES = {"gpt-4o-mini": judge_openai, "mistral-small": judge_mistral}
+LARGE_OPENAI = os.getenv("JUDGE_OPENAI_LARGE") or "gpt-4.1"
+
+
+def judge_openai_large(prompt):
+    """Third judge: a larger OpenAI model that wrote none of the replies, as a check on the two
+    small same-family judges."""
+    r = openai_client.chat.completions.create(
+        model=LARGE_OPENAI, temperature=0, max_tokens=300,
+        response_format={"type": "json_object"},
+        messages=[{"role": "user", "content": prompt}])
+    return r.choices[0].message.content
+
+
+ALL_JUDGES = {"gpt-4o-mini": judge_openai, "mistral-small": judge_mistral, LARGE_OPENAI: judge_openai_large}
+_judges_env = [j.strip() for j in (os.getenv("JUDGE_JUDGES") or "").split(",") if j.strip()]
+JUDGES = {k: v for k, v in ALL_JUDGES.items() if not _judges_env or k in _judges_env}
 KEYS = ["acknowledgement", "concreteness", "tone", "grounding", "overall",
         "has_placeholder", "promises_outcome", "admits_liability", "rationale"]
 COLUMNS = ["Row", "Model", "Prompt_Variant", "Judge"] + KEYS + ["raw", "error"]

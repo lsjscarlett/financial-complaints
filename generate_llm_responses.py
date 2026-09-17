@@ -24,6 +24,11 @@ Environment:
                        Study 1 prompts); see FACTORIAL_VARIANTS for Study 2
   LLM_ROWS_FILE        text file of row_ids to restrict the run to
   LLM_OUTPUT_NAME      output file stem (default llm_responses)
+  LLM_MODELS           comma-separated model names to run (default all: ChatGPT,
+                       Claude, Mistral)
+  LLM_SAMPLES          replies to draw per (complaint, prompt, model) (default 1);
+                       >1 adds a Sample column and is meant for a within-model
+                       variance run under a separate LLM_OUTPUT_NAME
 """
 
 import csv
@@ -120,6 +125,13 @@ MODELS = {
     "Claude": get_claude_response,
     "Mistral": get_mistral_response,
 }
+_models_env = [m.strip() for m in (os.getenv("LLM_MODELS") or "").split(",") if m.strip()]
+if _models_env:
+    unknown = [m for m in _models_env if m not in MODELS]
+    if unknown:
+        raise SystemExit(f"LLM_MODELS names unknown models: {unknown}; choose from {list(MODELS)}")
+    MODELS = {k: v for k, v in MODELS.items() if k in _models_env}
+N_SAMPLES = max(1, int(os.getenv("LLM_SAMPLES") or "1"))
 
 # 3. Three prompt variants, differing on persona, tone, and output structure.
 # Each takes a {complaint} placeholder. Vary one axis at a time so differences
@@ -359,7 +371,11 @@ LONG_COLUMNS = [
     "Row", "Complaint_ID", "Product", "Sub_Product", "Issue", "Sub_Issue",
     "Prompt_Variant", "Prompt_Text", "Model", "Response", "Response_Chars",
     "Is_Error", "Prompt_Tokens", "Completion_Tokens", "Latency_s",
-]
+] + (["Sample"] if N_SAMPLES > 1 else [])
+
+
+def job_key(row, variant, model, sample):
+    return (row, variant, model, str(sample)) if N_SAMPLES > 1 else (row, variant, model)
 
 done = set()
 if os.path.exists(long_path):
@@ -367,7 +383,8 @@ if os.path.exists(long_path):
     if set(LONG_COLUMNS) <= set(prev.columns):
         # Redo rows that only hold an error so a rerun fills them in
         ok_prev = prev[prev["Is_Error"].str.lower() != "true"]
-        done = set(zip(ok_prev["Row"], ok_prev["Prompt_Variant"], ok_prev["Model"]))
+        done = set(zip(ok_prev["Row"], ok_prev["Prompt_Variant"], ok_prev["Model"],
+                       *([ok_prev["Sample"]] if N_SAMPLES > 1 else [])))
         if len(done) < len(prev):
             ok_prev.to_csv(long_path, index=False, encoding="utf-8-sig")
         print(f"Resuming: {len(done):,} responses already recorded in {long_path}")
@@ -390,11 +407,12 @@ for i, (_, row) in enumerate(sample_df.iterrows()):
     for variant in PROMPT_VARIANTS:
         prompt = variant["template"].format(complaint=complaint)
         for model_name, fn in MODELS.items():
-            if (row_key, variant["name"], model_name) in done:
-                continue
-            jobs.append((meta, variant, prompt, model_name, fn))
+            for sample in range(1, N_SAMPLES + 1):
+                if job_key(row_key, variant["name"], model_name, sample) in done:
+                    continue
+                jobs.append((meta, variant, prompt, model_name, fn, sample))
 
-total_calls = len(sample_df) * len(PROMPT_VARIANTS) * len(MODELS)
+total_calls = len(sample_df) * len(PROMPT_VARIANTS) * len(MODELS) * N_SAMPLES
 VERBOSE = (os.getenv("LLM_VERBOSE") or "").strip() == "1" or total_calls <= 100
 print(
     f"--- {len(sample_df):,} complaints x {len(PROMPT_VARIANTS)} prompts x "
@@ -417,7 +435,7 @@ started = time.monotonic()
 
 
 def run_job(job):
-    meta, variant, prompt, model_name, fn = job
+    meta, variant, prompt, model_name, fn, sample = job
     with semaphores[model_name]:
         text, p_tok, c_tok, is_error, latency = call_model(
             model_name, fn, prompt, variant["max_tokens"])
@@ -433,6 +451,8 @@ def run_job(job):
         "Completion_Tokens": "" if c_tok is None else c_tok,
         "Latency_s": latency,
     }
+    if N_SAMPLES > 1:
+        record["Sample"] = sample
     with write_lock:
         writer.writerow(record)
         long_file.flush()
