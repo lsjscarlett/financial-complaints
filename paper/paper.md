@@ -19,8 +19,9 @@ stratified 2,999-complaint subset we then take the empathetic prompt apart in a 
 empathetic framing, structured format, and compliance constraints, and add a one-line output-hygiene
 mitigation and two content-preserving paraphrases (59,980 further replies). Replies are measured for
 length, lexicon and transformer sentiment, readability, twelve rhetorical markers, instruction
-compliance, unfilled template placeholders, and invented facts, and rated on a rubric by two blind LLM
-judges.
+compliance, unfilled template placeholders, and invented facts, and rated on a rubric by three blind
+LLM judges: the two reply models and a larger outside model, with every head-to-head comparison also
+judged in both presentation orders.
 
 Four results stand out. First, the prompt explains far more of the variation in a reply than the
 model does: 60-72% of the variance in length and sentence count and 47-68% of the variance in
@@ -29,12 +30,15 @@ apologising, taking ownership, and committing to a deadline is attributable to t
 the factorial shows which part of the prompt does what: the structured format and the compliance
 constraints each remove apologies on their own, empathetic framing restores them against the
 constraints but not against the format, and constraints without positive instructions turn replies
-into hedged boilerplate that two blind judges rate below the bare baseline; combined with a framing
+into hedged boilerplate that all three judges rate below the bare baseline; combined with a framing
 or a format, the same constraints cut judged admissions of liability from 52% to 5% at a cost of
-0.3 points on a five-point overall scale. Third, the same "empathetic" instruction is read in opposite registers:
+0.3 points on a five-point overall scale under the small judges and a gain under the outside judge. Third, the same "empathetic" instruction is read in opposite registers:
 ChatGPT becomes uniformly warm while Mistral restates the grievance in the customer's own words and
-commits to a dated action, and two blind judges prefer Mistral's replies on concreteness while
-flagging them for admitting liability. Fourth, the dominant deployment failure is not fabrication,
+commits to a dated action, and all three judges score Mistral's replies higher on concreteness while
+flagging them for admitting liability; whether that makes them better overall depends on how much a
+judge charges for an unsupported process claim, and the outside judge charges more than the two
+small ones do. The split is not sampling noise: five repeated draws per cell put it at 1.6-2.3
+within-cell standard deviations. Fourth, the dominant deployment failure is not fabrication,
 which occurs in under 1% of replies, but the unfilled template placeholder, present in 95% of
 ChatGPT's replies to the bare instruction and 40% under the empathetic prompt; a one-line hygiene
 instruction removes it entirely at some cost in warmth. Content-preserving paraphrases of a prompt
@@ -129,7 +133,9 @@ self-preference proportional to self-recognition [panickssery2024selfpreference]
 automatic evaluators can be large enough to require explicit control [dubois2024lengthcontrolled];
 recent surveys catalogue these biases and mitigations [gu2024judgesurvey]. We use two judges from the
 two families that produced the replies precisely so that self-preference can be measured rather
-than assumed away, and we report the length correlation of judged quality.
+than assumed away, add a larger judge that wrote no replies as the reference point, judge every
+head-to-head pair in both presentation orders so that position bias is measured, and report the
+length correlation of judged quality.
 
 **Hallucination.** Surveys distinguish intrinsic from extrinsic hallucination and fabricated
 specifics from unsupported claims [ji2023hallucination; huang2023hallucination], and human
@@ -598,8 +604,9 @@ largest single-factor effect for Mistral in the design. Mistral reads "acknowled
 next step" as an instruction to restate the grievance and commit; ChatGPT reads it as an instruction
 to reassure. The format factor then closes the gap: under any B cell the models' sentiment, thanks,
 and deadline rates are within a few points of each other. Section 5.9 shows that a transformer
-classifier keeps the direction of the gap and that two rubric judges rank Mistral's V2 replies above
-ChatGPT's on concreteness and overall quality.
+classifier keeps the direction of the gap, that all three rubric judges rank Mistral's V2 replies
+above ChatGPT's on concreteness, and that the two small judges, but not the larger outside judge,
+also rank them higher overall.
 
 **Is the V2 split sampling noise?** Every reply in the full corpus is a single draw at the models'
 default temperature, so a sceptic can ask whether the gap between ChatGPT and Mistral under V2 would
@@ -793,17 +800,30 @@ about whether the complaint was upheld.
 
 ![Figure 10](../analysis/figures/fig10_judge_scores.png)
 
-**Figure 10. Mean rubric scores (1-5) from two blind LLM judges on the three realistic prompts.**
-Circles and solid lines: gpt-4o-mini as judge. Squares and dashed lines: mistral-small as judge. Bars
-are 95% confidence intervals over 299 complaints per cell.
+**Figure 10. Mean rubric scores (1-5) from three blind LLM judges on the three realistic prompts.**
+Circles and solid lines: gpt-4o-mini as judge. Squares and dashed lines: mistral-small as judge.
+Triangles and dotted lines: gpt-4.1, the larger outside judge. Bars are 95% confidence intervals
+over 299 complaints per cell.
 
-**Rubric ratings on the realistic prompts.** The judges agree on the shape of the results (Table 10).
-Both V2 and V3 improve on V1 on every criterion except grounding (paired *d* 0.3-1.6); Mistral's V2
-replies are the best cell for acknowledgement, concreteness, tone, and overall quality under both
-judges (overall 4.21 and 3.99 out of 5); and under V3 the two models are rated within 0.15 of each
-other, mirroring the collapse of stylistic differences in Section 5.2. ChatGPT's V2 replies, the
-warmest by lexicon sentiment, are rated well below Mistral's on concreteness (3.18 vs 4.12 by the GPT
-judge; 2.62 vs 4.19 by the Mistral judge).
+**Rubric ratings on the realistic prompts.** The two small judges agree on the shape of the results
+(Table 10). Both V2 and V3 improve on V1 on every criterion except grounding (paired *d* 0.3-1.6);
+Mistral's V2 replies are the best cell for acknowledgement, concreteness, tone, and overall quality
+under both small judges (overall 4.21 and 3.99 out of 5); and under V3 the two models are rated
+within 0.15 of each other, mirroring the collapse of stylistic differences in Section 5.2. ChatGPT's
+V2 replies, the warmest by lexicon sentiment, are rated well below Mistral's on concreteness (3.18 vs
+4.12 by the GPT judge; 2.62 vs 4.19 by the Mistral judge; 3.06 vs 3.80 by gpt-4.1).
+
+The outside judge, gpt-4.1, agrees with the small judges on every criterion but one, and that one
+changes the ranking. It also rates Mistral's V2 replies highest on acknowledgement (4.63) and
+concreteness (3.80), and it flags them for admitting liability (47%) and promising outcomes (48%)
+at the same rates the GPT judge does. But it scores their grounding at 3.77, a full point below
+every other cell, where the small GPT judge gives 4.99 to everything and the Mistral judge 4.33.
+The larger judge reads "I'll escalate this to our compliance team today" as invented process, and
+the penalty is large enough to move Mistral's V2 from the best cell to the middle: overall 3.67,
+below ChatGPT's V2 (3.83) and well below both models' V3 (4.18 and 4.05), which are its best cells.
+Under gpt-4.1 the structured format is the best realistic prompt for both models and the model gap
+in every cell is at most 0.17. The concreteness the small judges reward is still there in the
+outside judge's scores; what differs is how much an unsupported process claim costs.
 
 **Table 10. Mean rubric scores (1-5) and flag rates by judge, prompt, and model. n = 299 per cell.**
 
@@ -821,109 +841,144 @@ judge; 2.62 vs 4.19 by the Mistral judge).
 | mistral-small | V2 | Mistral | 4.20 | 4.19 | 4.84 | 4.33 | 3.99 | 16% | 21% | 18% |
 | mistral-small | V3 | ChatGPT | 3.93 | 3.52 | 4.50 | 4.98 | 3.51 | 3% | 0% | 0% |
 | mistral-small | V3 | Mistral | 3.81 | 3.38 | 4.40 | 4.96 | 3.38 | 5% | 0% | 0% |
+| gpt-4.1 | V1 | ChatGPT | 3.83 | 2.22 | 4.90 | 4.92 | 3.10 | 12% | 10% | 2% |
+| gpt-4.1 | V1 | Mistral | 4.02 | 2.76 | 4.76 | 4.41 | 3.27 | 10% | 26% | 16% |
+| gpt-4.1 | V2 | ChatGPT | 4.37 | 3.06 | 4.99 | 4.78 | 3.83 | 40% | 11% | 3% |
+| gpt-4.1 | V2 | Mistral | 4.63 | 3.80 | 4.81 | 3.77 | 3.67 | 17% | 48% | 47% |
+| gpt-4.1 | V3 | ChatGPT | 4.53 | 4.06 | 5.00 | 5.00 | 4.18 | 3% | 1% | 0% |
+| gpt-4.1 | V3 | Mistral | 4.38 | 3.93 | 5.00 | 4.99 | 4.05 | 6% | 2% | 0% |
 
-**The concreteness the judges reward comes with a compliance cost.** The Mistral V2 replies that score
-highest overall are flagged by the judges as promising a specific outcome in 21-49% of cases and as
-admitting liability in 18-52% ("I take full ownership of the miscommunication", "it's completely
-unacceptable that you're not getting the full refund you're owed"). ChatGPT's V2 replies and both
-models' V3 replies are flagged in 0-12% of cases. The regex marker for promised outcomes caught
+**The concreteness the judges reward comes with a compliance cost.** The Mistral V2 replies that the
+small judges score highest overall are flagged by all three judges as promising a specific outcome in
+21-49% of cases and as admitting liability in 18-52% ("I take full ownership of the miscommunication",
+"it's completely unacceptable that you're not getting the full refund you're owed"). ChatGPT's V2
+replies and both models' V3 replies are flagged in 0-12% of cases. The regex marker for promised outcomes caught
 ≤ 0.4% because it looked for explicit "will be refunded" phrasing; the judges read "ensure the refund
 is processed" as a promise. The V3 constraints work as intended here: both flags fall to ≤ 2% under
 V3 for both models.
 
-**Rubric ratings on the factorial cells.** Both judges also rated the seven new cube cells for the
-299 overlapping complaints (Figure 12, Table 13; 8,344 ratings). Three results follow.
+**Rubric ratings on the factorial cells.** All three judges also rated the seven new cube cells for
+the 299 overlapping complaints (Figure 12, Table 13; 12,558 ratings). Three results follow, each
+stated for the two small judges and then checked against the outside judge.
 
 ![Figure 12](../analysis/figures/fig12_judge_factorial.png)
 
 **Figure 12. Judge ratings across the prompt factorial.** Circles and solid lines: gpt-4o-mini as
-judge; squares and dashed lines: mistral-small as judge. Bars are 95% confidence intervals over 299
-complaints per cell.
+judge; squares and dashed lines: mistral-small as judge; triangles and dotted lines: gpt-4.1. Bars
+are 95% confidence intervals over 299 complaints per cell.
 
 *Constraints alone are judged the worst prompt in the design, below the bare baseline.* The
 constraints-only cell scores 2.15 and 2.51 overall (ChatGPT, Mistral) under the GPT judge and 1.93
 and 2.42 under the Mistral judge, against 3.25-3.63 for the bare baseline and 3.7-4.2 for the best
 cells; its concreteness scores (1.2-2.1) are the lowest of any cell. The C main effect on overall is
 -1.10 and -1.12 (GPT judge) and -0.59 and -0.89 (Mistral judge), and it is cancelled by positive
-A × C (+0.40 to +0.82) and B × C (+0.36 to +0.88) interactions. What the regex markers showed as a
-retreat into hedged boilerplate (Section 5.3), the judges score as a failure to reply.
+A × C (+0.40 to +0.82) and B × C (+0.36 to +0.88) interactions. The outside judge agrees: it scores
+the constraints-only cell 2.42 and 3.28, its lowest for both models, with a C main effect of −0.92
+and −0.39 on overall and −0.65 and −0.80 on concreteness. What the regex markers showed as a retreat
+into hedged boilerplate (Section 5.3), all three judges score as a failure to reply.
 
 *The format is the improvement for ChatGPT; the empathetic framing is already the best for Mistral.*
 For ChatGPT every cell with the format on beats V2 overall (by +0.14 to +0.79 depending on judge),
-with `AB0` the best cell under both judges (4.00 and 3.80). The B main effect on ChatGPT's overall
+with `AB0` the best cell under both small judges (4.00 and 3.80). The B main effect on ChatGPT's overall
 score is +0.69 (GPT judge) and +1.08 (Mistral judge), against +0.33 and +0.36 for Mistral. For
 Mistral no cell beats V2 under the GPT judge, and only `AB0` ties it under the Mistral judge
 (+0.02). The model that reads the empathetic framing as "restate and commit" needs nothing more;
-the model that reads it as "reassure" needs the format to become concrete.
+the model that reads it as "reassure" needs the format to become concrete. Here the outside judge
+differs on Mistral: because it penalises V2's unsupported process claims, every format cell beats
+V2 for Mistral too under gpt-4.1 (by +0.29 to +0.46), and its best cell for both models is the full
+`ABC` (4.19 and 4.13). On the B main effect the three judges agree (ChatGPT +0.69, +1.08, +0.79;
+Mistral +0.33, +0.36, +0.37).
 
 *The constraints separate "sorry" from "we were wrong".* Under the empathetic framing, adding the
 constraints leaves the regex apology rate at 90-100% (Section 5.3) but cuts the judges' admitted-
 liability flag on Mistral's replies from 52% to 20% (GPT judge) and from 18% to 3% (Mistral judge),
 and the promised-outcome flag from 49% to 11% and from 21% to 1%. The format alone cuts admissions
 (52% to 16%) but not promises (49% to 37%); format and constraints together bring both to 0-12%.
-The cost is measurable: moving Mistral from V2 to the full `ABC` cell lowers its overall score by
-0.29 (GPT judge) and 0.28 (Mistral judge) on the five-point scale and its concreteness by about
-0.45, while removing nearly all of the compliance exposure. A deployer can now price the trade.
+The cost is measurable under the small judges: moving Mistral from V2 to the full `ABC` cell
+lowers its overall score by 0.29 (GPT judge) and 0.28 (Mistral judge) on the five-point scale and
+its concreteness by about 0.45, while removing nearly all of the compliance exposure. Under the
+outside judge, which flags the same exposure (47% admissions, 48% promises at V2, both 0-12% at
+`ABC`), the same move *raises* Mistral's overall score by 0.46 and its concreteness by 0.18,
+because the grounding penalty on V2 disappears. The trade is therefore priced between "a small
+loss in judged quality" and "a gain", depending on how much a judge charges for invented process;
+either way the compliance exposure goes, and a deployer can now see both prices.
 
 **Table 13. Judge ratings on the factorial cells: overall and concreteness (1-5), admitted-liability
-and promised-outcome flags (%). n = 299 per cell. Judge G = gpt-4o-mini, M = mistral-small.**
+and promised-outcome flags (%). n = 299 per cell. Judge G = gpt-4o-mini, M = mistral-small,
+L = gpt-4.1 (the larger outside judge).**
 
-| Cell | Model | Overall G | Overall M | Concrete. G | Concrete. M | Admits G | Admits M | Promises G | Promises M |
-| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| 000 | ChatGPT | 3.25 | 2.52 | 2.51 | 1.99 | 13 | 0 | 4 | 1 |
-| 000 | Mistral | 3.63 | 3.32 | 3.15 | 3.11 | 33 | 2 | 17 | 6 |
-| A00 (V2) | ChatGPT | 3.80 | 3.02 | 3.18 | 2.62 | 10 | 0 | 12 | 2 |
-| A00 (V2) | Mistral | 4.21 | 3.99 | 4.12 | 4.19 | 52 | 18 | 49 | 21 |
-| 0B0 | ChatGPT | 3.94 | 3.60 | 3.56 | 3.58 | 2 | 0 | 8 | 1 |
-| 0B0 | Mistral | 3.96 | 3.68 | 3.67 | 3.80 | 6 | 0 | 21 | 5 |
-| 00C | ChatGPT | 2.15 | 1.93 | 1.86 | 1.21 | 0 | 0 | 0 | 0 |
-| 00C | Mistral | 2.51 | 2.42 | 2.05 | 1.80 | 1 | 0 | 0 | 0 |
-| AB0 | ChatGPT | 4.00 | 3.80 | 3.81 | 3.90 | 2 | 0 | 10 | 1 |
-| AB0 | Mistral | 4.04 | 4.02 | 3.92 | 4.17 | 16 | 1 | 37 | 11 |
-| A0C | ChatGPT | 3.32 | 2.83 | 2.73 | 2.24 | 4 | 0 | 1 | 0 |
-| A0C | Mistral | 3.91 | 3.92 | 3.66 | 3.90 | 20 | 3 | 11 | 1 |
-| 0BC | ChatGPT | 3.72 | 3.41 | 3.21 | 3.41 | 1 | 0 | 1 | 0 |
-| 0BC | Mistral | 3.54 | 3.15 | 3.20 | 3.24 | 0 | 0 | 2 | 0 |
-| ABC | ChatGPT | 3.94 | 3.72 | 3.65 | 3.87 | 1 | 0 | 1 | 0 |
-| ABC | Mistral | 3.92 | 3.72 | 3.65 | 3.76 | 5 | 0 | 12 | 0 |
+| Cell | Model | Overall G | Overall M | Overall L | Concrete. G | Concrete. M | Concrete. L | Admits G | Admits M | Admits L | Promises G | Promises M | Promises L |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 000 | ChatGPT | 3.25 | 2.52 | 3.34 | 2.51 | 1.99 | 2.40 | 13 | 0 | 3 | 4 | 1 | 7 |
+| 000 | Mistral | 3.63 | 3.32 | 3.67 | 3.15 | 3.11 | 3.20 | 33 | 2 | 13 | 17 | 6 | 25 |
+| A00 (V2) | ChatGPT | 3.80 | 3.02 | 3.83 | 3.18 | 2.62 | 3.06 | 10 | 0 | 3 | 12 | 2 | 11 |
+| A00 (V2) | Mistral | 4.21 | 3.99 | 3.67 | 4.12 | 4.19 | 3.80 | 52 | 18 | 47 | 49 | 21 | 48 |
+| 0B0 | ChatGPT | 3.94 | 3.60 | 4.12 | 3.56 | 3.58 | 4.02 | 2 | 0 | 0 | 8 | 1 | 10 |
+| 0B0 | Mistral | 3.96 | 3.68 | 4.04 | 3.67 | 3.80 | 3.96 | 6 | 0 | 1 | 21 | 5 | 23 |
+| 00C | ChatGPT | 2.15 | 1.93 | 2.42 | 1.86 | 1.21 | 1.76 | 0 | 0 | 0 | 0 | 0 | 0 |
+| 00C | Mistral | 2.51 | 2.42 | 3.28 | 2.05 | 1.80 | 2.40 | 1 | 0 | 0 | 0 | 0 | 0 |
+| AB0 | ChatGPT | 4.00 | 3.80 | 4.15 | 3.81 | 3.90 | 4.11 | 2 | 0 | 0 | 10 | 1 | 11 |
+| AB0 | Mistral | 4.04 | 4.02 | 3.96 | 3.92 | 4.17 | 3.96 | 16 | 1 | 6 | 37 | 11 | 40 |
+| A0C | ChatGPT | 3.32 | 2.83 | 3.73 | 2.73 | 2.24 | 2.81 | 4 | 0 | 1 | 1 | 0 | 1 |
+| A0C | Mistral | 3.91 | 3.92 | 3.95 | 3.66 | 3.90 | 3.73 | 20 | 3 | 16 | 11 | 1 | 12 |
+| 0BC | ChatGPT | 3.72 | 3.41 | 4.08 | 3.21 | 3.41 | 4.01 | 1 | 0 | 0 | 1 | 0 | 0 |
+| 0BC | Mistral | 3.54 | 3.15 | 3.98 | 3.20 | 3.24 | 3.87 | 0 | 0 | 0 | 2 | 0 | 2 |
+| ABC | ChatGPT | 3.94 | 3.72 | 4.19 | 3.65 | 3.87 | 4.16 | 1 | 0 | 0 | 1 | 0 | 1 |
+| ABC | Mistral | 3.92 | 3.72 | 4.13 | 3.65 | 3.76 | 3.98 | 5 | 0 | 0 | 12 | 0 | 12 |
 
 The judges' placeholder flag tracks the regex marker across the cube as it did on the realistic
 prompts (96% and 94% for ChatGPT's bare-baseline replies), and the Mistral judge's grounding score,
 insensitive under the GPT judge, is lowest for exactly the cells whose replies write letters (3.46
 for ChatGPT's baseline), which suggests that judge reads an invented salutation as invented content.
 
-**Agreement and self-preference.** Inter-judge Spearman correlations on the realistic prompts are
-0.71 for concreteness, 0.59 for acknowledgement, 0.58 for overall, 0.38 for tone, and 0.06 for
-grounding (Table 11). On the placeholder flag the judges agree with each other (Cohen's κ [cohen1960kappa] = 0.81) and with the
-regex marker (κ = 0.82 and 0.92), which validates the regex used in Section 5.6. Agreement on the
-compliance flags is weaker (κ = 0.52 for promised outcomes, 0.31 for admitted liability), with the GPT
-judge flagging two to four times as often as the Mistral judge. The GPT judge rates grounding at
-4.98-5.00 in every cell and is effectively insensitive; the Mistral judge penalises V2 (3.97 ChatGPT,
-4.33 Mistral) for unsupported specifics such as "I'll escalate this to our compliance team today",
-which is invented process rather than invented fact.
+**Agreement and self-preference.** Between the two small judges, Spearman correlations on the
+realistic prompts are 0.71 for concreteness, 0.59 for acknowledgement, 0.58 for overall, 0.38 for
+tone, and 0.06 for grounding (Table 11). The outside judge correlates with each of them at 0.58-0.65
+on concreteness and 0.54-0.60 on acknowledgement, but only 0.34-0.36 on overall and 0.06-0.08 on
+tone: the judges agree on what a reply says and does, and disagree on how to weigh it. On the
+placeholder flag all three judges agree with each other (Cohen's κ [cohen1960kappa] = 0.81-0.95)
+and with the regex marker (κ = 0.82, 0.92, 0.95), which validates the regex used in Section 5.6.
+Agreement on the compliance flags is weaker between the two small judges (κ = 0.52 for promised
+outcomes, 0.31 for admitted liability), with the GPT judge flagging two to four times as often as
+the Mistral judge; the outside judge sides with the GPT judge here (κ = 0.70 and 0.66 with it,
+0.43 and 0.42 with the Mistral judge, and nearly identical flag rates), so the Mistral judge is the
+outlier on compliance. On grounding the roles reverse. The small GPT judge rates grounding at
+4.98-5.00 in every cell and is effectively insensitive; the Mistral judge penalises V2 (3.97
+ChatGPT, 4.33 Mistral) for unsupported specifics such as "I'll escalate this to our compliance team
+today", which is invented process rather than invented fact; and the outside judge penalises the
+same replies more (4.78 and 3.77) and, unlike the Mistral judge, concentrates the penalty on
+Mistral, whose V2 replies contain most of the dated commitments and named teams.
 
-Each judge favours its own family: on the paired ChatGPT-minus-Mistral difference, the GPT judge is
-0.23 points more favourable to ChatGPT than the Mistral judge is (overall; *d* = 0.27, *p* < 0.001),
-with similar shifts on every criterion. But the self-preference shifts the size of the gap, not its
-direction: both judges still rate Mistral's replies higher overall (GPT judge -0.26, Mistral judge
--0.50). The Mistral judge is also harsher in general, by about 0.4 points.
+Each small judge favours its own family relative to the other: on the paired ChatGPT-minus-Mistral
+difference, the GPT judge is 0.23 points more favourable to ChatGPT than the Mistral judge is
+(overall; *d* = 0.27, *p* < 0.001), with similar shifts on every criterion. Measured against the
+outside judge, however, the picture is not one of two judges pulling towards their own models but of
+both small judges being more favourable to Mistral than the outside judge is: the small GPT judge
+by 0.30 points (*d* = 0.32) and the Mistral judge by 0.53 (*d* = 0.49). The outside judge's own
+model gap on overall is +0.04 (*p* = 0.14), a tie, made of a Mistral advantage on concreteness
+(−0.38) cancelled by a ChatGPT advantage on grounding (+0.51) and tone (+0.10). The small judges'
+preference for Mistral is therefore real in the sense that both see the same concreteness, but it
+is not a stable ranking: it depends on a weighting of concreteness against grounding that a larger
+judge makes differently. The Mistral judge is also harsher in general, by about 0.4 points, and the
+outside judge sits between the two on level.
 
-**Table 11. Inter-judge agreement and self-preference, realistic prompts.**
+**Table 11. Inter-judge agreement and self-preference, realistic prompts. Agreement is Spearman ρ;
+gaps are the paired ChatGPT − Mistral difference in mean score.**
 
-| Criterion | Spearman ρ (judges) | Within 1 point | ChatGPT − Mistral, GPT judge | ChatGPT − Mistral, Mistral judge | Self-preference shift (*d*) |
-| --- | ---: | ---: | ---: | ---: | ---: |
-| Acknowledgement | 0.59 | 84% | -0.26 | -0.49 | 0.22 |
-| Concreteness | 0.71 | 99% | -0.50 | -0.76 | 0.28 |
-| Tone | 0.38 | 100% | -0.04 | -0.21 | 0.23 |
-| Grounding | 0.06 | 84% | 0.00 | -0.14 | 0.13 |
-| Overall | 0.58 | 95% | -0.26 | -0.50 | 0.27 |
+| Criterion | ρ, GPT vs Mistral judge | ρ, GPT judge vs gpt-4.1 | ρ, Mistral judge vs gpt-4.1 | Gap, GPT judge | Gap, Mistral judge | Gap, gpt-4.1 | GPT − Mistral judge shift (*d*) |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| Acknowledgement | 0.59 | 0.60 | 0.54 | -0.26 | -0.49 | -0.10 | 0.22 |
+| Concreteness | 0.71 | 0.58 | 0.65 | -0.50 | -0.76 | -0.38 | 0.28 |
+| Tone | 0.38 | 0.08 | 0.06 | -0.04 | -0.21 | +0.10 | 0.23 |
+| Grounding | 0.06 | 0.04 | 0.24 | 0.00 | -0.14 | +0.51 | 0.13 |
+| Overall | 0.58 | 0.34 | 0.36 | -0.26 | -0.50 | +0.04 | 0.27 |
 
 **Sentiment is anti-correlated with judged quality.** Across the 1,800 rated realistic-prompt
 replies, the VADER compound correlates negatively with the judges' overall score (Spearman -0.14 GPT
-judge, -0.26 Mistral judge) and with concreteness (-0.24, -0.30). Length correlates positively with
-judged quality (0.49 and 0.27 for overall), so verbosity bias [zheng2023judge;
-dubois2024lengthcontrolled] cannot be excluded as part of the
-reason V2 replies score well.
+judge, -0.26 Mistral judge, -0.15 gpt-4.1) and with concreteness (-0.24, -0.30, -0.34). Length
+correlates positively with judged quality (0.49, 0.27, and 0.32 for overall), so verbosity bias
+[zheng2023judge; dubois2024lengthcontrolled] cannot be excluded as part of the reason V2 replies
+score well, though the outside judge's length correlation on tone is only 0.05.
 
 **Transformer sentiment disagrees with the lexicon on level but not on order.** On 18,000 replies from
 3,000 full-corpus complaints, the RoBERTa classifier's positive-minus-negative score correlates only
@@ -976,11 +1031,22 @@ matters as much as its content, and the trade between empathy and exposure can b
 
 **Sentiment is the wrong yardstick for empathy.** The instrument that most analyses of "empathetic"
 AI reach for, lexicon sentiment, ranked the reply that restated the customer's problem and committed
-to a date below the reply that thanked the customer and promised to be in touch, and two LLM judges
+to a date below the reply that thanked the customer and promised to be in touch, and three LLM judges
 confirmed the inversion: judged overall quality correlates negatively with VADER sentiment. A rubric
 that scores acknowledgement accuracy and concreteness separately from tone is needed, and it must be
 paired with compliance flags, because the replies the judges liked best were also the ones most
 likely to concede fault or promise a refund.
+
+**Which judge you ask decides who wins, but not what happened.** Three LLM judges agreed on what
+each reply does: which cell is concrete, which apologises, which leaves a placeholder, which concedes
+fault. They disagreed on how to weigh those facts. The two small judges rank Mistral's empathetic
+replies best overall; the larger outside judge ranks them in the middle because it charges a full
+point for an unsupported process claim that the small judges let pass. The difference is not
+self-preference in the usual sense, since both small judges are more favourable to Mistral than the
+outside judge is; it is a weighting of concreteness against grounding, and a deployer's compliance
+team would have its own. The practical reading is that a rubric's per-criterion scores and flags are
+portable across judges and an "overall" score is not, so evaluations of customer-facing text should
+report the criteria and let the deployer supply the weights.
 
 **The realistic risk is not hallucination.** With inputs that redact every date, name, and amount,
 the models almost never invented one. What they did, in one full-corpus reply out of seven and in
