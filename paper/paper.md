@@ -421,8 +421,9 @@ to or larger than the model main effect for sentiment (11% vs 4%), sentence coun
 thanking (14% vs 13%): the models differ mostly in how they respond to a particular prompt, not in a
 fixed house style. The complaint itself explains 27% of sentiment variance and 21% of escalation
 variance, but only 8-17% of the other features. Placeholders are 72% residual: the behaviour is close
-to random at the level of an individual reply, which is why a single explicit instruction against it
-has nothing to fight (Section 5.6).
+to random at the level of an individual reply (the sampling layer confirms this directly: under V2
+the five draws of the same cell disagree on the placeholder in 58% of cells, Table 5b), which is
+why a single explicit instruction against it has nothing to fight (Section 5.6).
 
 **Table 2. Share of variance (η²) explained by each source, full corpus.**
 
@@ -993,7 +994,11 @@ predictable output is a feature.
 
 - Two models in the same small, inexpensive tier; results may not transfer to frontier models. The
   pipeline is model-agnostic and the Claude arm is pending.
-- One sample per prompt at default temperature; within-model variance is unmeasured. The two
+- The two main layers hold one draw per prompt at default temperature. The sampling layer (five
+  draws per cell on 299 complaints) shows that the headline model gap under V2 is 1.6-2.3 within-
+  cell standard deviations and that single-draw re-estimates never flip its sign, but it also shows
+  that reply-level binary markers such as the placeholder vary between draws in more than half of
+  cells, so per-reply claims should be read as rates, not as properties of a model. The two
   paraphrases bound wording variance but do not estimate it precisely.
 - The factorial cells were run on a 2,999-complaint subset; effect estimates there have wider
   intervals than the full-corpus ones, though with 2,999 pairs per cell every reported difference is
@@ -1001,16 +1006,20 @@ predictable output is a feature.
 - Regular-expression markers count surface phrases, not intent, and are sensitive to details such as
   typographic apostrophes (a bug found and fixed during analysis). The judges' broader reading of
   "promise" versus the regex's narrow one is an instance of the same gap.
-- VADER is a social-media lexicon and the RoBERTa classifier is trained on tweets. The judge ratings
-  are from the same two model families that produced the replies [panickssery2024selfpreference]; we
-  measure a self-preference shift
-  of about a quarter of a standard deviation, which changes the size but not the direction of the
-  model gap. Judged quality also correlates with length (ρ up to 0.49), so verbosity bias may inflate
-  the ratings of longer replies.
+- VADER is a social-media lexicon and the RoBERTa classifier is trained on tweets. Two of the three
+  judges are the models that produced the replies [panickssery2024selfpreference]; we measure a
+  self-preference shift of about a quarter of a standard deviation between them, which changes the
+  size but not the direction of the model gap, and the third judge, a larger model that wrote no
+  replies, is the check on that conclusion (Section 5.9). All three are LLMs from the two vendors
+  whose models are being compared. Judged quality also correlates with length (ρ up to 0.49), so
+  verbosity bias may inflate the ratings of longer replies; the order-swapped pairwise judging
+  measures position bias but not length bias.
 - The complaint set is category-stratified, not representative of complaint volume, and 12% of
   narratives were truncated in the prompt.
 - Everything here is descriptive of the replies. No human rated them, and we do not know how consumers
-  would receive them.
+  would receive them. A blinded human rating pass (two raters, 600 replies over six cells, partial
+  double coding) was designed and its materials are in the repository, but it was not run; the
+  three-judge, pairwise, and sampling checks above are what stands in for it.
 
 ## 8. Conclusion
 
