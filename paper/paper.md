@@ -303,15 +303,29 @@ company field proved too noisy to attribute.
 
 ### 4.5 LLM-judge rubric
 
-On the 300-complaint judge sample, replies are rated by two judges, `gpt-4o-mini` and
-`mistral-small-latest`, at temperature 0. Each judge sees the complaint exactly as the reply model
-saw it and one reply, without any indication of which model or prompt produced it, and returns 1-5
-scores for acknowledgement accuracy, concreteness of the next step, tone, grounding (absence of
-invented specifics), and overall send-ability, plus booleans for the presence of a placeholder, a
-promised outcome, and an admission of liability (rubric text in Appendix C). Both judges rate all
-three realistic prompts (1,800 replies) and the seven new factorial cells (4,186 replies). Using two
-judges lets us report inter-judge agreement and test for self-preference, i.e. whether each judge
-scores its own model's replies higher than the other judge does.
+On the 300-complaint judge sample, replies are rated by three judges at temperature 0: the two
+reply models themselves, `gpt-4o-mini` and `mistral-small-latest`, and a larger model from a
+family that wrote none of the replies in this role, `gpt-4.1`. Each judge sees the complaint
+exactly as the reply model saw it and one reply, without any indication of which model or prompt
+produced it, and returns 1-5 scores for acknowledgement accuracy, concreteness of the next step,
+tone, grounding (absence of invented specifics), and overall send-ability, plus booleans for the
+presence of a placeholder, a promised outcome, and an admission of liability (rubric text in
+Appendix C). All three judges rate all three realistic prompts (1,800 replies) and the seven new
+factorial cells (4,186 replies). Using the two small judges lets us report inter-judge agreement
+and test for self-preference, i.e. whether each judge scores its own model's replies higher than
+the other judge does; the larger outside judge is the check on whether the two small judges' verdicts
+are an artefact of judging one's own family.
+
+**Pairwise judging with order swap.** Absolute scores can hide two judge artefacts: a preference for
+whichever reply is shown first, and a preference for longer replies. On the first 150 complaints of
+the judge sample (in its stratified order) each judge therefore also compares replies head to head:
+ChatGPT against Mistral within each of six cells (V1, V2 = A00, V3, 000, A0C, ABC), and within each
+model six cell contrasts (V2 vs V1, V2 vs V3, A00 vs 000, A00 vs A0C, A0C vs ABC, 000 vs 00C), for
+2,700 pairs. Every pair is judged twice, once in each presentation order, and the judge names the
+better reply overall, on concreteness, and on tone, or a tie. A pair counts as decided only when
+the same reply wins in both orders; a pair whose winner changes with the order is recorded as
+decided by position. This measures position bias directly and gives a verdict on each contrast that
+does not depend on the judges' use of the 1-5 scale.
 
 ### 4.6 Statistics
 
@@ -330,6 +344,21 @@ the primary evidence and the regression terms are read as "does adding this fact
 given what is already on". To relate reply sentiment to complaint characteristics we fit OLS with
 model × prompt fixed effects, product family, narrative sentiment, log narrative length, and
 redaction ratio, with standard errors clustered by complaint.
+
+Three robustness layers sit under these estimates. First, every paired contrast reported for the
+full corpus (model gap within prompt, prompt contrast within model) and every main effect of the
+factorial carries a 95% confidence interval from a cluster bootstrap over complaints (1,000
+resamples of complaint identifiers, percentile interval), which respects the pairing and makes no
+distributional assumption. Second, the binary markers are re-estimated by logistic regression,
+*y ~ model × prompt* for the full corpus and *y ~ A × B × C* per model for the factorial, with
+complaint-clustered standard errors, reported as odds ratios and average marginal effects, as a
+check that the linear-probability differences are not artefacts of floors and ceilings. Third,
+because every reply in the two main layers is a single draw at the models' default sampling
+temperature, we ran a sampling layer: for the 299 judge-sample complaints, each model produced
+five independent replies to each of the three realistic prompts (8,970 replies). This gives the
+within-cell draw-to-draw variance of every feature, a model gap estimated from five-draw cell
+means with a bootstrap interval, and a direct measure of how far a single-draw estimate, which is
+what the main layers use, can wander from it.
 
 ## 5. Results
 
@@ -417,6 +446,22 @@ within a prompt moves them by 0.02 to 1.4. Under V3 the two models are indisting
 sentence count, and grade level (*d* ≤ 0.04): a strict output schema erases most model-level
 stylistic variation.
 
+**Uncertainty.** With 10,000 paired complaints the intervals are narrow. Of the 108 paired contrasts
+(nine per feature: the model gap within each prompt and the three prompt contrasts within each
+model, for twelve features), 97 have a 95% cluster-bootstrap interval that excludes zero; the eleven
+that do not are all near-zero differences on markers at their floor, such as the model gap in
+promised outcomes under V3 (0.0%) or in placeholders under V1 (−0.2%, interval −1.0 to +0.6).
+The headline gaps are estimated to within a few hundredths: under V2 the ChatGPT − Mistral
+difference is 0.67 (0.66-0.69) on the VADER compound, +25.1 (23.9-26.3) points on placeholders,
++71.3 (70.4-72.2) points on thanking, and −62.8 (−63.8 to −61.8) points on time-bound commitments.
+Logistic regressions of the binary markers on model × prompt with clustered standard errors give the
+same picture in odds ratios (Appendix C): the V2 prompt multiplies the odds of a placeholder by 5.0
+(4.7-5.4) for ChatGPT and the Mistral × V2 interaction divides them by 3.9, and the V3 prompt
+multiplies the odds of a time-bound commitment by about 1,300 because the field asks for one. The
+linear-probability differences in the text are therefore not artefacts of floors and ceilings;
+where a marker is near 0% or 100% the odds ratios are extreme but the direction is unchanged.
+Tables `ci_study1_contrasts.csv` and `ci_study1_logit.csv` carry every interval.
+
 **Table 3. Paired Cohen's *d* for prompt changes (within model) and model changes (within prompt),
 full corpus.**
 
@@ -498,6 +543,20 @@ effect -0.43 and -0.42), consistent with its "do not ask the customer to repeat 
 directive. The format removes it for ChatGPT (3%) but not for Mistral (42%), because Mistral fills
 the `What we need from you` field with a request while ChatGPT writes "Nothing at this time"; the
 full corpus shows the same asymmetry under V3 (99% vs 62% "Nothing at this time").
+
+**Uncertainty.** The main effects are estimated on 2,999 complaints with all eight cells present,
+and 81 of the 90 main effects (three factors × fifteen features × two models) have a 95% cluster-
+bootstrap interval that excludes zero; the nine that do not are effects of under one point on
+markers at a floor or ceiling (for example the format's effect on Mistral's placeholders, −0.4
+points, interval −1.2 to +0.4). The effects that carry the argument are estimated to within a
+point: the format removes apologies by 62.0 (61.4-62.6) points for ChatGPT and 65.4 (64.8-66.0) for
+Mistral, the constraints by 17.7 (17.2-18.3) and 18.5 (17.9-19.1), and the framing adds them back
+by 31.0 (30.4-31.6) and 34.2 (33.6-34.9). Logistic *y ~ A × B × C* fits with clustered standard
+errors (Appendix C) agree in sign on every main effect and reproduce the interactions that matter:
+for ChatGPT the constraints divide the odds of an apology by about 40 on their own and the A × C
+interaction multiplies them back by 14, which is the "framing restores against constraints" result
+in odds-ratio form. Tables `ci_study2_main_effects.csv` and `ci_study2_logit.csv` carry every
+interval.
 
 ### 5.4 "Empathetic" is not a model-independent instruction
 
@@ -1003,10 +1062,15 @@ salutation / sign-off patterns in `analysis/study2_factorial.py`.
 
 ## Appendix C. Judge rubric and supplementary tables
 
-Rubric text: `RUBRIC` in `analysis/llm_judge.py`. OLS of reply sentiment on complaint characteristics:
+Rubric text: `RUBRIC` in `analysis/llm_judge.py`; pairwise prompt: `PROMPT` in
+`analysis/pairwise_judge.py`. OLS of reply sentiment on complaint characteristics:
 `analysis/tables/ols_reply_sentiment.txt`. Reply measures by company outcome:
 `analysis/tables/reply_by_company_outcome.csv`. Factorial effect estimates:
-`analysis/tables/study2_factorial_effects.csv`.
+`analysis/tables/study2_factorial_effects.csv`. Cluster-bootstrap intervals and logistic checks:
+`analysis/tables/ci_study1_contrasts.csv`, `ci_study1_logit.csv`, `ci_study2_main_effects.csv`,
+`ci_study2_logit.csv`. Sampling layer: `sampling_variance.csv`, `sampling_decomposition.csv`.
+Pairwise judging: `pairwise_position_bias.csv`, `pairwise_winrates.csv`, `pairwise_vs_absolute.csv`.
+Three-judge agreement and self-preference: `judge_agreement.csv`, `judge_self_preference.csv`.
 
 ## Appendix D. Worked examples
 

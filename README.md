@@ -226,13 +226,22 @@ Output:
 `ANALYSIS_SAMPLE=2000` runs on a random subset of complaints; `ANALYSIS_FROM_CACHE=1`
 redoes the statistics and figures from the saved feature table without recomputing it.
 
-Three follow-up scripts build on the feature table:
+Follow-up scripts build on the feature table:
 
 - `analysis/robustness.py` — variance decomposition (prompt vs model vs complaint) and the
   invented-facts audit
 - `analysis/llm_judge.py` then `analysis/judge_analysis.py` — blind rubric ratings of a
-  stratified 300-complaint sample by two LLM judges (`JUDGE_COMPLAINTS`, paid API calls), with
-  agreement and self-preference tests
+  stratified 300-complaint sample by three LLM judges (`gpt-4o-mini`, `mistral-small`, and the
+  larger outside judge `gpt-4.1`; `JUDGE_JUDGES` selects a subset, `JUDGE_COMPLAINTS` the sample;
+  paid API calls), with agreement and self-preference tests
+- `analysis/pairwise_judge.py` then `analysis/pairwise_analysis.py` — head-to-head verdicts on
+  150 complaints, every pair judged in both presentation orders (`PAIR_COMPLAINTS`); position
+  bias, win rates with bootstrap CIs, and agreement with the absolute scores
+- `analysis/sampling_variance.py` — within-model draw-to-draw variance from the sampling run
+  (`LLM_SAMPLES=5 LLM_MODELS=ChatGPT,Mistral LLM_ROWS_FILE=dataset/judge_rows.txt
+  LLM_OUTPUT_NAME=llm_responses_samples`, see `generate_llm_responses.py`)
+- `analysis/bootstrap_ci.py` — cluster-bootstrap confidence intervals for every paired contrast
+  and factorial main effect, and logistic-regression checks for the binary markers (`BOOT_B`)
 - `analysis/study2_factorial.py` and `analysis/study2_judge_analysis.py` — the factorial
   decomposition (cell means, A×B×C effects, hygiene and paraphrase contrasts) and the judges'
   ratings of the factorial cells (`JUDGE_VARIANTS=... JUDGE_OUTPUT=judge_ratings_study2.csv`)
@@ -240,9 +249,10 @@ Three follow-up scripts build on the feature table:
   (needs `torch` and `transformers`; downloads the model from Hugging Face on first run)
 
 The manuscript draft is in `paper/paper.md` (references in `paper/references.bib`), with worked
-examples in `paper/appendix_examples.md`. `paper/human_rating_protocol.md` describes the human
-rating pass; `analysis/human_rating_build.py` writes the blinded rating sheets to
-`analysis/human_rating/` and `analysis/human_rating_analysis.py` scores the returned sheets.
+examples in `paper/appendix_examples.md`. `paper/human_rating_protocol.md` describes a human
+rating pass that was designed but not run; `analysis/human_rating_build.py` writes the blinded
+rating sheets to `analysis/human_rating/` and `analysis/human_rating_analysis.py` would score the
+returned sheets.
 
 ## Study 2: factorial prompts
 

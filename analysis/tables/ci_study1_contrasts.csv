@@ -1,0 +1,109 @@
+contrast,feature,n,estimate,ci_lo,ci_hi,excludes_zero
+ChatGPT - Mistral | V1,Length (chars),10000,12.7451,11.398575,14.068670000000001,True
+ChatGPT - Mistral | V2,Length (chars),10000,60.1749,58.5665075,61.725407499999996,True
+ChatGPT - Mistral | V3,Length (chars),10000,1.3435,-0.07697499999999999,2.7734449999999997,False
+V2 - V1 | ChatGPT,Length (chars),10000,200.5325,199.1675675,201.915815,True
+V3 - V1 | ChatGPT,Length (chars),10000,88.9839,87.84100000000001,90.070515,True
+V3 - V2 | ChatGPT,Length (chars),10000,-111.5486,-112.944935,-110.170395,True
+V2 - V1 | Mistral,Length (chars),10000,153.1027,151.4552775,154.8314,True
+V3 - V1 | Mistral,Length (chars),10000,100.3855,98.8285425,102.00356,True
+V3 - V2 | Mistral,Length (chars),10000,-52.7172,-54.357414999999996,-50.917795,True
+ChatGPT - Mistral | V1,Sentences,10000,-0.1614,-0.1686025,-0.1540975,True
+ChatGPT - Mistral | V2,Sentences,10000,1.1374,1.122685,1.1542024999999998,True
+ChatGPT - Mistral | V3,Sentences,10000,-0.0014,-0.0035,0.0007,False
+V2 - V1 | ChatGPT,Sentences,10000,2.6264,2.6132975000000003,2.639205,True
+V3 - V1 | ChatGPT,Sentences,10000,0.9975,0.9951,1.0,True
+V3 - V2 | ChatGPT,Sentences,10000,-1.6289,-1.6412,-1.6164975000000001,True
+V2 - V1 | Mistral,Sentences,10000,1.3276,1.3154925,1.3399,True
+V3 - V1 | Mistral,Sentences,10000,0.8375,0.8295,0.8456,True
+V3 - V2 | Mistral,Sentences,10000,-0.4901,-0.5003025,-0.4797,True
+ChatGPT - Mistral | V1,VADER compound,10000,0.22614167999999998,0.21449525524999996,0.23753813224999998,True
+ChatGPT - Mistral | V2,VADER compound,10000,0.6740894700000001,0.6623348022500001,0.686198148,True
+ChatGPT - Mistral | V3,VADER compound,10000,-0.23910953,-0.24805598374999996,-0.23010016875,True
+V2 - V1 | ChatGPT,VADER compound,10000,0.09029762999999999,0.07947824699999999,0.10024868225,True
+V3 - V1 | ChatGPT,VADER compound,10000,-0.63281255,-0.6436343674999999,-0.622410008,True
+V3 - V2 | ChatGPT,VADER compound,10000,-0.72311018,-0.7344192257500001,-0.7129744155,True
+V2 - V1 | Mistral,VADER compound,10000,-0.35765016,-0.3712872,-0.34338099325,True
+V3 - V1 | Mistral,VADER compound,10000,-0.16756134,-0.17889338700000001,-0.15620187325,True
+V3 - V2 | Mistral,VADER compound,10000,0.19008882,0.17612221374999998,0.20311140049999998,True
+ChatGPT - Mistral | V1,FK grade,10000,1.2127700000000001,1.16238675,1.261981,True
+ChatGPT - Mistral | V2,FK grade,10000,-1.1797,-1.21641425,-1.13857575,True
+ChatGPT - Mistral | V3,FK grade,10000,0.08025,0.03851524999999997,0.12182349999999999,True
+V2 - V1 | ChatGPT,FK grade,10000,-4.1227,-4.1578105,-4.08626225,True
+V3 - V1 | ChatGPT,FK grade,10000,-2.84266,-2.8829810000000005,-2.80420975,True
+V3 - V2 | ChatGPT,FK grade,10000,1.28004,1.2466100000000002,1.31728625,True
+V2 - V1 | Mistral,FK grade,10000,-1.73023,-1.77633925,-1.6785705000000002,True
+V3 - V1 | Mistral,FK grade,10000,-1.7101400000000002,-1.7647525000000002,-1.65910975,True
+V3 - V2 | Mistral,FK grade,10000,0.02009000000000001,-0.029450749999999994,0.06797900000000001,False
+ChatGPT - Mistral | V1,Apology,10000,0.039,0.0289,0.0488025,True
+ChatGPT - Mistral | V2,Apology,10000,-0.034,-0.0378,-0.0302975,True
+ChatGPT - Mistral | V3,Apology,10000,-0.0006,-0.0014,0.0,False
+V2 - V1 | ChatGPT,Apology,10000,0.2671,0.2581,0.2758,True
+V3 - V1 | ChatGPT,Apology,10000,-0.6962,-0.7058,-0.6868,True
+V3 - V2 | ChatGPT,Apology,10000,-0.9633,-0.9670025,-0.9597,True
+V2 - V1 | Mistral,Apology,10000,0.3401,0.3309975,0.3494,True
+V3 - V1 | Mistral,Apology,10000,-0.6566,-0.666,-0.6473949999999999,True
+V3 - V2 | Mistral,Apology,10000,-0.9967,-0.9977,-0.9955,True
+ChatGPT - Mistral | V1,Ownership,10000,-0.0464,-0.0594,-0.0343,True
+ChatGPT - Mistral | V2,Ownership,10000,-0.0126,-0.0158,-0.0092,True
+ChatGPT - Mistral | V3,Ownership,10000,-0.0092,-0.0113,-0.0072,True
+V2 - V1 | ChatGPT,Ownership,10000,0.6542,0.6442,0.6641025,True
+V3 - V1 | ChatGPT,Ownership,10000,0.6656,0.6568,0.6749050000000001,True
+V3 - V2 | ChatGPT,Ownership,10000,0.0114,0.0077975,0.014802499999999998,True
+V2 - V1 | Mistral,Ownership,10000,0.6204,0.6104,0.6312,True
+V3 - V1 | Mistral,Ownership,10000,0.6284,0.6198975,0.6378,True
+V3 - V2 | Mistral,Ownership,10000,0.008,0.0061,0.0099,True
+ChatGPT - Mistral | V1,Thanks the customer,10000,0.143,0.1348975,0.1524,True
+ChatGPT - Mistral | V2,Thanks the customer,10000,0.713,0.7041,0.7220025,True
+ChatGPT - Mistral | V3,Thanks the customer,10000,0.0245,0.021597500000000002,0.027702499999999998,True
+V2 - V1 | ChatGPT,Thanks the customer,10000,0.5403,0.5288975,0.551,True
+V3 - V1 | ChatGPT,Thanks the customer,10000,-0.2203,-0.2291,-0.211,True
+V3 - V2 | ChatGPT,Thanks the customer,10000,-0.7606,-0.7701,-0.7522,True
+V2 - V1 | Mistral,Thanks the customer,10000,-0.0297,-0.0370025,-0.0229975,True
+V3 - V1 | Mistral,Thanks the customer,10000,-0.1018,-0.108,-0.09559500000000001,True
+V3 - V2 | Mistral,Thanks the customer,10000,-0.0721,-0.0773025,-0.0672,True
+ChatGPT - Mistral | V1,Time-bound commitment,10000,-0.1222,-0.1284,-0.1157,True
+ChatGPT - Mistral | V2,Time-bound commitment,10000,-0.6277,-0.6379,-0.6177,True
+ChatGPT - Mistral | V3,Time-bound commitment,10000,-0.1116,-0.1212025,-0.1031925,True
+V2 - V1 | ChatGPT,Time-bound commitment,10000,0.0564,0.0519,0.0611025,True
+V3 - V1 | ChatGPT,Time-bound commitment,10000,0.8299,0.8228,0.837505,True
+V3 - V2 | ChatGPT,Time-bound commitment,10000,0.7735,0.7649,0.7813025,True
+V2 - V1 | Mistral,Time-bound commitment,10000,0.5619,0.551295,0.5724025,True
+V3 - V1 | Mistral,Time-bound commitment,10000,0.8193,0.8110975,0.8272,True
+V3 - V2 | Mistral,Time-bound commitment,10000,0.2574,0.24709499999999998,0.26780499999999996,True
+ChatGPT - Mistral | V1,Escalation,10000,-0.1438,-0.15200249999999998,-0.1353975,True
+ChatGPT - Mistral | V2,Escalation,10000,-0.1933,-0.205205,-0.18239750000000002,True
+ChatGPT - Mistral | V3,Escalation,10000,-0.156,-0.16410249999999998,-0.1476,True
+V2 - V1 | ChatGPT,Escalation,10000,0.4332,0.423495,0.443505,True
+V3 - V1 | ChatGPT,Escalation,10000,-0.0349,-0.0401,-0.0294975,True
+V3 - V2 | ChatGPT,Escalation,10000,-0.4681,-0.4789,-0.4569975,True
+V2 - V1 | Mistral,Escalation,10000,0.4827,0.4711975,0.492905,True
+V3 - V1 | Mistral,Escalation,10000,-0.0227,-0.031802500000000004,-0.013997500000000003,True
+V3 - V2 | Mistral,Escalation,10000,-0.5054,-0.5156,-0.4945925,True
+ChatGPT - Mistral | V1,Leaves a [placeholder],10000,-0.0023,-0.010305,0.0062,False
+ChatGPT - Mistral | V2,Leaves a [placeholder],10000,0.2506,0.2389975,0.26330499999999996,True
+ChatGPT - Mistral | V3,Leaves a [placeholder],10000,-0.0078,-0.0127,-0.003,True
+V2 - V1 | ChatGPT,Leaves a [placeholder],10000,0.2829,0.2709,0.2937075,True
+V3 - V1 | ChatGPT,Leaves a [placeholder],10000,-0.0898,-0.0969,-0.0832975,True
+V3 - V2 | ChatGPT,Leaves a [placeholder],10000,-0.3727,-0.383005,-0.3624,True
+V2 - V1 | Mistral,Leaves a [placeholder],10000,0.03,0.0205975,0.0397,True
+V3 - V1 | Mistral,Leaves a [placeholder],10000,-0.0843,-0.0914,-0.07729749999999999,True
+V3 - V2 | Mistral,Leaves a [placeholder],10000,-0.1143,-0.12230250000000001,-0.106495,True
+ChatGPT - Mistral | V1,Promises an outcome,10000,-0.0035,-0.0049,-0.0022,True
+ChatGPT - Mistral | V2,Promises an outcome,10000,-0.0038,-0.0053,-0.002597500000000002,True
+ChatGPT - Mistral | V3,Promises an outcome,10000,-0.0001,-0.0003,0.0,False
+V2 - V1 | ChatGPT,Promises an outcome,10000,0.0,-0.0005,0.0005,False
+V3 - V1 | ChatGPT,Promises an outcome,10000,-0.0007,-0.0013,-0.0002,True
+V3 - V2 | ChatGPT,Promises an outcome,10000,-0.0007,-0.0013,-0.0002,True
+V2 - V1 | Mistral,Promises an outcome,10000,0.0003,-0.0013024999999999998,0.0021,False
+V3 - V1 | Mistral,Promises an outcome,10000,-0.0041,-0.0054,-0.0029,True
+V3 - V2 | Mistral,Promises an outcome,10000,-0.0044,-0.0057,-0.0031,True
+ChatGPT - Mistral | V1,Hedging,10000,-0.0236,-0.029105,-0.0175,True
+ChatGPT - Mistral | V2,Hedging,10000,0.0028,-0.0009024999999999999,0.0062,False
+ChatGPT - Mistral | V3,Hedging,10000,-0.0401,-0.0453,-0.0345,True
+V2 - V1 | ChatGPT,Hedging,10000,-0.0206,-0.0250025,-0.015897500000000002,True
+V3 - V1 | ChatGPT,Hedging,10000,-0.017,-0.021904999999999997,-0.0124,True
+V3 - V2 | ChatGPT,Hedging,10000,0.0036,-0.0003,0.0073,False
+V2 - V1 | Mistral,Hedging,10000,-0.047,-0.052,-0.041697500000000005,True
+V3 - V1 | Mistral,Hedging,10000,-0.0005,-0.0073025,0.005802499999999998,False
+V3 - V2 | Mistral,Hedging,10000,0.0465,0.0407975,0.052,True

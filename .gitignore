@@ -30,3 +30,5 @@ llm_responses_wide.csv
 
 # Derived per-reply feature table (rebuilt by analysis/eda_sentiment.py, includes the reply text)
 analysis/tables/reply_features.csv.gz
+llm_responses_samples_long.csv
+llm_responses_samples_wide.csv
