@@ -248,8 +248,11 @@ Follow-up scripts build on the feature table:
 - `analysis/transformer_sentiment.py` — RoBERTa sentiment on a subsample as a check on VADER
   (needs `torch` and `transformers`; downloads the model from Hugging Face on first run)
 
-The manuscript draft is in `paper/paper.md` (references in `paper/references.bib`), with worked
-examples in `paper/appendix_examples.md`. `paper/human_rating_protocol.md` describes a human
+The conference manuscript (IEEE 8-page target: 5 figures, 5 tables, 25 references) is
+`paper/paper.md`; the extended journal-length version with every table, figure and interval is
+`paper/paper_extended.md` (references in `paper/references.bib`), with worked examples in
+`paper/appendix_examples.md`. The composite figures used by the conference version are
+`analysis/figures/conf_fig*.png`. `paper/human_rating_protocol.md` describes a human
 rating pass that was designed but not run; `analysis/human_rating_build.py` writes the blinded
 rating sheets to `analysis/human_rating/` and `analysis/human_rating_analysis.py` would score the
 returned sheets.
