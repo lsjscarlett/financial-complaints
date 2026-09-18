@@ -974,57 +974,62 @@ gaps are the paired ChatGPT − Mistral difference in mean score.**
 | Overall | 0.58 | 0.34 | 0.36 | -0.26 | -0.50 | +0.04 | 0.27 |
 
 **Head-to-head verdicts and position bias.** The pairwise layer (Section 4.5; 2,700 pairs on 150
-complaints, each judged in both orders by the Mistral judge and by gpt-4.1; the small GPT judge's
-verdicts are reported in the same table once complete) makes two things visible that absolute
-scores hide. First, both judges have a substantial position bias, and it runs towards the reply
-shown *second*: gpt-4.1 names reply B the better one in 62% of verdicts and reply A in 38%, and the
-Mistral judge 59% against 41%. When the same pair is shown in both orders, the winner changes with
-the order in 25% of pairs for gpt-4.1 and 32% for the Mistral judge on the overall criterion, and
-in 24-25% on concreteness. On tone the Mistral judge declares a tie in 58% of verdicts, so tone is
-effectively not judged pairwise by that model. A single-order pairwise evaluation with either judge
-would therefore carry a quarter to a third of noise that looks like signal; every win rate below
-uses only the pairs whose winner survived the swap (Table 11b).
+complaints, each judged in both orders by all three judges, 16,200 verdicts) makes two things
+visible that absolute scores hide. First, every judge has a substantial position bias, and it runs
+towards the reply shown *second*: gpt-4.1 names reply B the better one in 62% of verdicts and reply
+A in 38%, the small GPT judge 62% against 36%, and the Mistral judge 59% against 41%. When the same
+pair is shown in both orders, the winner changes with the order in 25% of pairs for gpt-4.1, 26%
+for the small GPT judge, and 32% for the Mistral judge on the overall criterion, and in 24-35% on
+concreteness. On tone the Mistral judge declares a tie in 58% of verdicts, so tone is effectively
+not judged pairwise by that model, while the small GPT judge flips on tone in 33% of pairs. A
+single-order pairwise evaluation with any of the three judges would therefore carry a quarter to a
+third of noise that looks like signal; every win rate below uses only the pairs whose winner
+survived the swap (Table 11b).
 
 Second, on those consistent pairs the head-to-head verdicts are more one-sided than the absolute
-scores, and for the outside judge they reverse one of its own absolute rankings. Both judges prefer
-Mistral's reply to ChatGPT's under the bare baseline, the empathetic prompt, the empathetic-plus-
-constraints cell, and the terse prompt: ChatGPT wins 17%, 20%, 11%, and 26% of decided pairs under
-gpt-4.1 and 3%, 2%, 1%, and 12% under the Mistral judge. Under the two format cells (V3, ABC) the
-verdicts are near even (48-56% for ChatGPT). The gpt-4.1 verdict on the empathetic prompt is the
+scores, and for the outside judge they reverse one of its own absolute rankings. All three judges
+prefer Mistral's reply to ChatGPT's under the bare baseline, the empathetic prompt, the empathetic-
+plus-constraints cell, and the terse prompt: ChatGPT wins 17%, 20%, 11%, and 26% of decided pairs
+under gpt-4.1, 12%, 7%, 1%, and 9% under the small GPT judge, and 3%, 2%, 1%, and 12% under the
+Mistral judge. Under the two format cells (V3, ABC) the verdicts are near even for gpt-4.1 (56% and
+48% for ChatGPT) and the Mistral judge (51%, 24%), and lean to Mistral for the small GPT judge (34%,
+36%). The small GPT judge, which is the ChatGPT model itself, is the judge that prefers Mistral's
+replies most consistently head to head, so whatever self-preference it shows in absolute scores
+does not survive a side-by-side comparison. The gpt-4.1 verdict on the empathetic prompt is the
 notable one: its absolute scores put ChatGPT's V2 0.19 points above Mistral's, because of the
 grounding penalty discussed above, but shown the two replies side by side it chooses Mistral's four
 times out of five. Asked to score each reply alone, the outside judge penalises the invented
 process; asked which reply it would send, it prefers the concrete one. Among the cell contrasts the
-constraints-only prompt loses to the bare baseline in 96-100% of decided pairs under both judges
+constraints-only prompt loses to the bare baseline in 96-100% of decided pairs under every judge
 and both models, the sharpest verdict in the design; the empathetic prompt beats the terse one
 88-100%; and adding format and constraints to the empathetic framing (`A0C` vs `ABC`) is preferred
-by gpt-4.1 for both models (96% and 65% for `ABC`) and by the Mistral judge for ChatGPT (76%) but
-not for Mistral (7%), whose judge prefers its own model's least-constrained replies. The pairwise
-verdicts agree in direction with the same judge's absolute mean difference in 14 of 18 contrasts
-for gpt-4.1 and 17 of 18 for the Mistral judge; the exceptions are contrasts whose absolute
-difference is under 0.45 points.
+for ChatGPT by all three judges (96%, 99%, 76% for `ABC`) and for Mistral only by gpt-4.1 (65%),
+while the two small judges prefer Mistral's least-constrained replies (22% and 7% for `ABC`). The
+pairwise verdicts agree in direction with the same judge's absolute mean difference in 14 of 18
+contrasts for gpt-4.1, 16 of 18 for the small GPT judge, and 17 of 18 for the Mistral judge; the
+exceptions are contrasts whose absolute difference is under 0.45 points.
 
 **Table 11b. Order-swapped pairwise verdicts, overall criterion, 150 complaints. Position bias
 is the share of pairs whose winner changed with the presentation order. Win rates are for the
 first-named reply among pairs decided consistently in both orders, with 95% bootstrap intervals
 over complaints.**
 
-| | gpt-4.1 | Mistral judge |
-| --- | ---: | ---: |
-| Verdicts choosing the second-shown reply | 62% | 59% |
-| Pairs decided by position (overall) | 25% | 32% |
-| Pairs decided by position (concreteness) | 24% | 25% |
-| Pairs tied on tone | 9% | 58% |
-| ChatGPT beats Mistral, bare baseline 000 | 17% (10-23) | 3% (0-7) |
-| ChatGPT beats Mistral, V2 / A00 | 20% (13-28) | 2% (0-5) |
-| ChatGPT beats Mistral, A0C | 11% (5-17) | 1% (0-2) |
-| ChatGPT beats Mistral, V1 | 26% (19-34) | 12% (3-21) |
-| ChatGPT beats Mistral, V3 | 56% (48-67) | 51% (42-60) |
-| ChatGPT beats Mistral, ABC | 48% (37-59) | 24% (16-32) |
-| Bare baseline beats constraints-only, ChatGPT / Mistral | 100% / 96% | 99% / 98% |
-| V2 beats V1, ChatGPT / Mistral | 96% / 88% | 93% / 100% |
-| V2 beats V3, ChatGPT / Mistral | 30% / 60% | 88% / 98% |
-| ABC beats A0C, ChatGPT / Mistral | 96% / 65% | 76% / 7% |
+| | gpt-4.1 | GPT judge (gpt-4o-mini) | Mistral judge |
+| --- | ---: | ---: | ---: |
+| Verdicts choosing the second-shown reply | 62% | 62% | 59% |
+| Pairs decided by position (overall) | 25% | 26% | 32% |
+| Pairs decided by position (concreteness) | 24% | 35% | 25% |
+| Pairs tied on tone | 9% | 2% | 58% |
+| ChatGPT beats Mistral, bare baseline 000 | 17% (10-23) | 12% (7-19) | 3% (0-7) |
+| ChatGPT beats Mistral, V2 / A00 | 20% (13-28) | 7% (3-12) | 2% (0-5) |
+| ChatGPT beats Mistral, A0C | 11% (5-17) | 1% (0-3) | 1% (0-2) |
+| ChatGPT beats Mistral, V1 | 26% (19-34) | 9% (4-14) | 12% (3-21) |
+| ChatGPT beats Mistral, V3 | 56% (48-67) | 34% (24-44) | 51% (42-60) |
+| ChatGPT beats Mistral, ABC | 48% (37-59) | 36% (22-50) | 24% (16-32) |
+| Bare baseline beats constraints-only, ChatGPT / Mistral | 100% / 96% | 100% / 99% | 99% / 98% |
+| V2 beats V1, ChatGPT / Mistral | 96% / 88% | 99% / 98% | 93% / 100% |
+| V2 beats V3, ChatGPT / Mistral | 30% / 60% | 84% / 93% | 88% / 98% |
+| ABC beats A0C, ChatGPT / Mistral | 96% / 65% | 99% / 22% | 76% / 7% |
 
 **Sentiment is anti-correlated with judged quality.** Across the 1,800 rated realistic-prompt
 replies, the VADER compound correlates negatively with the judges' overall score (Spearman -0.14 GPT
@@ -1100,7 +1105,7 @@ outside judge is; it is a weighting of concreteness against grounding, and a dep
 team would have its own. The practical reading is that a rubric's per-criterion scores and flags are
 portable across judges and an "overall" score is not, so evaluations of customer-facing text should
 report the criteria and let the deployer supply the weights. The pairwise layer adds a procedural
-warning: both judges preferred whichever reply was shown second in about 60% of verdicts, and a
+warning: all three judges preferred whichever reply was shown second in about 60% of verdicts, and a
 quarter to a third of pairs changed winner when the order was swapped. Pairwise LLM evaluation
 without an order swap is not a measurement of the replies.
 
